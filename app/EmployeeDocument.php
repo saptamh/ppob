@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Employee extends Model
+class EmployeeDocument extends Model
 {
     use SoftDeletes;
 
@@ -14,15 +14,10 @@ class Employee extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'nik',
+        'employee_id',
         'name',
-        'address',
-        'religion',
-        'education',
-        'location',
-        'is_merried',
-        'sex',
-        'start_date',
-        'end_date',
-        'no_npwp' ];
+        'path',
+        'size',
+        'type'
+    ];
 }

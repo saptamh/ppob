@@ -54,37 +54,9 @@ class EmployeeController extends Controller
             'education' => 'required',
             'location' => 'required',
             'start_date' => 'required',
-            'ktp' => 'mimes:jpeg,jpg,png|max:10000',
-            'npwp' => 'mimes:jpeg,jpg,png|max:10000'
         ]);
         try {
-            $img_name_ktp = "";
-            $img_name_npwp = "";
-            if ($request->hasFile('ktp')) {
-                $image_ktp = $request->file('ktp');
-                $img_name_ktp = time();
-                Cloudder::upload($image_ktp, $img_name_ktp,['folder'=>'REKAKOMINDO/employee']);
-                $img_name_ktp = Cloudder::show(Cloudder::getResult()['public_id'], []);
-            } else {
-                if (isset($request->ktp_hidden) && !empty($request->ktp_hidden)) {
-                    $img_name_ktp = $request->ktp_hidden;
-                }
-            }
-
-            if ($request->hasFile('npwp')) {
-                $image_npwp = $request->file('npwp');
-                $img_name_npwp = time();
-                Cloudder::upload($image_npwp, $img_name_npwp,['folder'=>'REKAKOMINDO/employee']);
-                $img_name_npwp = Cloudder::show(Cloudder::getResult()['public_id'], []);
-            } else {
-                if (isset($request->npwp_hidden) && !empty($request->npwp_hidden)) {
-                    $img_name_npwp = $request->npwp_hidden;
-                }
-            }
-
             $input = $request->all();
-            $input['ktp'] = $img_name_ktp;
-            $input['npwp'] = $img_name_npwp;
             $model = new Employee;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);

@@ -56,6 +56,15 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/template/{id}', ['uses' => 'LevelController@template'])->name('template');
     });
 
+    Route::group(['prefix' => 'document-employee', 'as' => 'document-employee.'], function () {
+        Route::get('/', ['uses' => 'EmployeeDocumentController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'EmployeeDocumentController@index'])->name('data-table');
+        Route::post('/store', ['uses' => 'EmployeeDocumentController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'EmployeeDocumentController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'EmployeeDocumentController@destroy'])->name('destroy');
+        Route::get('/template/{id}', ['uses' => 'EmployeeDocumentController@template'])->name('template');
+    });
+
     Route::group(['prefix' => 'project', 'as' => 'project.'], function () {
         Route::get('/', ['uses' => 'ProjectController@index'])->name('main');
         Route::get('/data-table', ['uses' => 'ProjectController@index'])->name('data-table');

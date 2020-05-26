@@ -79,14 +79,6 @@
         {{ Form::text('end_date', '', ['class'=>'form-control', 'placeholder'=>'Select Date']) }}
     </div>
     <div class="form-group">
-        {{ Form::label('ktp', 'KTP') }}
-        {{ Form::file('ktp', ['class'=>'form-control', 'placeholder'=>'Upload KTP', 'required'=>'true']) }}
-    </div>
-    <div class="form-group">
-        {{ Form::label('npwp', 'NPWP') }}
-        {{ Form::file('npwp', ['class'=>'form-control', 'placeholder'=>'Upload KTP']) }}
-    </div>
-    <div class="form-group">
         {{ Form::submit('Save!', ['class'=>'btn btn-success btn-sm']) }}
         <a href="{{ route('employee.main') }}" class="btn btn-warning btn-sm"> Cancel! </a>
     </div>

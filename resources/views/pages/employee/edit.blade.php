@@ -82,22 +82,6 @@
                 {{ Form::text('end_date', $edit['end_date'], ['class'=>'form-control', 'placeholder'=>'Select Date']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('ktp', 'KTP') }}
-                {{ Form::file('ktp', ['class'=>'form-control', 'placeholder'=>'Upload KTP']) }}
-                {{ Form::hidden('ktp_hidden', $edit['ktp']) }}
-                @if($edit['ktp'] != "" | $edit['ktp'] != null)
-                    <img src="{{ $edit['ktp'] }}" />
-                @endif
-            </div>
-            <div class="form-group">
-                {{ Form::label('npwp', 'NPWP') }}
-                {{ Form::file('npwp', ['class'=>'form-control', 'placeholder'=>'Upload NPWP']) }}
-                {{ Form::hidden('npwp_hidden', $edit['npwp']) }}
-                @if($edit['npwp'] != "" | $edit['npwp'] != null)
-                    <img src="{{ $edit['npwp'] }}" />
-                @endif
-            </div>
-            <div class="form-group">
                 {{ Form::submit('Save!', ['class'=>'btn btn-success btn-sm']) }}
                 <a href="{{ route('employee.main') }}" class="btn btn-warning btn-sm"> Cancel! </a>
             </div>
@@ -117,6 +101,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#level">Level</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#document">Documents</a>
+                </li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
@@ -131,6 +118,10 @@
                 <div id="level" class="container tab-pane"><br>
                     <h3>Level</h3>
                     <div class="level-content"></div>
+                </div>
+                <div id="document" class="container tab-pane"><br>
+                    <h3>Document</h3>
+                    <div class="document-content"></div>
                 </div>
             </div>
         </div>
@@ -155,6 +146,10 @@ function showLevel() {
     $(".level-content").empty();
     $(".level-content").load("{{ url('/employee-level/template/' . $edit['id']) }}");
 }
+function showDocument() {
+    $(".document-content").empty();
+    $(".document-content").load("{{ url('/document-employee/template/' . $edit['id']) }}");
+}
 $(document).ready(function() {
     showFamily();
     $('#start_date').datepicker({
@@ -177,6 +172,9 @@ $(document).ready(function() {
         }
         if (activeTab === "Level"){
             showLevel();
+        }
+        if (activeTab === "Documents"){
+            showDocument();
         }
     });
 });
