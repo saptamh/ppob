@@ -82,7 +82,7 @@
   <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
       <a class="collapse-item" href="buttons.html">Kas</a>
-      <a class="collapse-item" href="buttons.html">Pembayaran Gaji</a>
+      <a class="collapse-item" href="{{ route('salary-payment.main') }}">Pembayaran Gaji</a>
       <a class="collapse-item" href="buttons.html">Pembayaran Barang</a>
       <a class="collapse-item" href="buttons.html">Laporan Kas</a>
       <a class="collapse-item" href="buttons.html">Tagihan Proyek</a>

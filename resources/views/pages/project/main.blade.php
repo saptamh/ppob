@@ -88,7 +88,7 @@ $(document).ready(function() {
 
     $('#DataTable tbody').on('click', '#edit_btn', function () {
         var data_row = t.row($(this).closest('tr')).data();
-        window.location.href = "/project/edit/" + data_row.id;
+        window.location.href = baseUrl + "/project/edit/" + data_row.id;
     });
 
     $('#DataTable tbody').on('click', '#remove_btn', function () {
@@ -102,7 +102,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/project/destroy/" + data_row.id,
+                url: baseUrl + "/project/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTable').DataTable().ajax.reload();

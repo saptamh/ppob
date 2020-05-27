@@ -3,10 +3,10 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Employees</h1>
+    <h1 class="h3 mb-2 text-gray-800">Salary Payment</h1>
     <div class="row">
         <div class="col-lg-12">
-            <a href="{{ route('employee.add') }}" class="btn btn-primary btn-circle">
+            <a href="{{ route('salary-payment.add') }}" class="btn btn-primary btn-circle">
                 <i class="fas fa-plus"></i>
             </a>
         </div>
@@ -14,7 +14,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Employe List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Salary Payment List</h6>
             @if(session()->has('message'))
                 <div class="alert alert-success alert-sm">
                     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -28,10 +28,10 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>NIK</th>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Start date</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Nominal</th>
+                        <th>Periode</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -53,7 +53,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '{{ route("employee.data-table") }}',
+            url: '{{ route("salary-payment.data-table") }}',
             dataType: 'json',
             data:{ _token: "{{csrf_token()}}"}
         },
@@ -73,10 +73,10 @@ $(document).ready(function() {
         }],
         columns: [
             {data: "id"},
-            {data: "nik"},
-            {data: "name"},
-            {data: "location"},
-            {data: "start_date"},
+            {data: "employee.name", name: "Employee.name"},
+            {data: "payment_date"},
+            {data: "salary"},
+            {data: "periode"},
         ]
     });
 
@@ -88,7 +88,7 @@ $(document).ready(function() {
 
     $('#DataTable tbody').on('click', '#edit_btn', function () {
         var data_row = t.row($(this).closest('tr')).data();
-        window.location.href = baseUrl + "/employee/edit/" + data_row.id;
+        window.location.href = baseUrl + "/salary-payment/edit/" + data_row.id;
     });
 
     $('#DataTable tbody').on('click', '#remove_btn', function () {
@@ -102,7 +102,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: baseUrl + "/employee/destroy/" + data_row.id,
+                url: baseUrl + "/salary-payment/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTable').DataTable().ajax.reload();
@@ -110,6 +110,7 @@ $(document).ready(function() {
                     alert('This Process Is Not Allowed');
                 }
             });
+
         }
     });
 });

@@ -91,6 +91,16 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', ['uses' => 'ProjectDocumentController@destroy'])->name('destroy');
         Route::get('/template/{id}', ['uses' => 'ProjectDocumentController@template'])->name('template');
     });
+
+    Route::group(['prefix' => 'salary-payment', 'as' => 'salary-payment.'], function () {
+        Route::get('/', ['uses' => 'SalaryPaymentController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'SalaryPaymentController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'SalaryPaymentController@create'])->name('add');
+        Route::post('/store', ['uses' => 'SalaryPaymentController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'SalaryPaymentController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'SalaryPaymentController@destroy'])->name('destroy');
+        Route::get('/salary/{employee_id}', ['uses' => 'SalaryPaymentController@salary'])->name('salary');
+    });
 });
 Auth::routes();
 

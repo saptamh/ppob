@@ -48,6 +48,9 @@
   <!-- Page level custom scripts -->
   <!-- <script src="{{ URL::asset('themes/js/demo/chart-area-demo.js') }}"></script>
   <script src="{{ URL::asset('themes/js/demo/chart-pie-demo.js') }}"></script> -->
+  <script>
+        var baseUrl = "{{ URL::to('/') }}";
+  </script>
   @stack('script')
 
 </body>
