@@ -12,41 +12,24 @@
         ]) }}
         {{ Form::hidden('id', '', ['id'=>'log_id']) }}
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-12">
                 <div class="form-group">
-                    {{ Form::label('point', 'Point (Nilai)') }}
-                    {{ Form::text('point', '', ['id'=>'point_id', 'class'=>'form-control', 'placeholder'=>'Enter Point', 'required'=>'true']) }}
+                    {{ Form::label('start_date', 'Start Date') }}
+                    {{ Form::text('start_date', '', ['id'=>'start_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
                 </div>
                 <div class="form-group">
                     {{ Form::label('duration', 'Duration') }}
                     {{ Form::text('duration', '', ['id'=>'duration_id', 'class'=>'form-control', 'placeholder'=>'Enter Duration']) }}
                 </div>
                 <div class="form-group">
-                    {{ Form::label('weight', 'Weight (Bobot)') }}
-                    {{ Form::text('weight', '', ['id'=>'weight_id', 'class'=>'form-control', 'placeholder'=>'Enter Weight', 'required'=>'true']) }}
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="form-group">
-                    {{ Form::label('bast', 'BAST') }}
-                    {{ Form::text('bast', '', ['id'=>'bast_id', 'class'=>'form-control', 'placeholder'=>'Enter BAST', 'required'=>'true']) }}
-                </div>
-                <div class="form-group">
                     {{ Form::label('retention', 'Retention') }}
                     {{ Form::text('retention', '', ['id'=>'retention_id', 'class'=>'form-control', 'placeholder'=>'Enter Retention', 'required'=>'true']) }}
-                </div>
-                <div class="form-group">
-                    {{ Form::label('date', 'Date') }}
-                    {{ Form::text('date', '', ['id'=>'date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
                 </div>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-                {{ Form::submit('Add!', ['id'=>'btn-log-form', 'class'=>'btn btn-success btn-sm btn-block', 'data-loading-text'=>'Loading...']) }}
-            </div>
-            <div class="col-lg-6">
-                {{ Form::button('Reset!', ['class'=>'btn btn-warning btn-sm btn-block', 'type'=>'reset']) }}
+            <div class="col-lg-12">
+                {{ Form::submit('Update!', ['id'=>'btn-log-form', 'class'=>'btn btn-success btn-sm btn-block', 'disabled'=>true, 'data-loading-text'=>'Loading...']) }}
             </div>
         </div>
         {{ Form::close() }}
@@ -56,16 +39,16 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="DataTableLog" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover" id="DataTableHistory" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Point</th>
+                    <th>Start Date</th>
                     <th>Duration</th>
-                    <th>Weight</th>
-                    <th>BAST</th>
                     <th>Retention</th>
-                    <th>Date</th>
+                    <th>Update At</th>
+                    <th>BAST 1</th>
+                    <th>BAST 2</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -78,12 +61,12 @@
 <script src="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('#date_id').datepicker({
+    $('#start_date_id').datepicker({
         uiLibrary: 'bootstrap',
         format: 'yyyy-mm-dd'
     });
 
-    var tLevel = $('#DataTableLog').DataTable({
+    var tLevel = $('#DataTableHistory').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
@@ -103,16 +86,32 @@ $(document).ready(function() {
             searchable: false,
             sortable: false,
             defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>"
+                "<button class='btn btn-danger btn-circle' id='remove_btn' disabled='true'><i class='fas fa-trash'></i></button></center>"
         }],
         columns: [
             {data: "id"},
-            {data: "point"},
+            {data: "start_date"},
             {data: "duration"},
-            {data: "weight"},
-            {data: "bast"},
             {data: "retention"},
-            {data: "date"},
+            {data: "updated_at"},
+            {render: function ( data, type, row, meta ) {
+                console.log(data);
+                console.log('ROW', row);
+                var someDate = new Date(row.start_date);
+                console.log( row.duration);
+                someDate.setDate(someDate.getDate() + parseInt(row.duration)); //number  of days to add, e.x. 15 days
+                var dateFormated = someDate.toISOString().substr(0,10);
+                return dateFormated;
+            }},
+            {render: function ( data, type, row, meta ) {
+                console.log(data);
+                console.log('ROW', row);
+                var someDate = new Date(row.start_date);
+                var duration = parseInt(row.duration) + parseInt(row.retention);
+                someDate.setDate(someDate.getDate() + parseInt(duration)); //number  of days to add, e.x. 15 days
+                var dateFormated = someDate.toISOString().substr(0,10);
+                return dateFormated;
+            }},
         ]
     });
 
@@ -122,19 +121,16 @@ $(document).ready(function() {
         });
     }).draw();
 
-    $('#DataTableLog tbody').on('click', '#edit_btn', function () {
+    $('#DataTableHistory tbody').on('click', '#edit_btn', function () {
         var data_row = tLevel.row($(this).closest('tr')).data();
-        $('#btn-log-form').val('Update');
+        $('#btn-log-form').val('Update').removeAttr('disabled');
         $("#log_id").val(data_row.id);
-        $("#point_id").val(data_row.point);
+        $("#start_date_id").val(data_row.start_date);
         $("#duration_id").val(data_row.duration);
-        $("#weight_id").val(data_row.weight);
-        $("#bast_id").val(data_row.bast);
-        $("#date_id").val(data_row.date);
         $("#retention_id").val(data_row.retention);
     });
 
-    $('#DataTableLog tbody').on('click', '#remove_btn', function () {
+    $('#DataTableHistory tbody').on('click', '#remove_btn', function () {
         var data_row = tLevel.row($(this).closest('tr')).data();
         var c = confirm('Delete data ?');
         if (c) {
@@ -147,7 +143,7 @@ $(document).ready(function() {
                 url: "/log-project/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
-                    $('#DataTableLog').DataTable().ajax.reload();
+                    $('#DataTableHistory').DataTable().ajax.reload();
                 }, error($data) {
                     alert('This Process Is Not Allowed');
                 }
@@ -155,15 +151,9 @@ $(document).ready(function() {
         }
     });
 
-    $('#log-form').on('reset', function() {
-        $("#log-form input[type='hidden']").val('');
-        $('#log-form')[0].reset();
-        $('#btn-log-form').val('Add');
-    });
-
     $('#log-form').submit(function(e){
         e.preventDefault();
-        $('#btn-log-form').attr('disabled',true);
+        // $('#btn-log-form').attr('disabled');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -177,8 +167,8 @@ $(document).ready(function() {
             success: function(data){
                 $("#log-form input[type='hidden']").val('');
                 $('#log-form')[0].reset();
-                $('#DataTableLog').DataTable().ajax.reload();
-                $('#btn-log-form').text('Add').removeAttr('disabled');
+                $('#DataTableHistory').DataTable().ajax.reload();
+                $('#btn-log-form').attr('disabled','disabled');
             }
         });
     });

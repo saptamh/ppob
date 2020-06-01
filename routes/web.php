@@ -56,6 +56,15 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/template/{id}', ['uses' => 'LevelController@template'])->name('template');
     });
 
+    Route::group(['prefix' => 'employee-experience', 'as' => 'employee-experience.'], function () {
+        Route::get('/', ['uses' => 'EmployeeWorkExperienceController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'EmployeeWorkExperienceController@index'])->name('data-table');
+        Route::post('/store', ['uses' => 'EmployeeWorkExperienceController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'EmployeeWorkExperienceController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'EmployeeWorkExperienceController@destroy'])->name('destroy');
+        Route::get('/template/{id}', ['uses' => 'EmployeeWorkExperienceController@template'])->name('template');
+    });
+
     Route::group(['prefix' => 'document-employee', 'as' => 'document-employee.'], function () {
         Route::get('/', ['uses' => 'EmployeeDocumentController@index'])->name('main');
         Route::get('/data-table', ['uses' => 'EmployeeDocumentController@index'])->name('data-table');
@@ -90,6 +99,24 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/edit/{id}', ['uses' => 'ProjectDocumentController@edit'])->name('edit');
         Route::delete('/destroy/{id}', ['uses' => 'ProjectDocumentController@destroy'])->name('destroy');
         Route::get('/template/{id}', ['uses' => 'ProjectDocumentController@template'])->name('template');
+    });
+
+    Route::group(['prefix' => 'value-project', 'as' => 'value-project.'], function () {
+        Route::get('/', ['uses' => 'ProjectValueController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'ProjectValueController@index'])->name('data-table');
+        Route::post('/store', ['uses' => 'ProjectValueController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'ProjectValueController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectValueController@destroy'])->name('destroy');
+        Route::get('/template/{id}', ['uses' => 'ProjectValueController@template'])->name('template');
+    });
+
+    Route::group(['prefix' => 'progress-project', 'as' => 'progress-project.'], function () {
+        Route::get('/', ['uses' => 'ProjectProgressController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'ProjectProgressController@index'])->name('data-table');
+        Route::post('/store', ['uses' => 'ProjectProgressController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'ProjectProgressController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectProgressController@destroy'])->name('destroy');
+        Route::get('/template/{id}', ['uses' => 'ProjectProgressController@template'])->name('template');
     });
 
     Route::group(['prefix' => 'salary-payment', 'as' => 'salary-payment.'], function () {

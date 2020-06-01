@@ -39,10 +39,6 @@
                 {{ Form::label('address', 'Address') }}
                 {{ Form::textarea('address', $edit['address'], ['class'=>'form-control', 'placeholder'=>'Enter Address', 'rows'=>3, 'required'=>'true']) }}
             </div>
-            <div class="form-group">
-                {{ Form::label('pic_customer', 'Pic Customer') }}
-                {{ Form::text('pic_customer', $edit['pic_customer'], ['class'=>'form-control', 'placeholder'=>'Enter PIC', 'required'=>'true']) }}
-            </div>
         </div>
         <div class="col-lg-6">
             <div class="form-group">
@@ -54,12 +50,8 @@
                 {{ Form::text('work_type', $edit['work_type'], ['class'=>'form-control', 'placeholder'=>'Enter Work Type', 'required'=>'true']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('start_date', 'Start Date') }}
-                {{ Form::text('start_date', $edit['start_date'], ['class'=>'form-control', 'placeholder'=>'Select Date', 'required'=>'true']) }}
-            </div>
-            <div class="form-group">
-                {{ Form::label('end_date', 'End Date') }}
-                {{ Form::text('end_date', $edit['end_date'], ['class'=>'form-control', 'placeholder'=>'Select Date']) }}
+                {{ Form::label('pic_customer', 'Pic Customer') }}
+                {{ Form::text('pic_customer', $edit['pic_customer'], ['class'=>'form-control', 'placeholder'=>'Enter PIC', 'required'=>'true']) }}
             </div>
         </div>
     </div>
@@ -78,7 +70,13 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#log_project">Log Project</a>
+                    <a class="nav-link active" data-toggle="tab" href="#project_value">Value</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#project_time">Time</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#project_progress">Progress</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#document">Document</a>
@@ -86,9 +84,17 @@
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
-                <div id="log_project" class="container tab-pane active"><br>
-                    <h3>Log Project</h3>
-                    <div class="log-project-content"></div>
+                <div id="project_value" class="container tab-pane active"><br>
+                    <h3>Project Value</h3>
+                    <div class="project-value-content"></div>
+                </div>
+                <div id="project_time" class="container tab-pane"><br>
+                    <h3>Project Time</h3>
+                    <div class="project-time-content"></div>
+                </div>
+                <div id="project_progress" class="container tab-pane"><br>
+                    <h3>Progress</h3>
+                    <div class="project-progress-content"></div>
                 </div>
                 <div id="document" class="container tab-pane"><br>
                     <h3>Document</h3>
@@ -105,29 +111,35 @@
 @push('script')
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script>
-function showLogProject() {
-    $(".log-project-content").empty();
-    $(".log-project-content").load("{{ url('/log-project/template/' . $edit['id']) }}");
+function showValueProject() {
+    $(".project-value-content").empty();
+    $(".project-value-content").load("{{ url('/value-project/template/' . $edit['id']) }}");
+}
+function showTimeProject() {
+    $(".project-time-content").empty();
+    $(".project-time-content").load("{{ url('/log-project/template/' . $edit['id']) }}");
+}
+function showProgressProject() {
+    $(".project-progress-content").empty();
+    $(".project-progress-content").load("{{ url('/progress-project/template/' . $edit['id']) }}");
 }
 function showDocumentProject() {
     $(".document-content").empty();
     $(".document-content").load("{{ url('/document-project/template/' . $edit['id']) }}");
 }
 $(document).ready(function() {
-    showLogProject();
-    $('#start_date').datepicker({
-        uiLibrary: 'bootstrap',
-        format: 'yyyy-mm-dd'
-    });
-    $('#end_date').datepicker({
-        uiLibrary: 'bootstrap',
-        format: 'yyyy-mm-dd'
-    });
+    showValueProject();
 
     $('#myTabs a').click(function (link) {
         var activeTab = link.currentTarget.innerText;
-        if (activeTab === "Log_project") {
-            showLogProject();
+        if (activeTab === "Value") {
+            showValueProject();
+        }
+        if (activeTab === "Time") {
+            showTimeProject();
+        }
+        if (activeTab === "Progress") {
+            showProgressProject();
         }
         if (activeTab === "Document") {
             showDocumentProject();

@@ -49,9 +49,6 @@ class ProjectController extends Controller
             'customer' => 'required',
             'pic_customer' => 'required',
             'work_type' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-            'retention' => 'required',
         ]);
         try {
             $input = $request->all();

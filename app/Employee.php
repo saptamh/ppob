@@ -24,5 +24,6 @@ class Employee extends Model
         'sex',
         'start_date',
         'end_date',
+        'status',
         'no_npwp' ];
 }

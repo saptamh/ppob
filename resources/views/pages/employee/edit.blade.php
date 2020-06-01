@@ -41,15 +41,19 @@
             </div>
             <div class="form-group">
                 {{ Form::label('religion', 'Religion') }}
-                {{ Form::select('religion', array_combine($religion, $religion),  $edit['religion'], ['class'=>'form-control', 'placeholder'=>'Select Religion', 'required'=>'true']) }}
+                {{ Form::select('religion', array_combine($select_box['religion'], $select_box['religion']),  $edit['religion'], ['class'=>'form-control', 'placeholder'=>'Select Religion', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('education', 'Education') }}
-                {{ Form::select('education', array_combine($education, $education),  $edit['education'], ['class'=>'form-control', 'placeholder'=>'Select Education', 'required'=>'true']) }}
+                {{ Form::select('education', array_combine($select_box['education'], $select_box['education']),  $edit['education'], ['class'=>'form-control', 'placeholder'=>'Select Education', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('location', 'Location') }}
-                {{ Form::select('location', array_combine($location, $location),  $edit['location'], ['class'=>'form-control', 'placeholder'=>'Select Location', 'required'=>'true']) }}
+                {{ Form::select('location', array_combine($select_box['location'], $select_box['location']),  $edit['location'], ['class'=>'form-control', 'placeholder'=>'Select Status', 'required'=>'true']) }}
+            </div>
+            <div class="form-group">
+                {{ Form::label('status', 'Status') }}
+                {{ Form::select('status', array_combine($select_box['status'], $select_box['status']),  $edit['status'], ['class'=>'form-control', 'placeholder'=>'Select Location', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('is_merried', 'Merried') }}
@@ -93,35 +97,42 @@
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" id="myTabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#family">Family</a>
+                    <a class="nav-link active" data-toggle="tab" href="#family">Families</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#salary">Salary</a>
+                    <a class="nav-link" data-toggle="tab" href="#salary">Salaries</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" href="#level">Level</a>
+                    <a class="nav-link" data-toggle="tab" href="#level">Levels</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#document">Documents</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#experience">Experiences</a>
                 </li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
                 <div id="family" class="container tab-pane active"><br>
-                    <h3>Family</h3>
+                    <h3>Families</h3>
                     <div class="family-content"></div>
                 </div>
                 <div id="salary" class="container tab-pane"><br>
-                    <h3>Salary</h3>
+                    <h3>Salaries</h3>
                     <div class="salary-content"></div>
                 </div>
                 <div id="level" class="container tab-pane"><br>
-                    <h3>Level</h3>
+                    <h3>Levels</h3>
                     <div class="level-content"></div>
                 </div>
                 <div id="document" class="container tab-pane"><br>
-                    <h3>Document</h3>
+                    <h3>Documents</h3>
                     <div class="document-content"></div>
+                </div>
+                <div id="experience" class="container tab-pane"><br>
+                    <h3>Experiences</h3>
+                    <div class="experience-content"></div>
                 </div>
             </div>
         </div>
@@ -150,6 +161,10 @@ function showDocument() {
     $(".document-content").empty();
     $(".document-content").load("{{ url('/document-employee/template/' . $edit['id']) }}");
 }
+function showExperience() {
+    $(".experience-content").empty();
+    $(".experience-content").load("{{ url('/employee-experience/template/' . $edit['id']) }}");
+}
 $(document).ready(function() {
     showFamily();
     $('#start_date').datepicker({
@@ -164,17 +179,20 @@ $(document).ready(function() {
     $('#myTabs a').click(function (link) {
         var activeTab = link.currentTarget.innerText;
         console.log(activeTab);
-        if (activeTab === "Family") {
+        if (activeTab === "Families") {
             showFamily();
         }
-        if (activeTab === "Salary"){
+        if (activeTab === "Salaries"){
             showSalary();
         }
-        if (activeTab === "Level"){
+        if (activeTab === "Levels"){
             showLevel();
         }
         if (activeTab === "Documents"){
             showDocument();
+        }
+        if (activeTab === "Experiences"){
+            showExperience();
         }
     });
 });

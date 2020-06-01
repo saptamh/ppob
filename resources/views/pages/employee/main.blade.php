@@ -32,6 +32,7 @@
                         <th>Name</th>
                         <th>Location</th>
                         <th>Start date</th>
+                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -64,7 +65,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 5 ],
+            targets: [ 6 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -77,6 +78,7 @@ $(document).ready(function() {
             {data: "name"},
             {data: "location"},
             {data: "start_date"},
+            {data: "status"},
         ]
     });
 

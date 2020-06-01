@@ -3,14 +3,14 @@
 <div class="row">
     <div class="col-lg-12">
         {{ Form::open([
-            'id'=>'level-form',
-            'url' => route('employee-level.store'),
+            'id'=>'experience-form',
+            'url' => route('employee-experience.store'),
             'method' => 'post',
             'class' => 'form',
             'role' => 'form',
             'enctype' => 'multipart/form-data'
         ]) }}
-        {{ Form::hidden('id', '', ['id'=>'level_id']) }}
+        {{ Form::hidden('id', '', ['id'=>'experience_id']) }}
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group">
@@ -22,11 +22,19 @@
                     {{ Form::text('end_date', '', ['id'=>'end_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date']) }}
                 </div>
                 <div class="form-group">
-                    {{ Form::label('level', 'Level') }}
-                    {{ Form::text('level', '', ['id'=>'level_input_id', 'class'=>'form-control', 'placeholder'=>'Enter Level', 'required'=>'true']) }}
+                    {{ Form::label('company', 'Company') }}
+                    {{ Form::text('company', '', ['id'=>'company_id', 'class'=>'form-control', 'placeholder'=>'Enter Company', 'required'=>'true']) }}
                 </div>
                 <div class="form-group">
-                    {{ Form::submit('Add!', ['id'=>'btn-level-form', 'class'=>'btn btn-success btn-sm', 'data-loading-text'=>'Loading...']) }}
+                    {{ Form::label('role', 'Role') }}
+                    {{ Form::text('role', '', ['id'=>'role_id', 'class'=>'form-control', 'placeholder'=>'Enter Role', 'required'=>'true']) }}
+                </div>
+                <div class="form-group">
+                {{ Form::label('description', 'Description') }}
+                {{ Form::textarea('description', '', ['id'=>'description_id', 'class'=>'form-control', 'placeholder'=>'Enter Address', 'rows'=>3, 'required'=>'true']) }}
+            </div>
+                <div class="form-group">
+                    {{ Form::submit('Add!', ['id'=>'btn-experience-form', 'class'=>'btn btn-success btn-sm', 'data-loading-text'=>'Loading...']) }}
                     {{ Form::button('Reset!', ['class'=>'btn btn-warning btn-sm', 'type'=>'reset']) }}
                 </div>
             </div>
@@ -37,13 +45,14 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="DataTableLevel" width="100%" cellspacing="0">
+            <table class="table table-bordered table-hover" id="DataTableExperience" width="100%" cellspacing="0">
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Level</th>
                     <th>Start Date</th>
                     <th>End Date</th>
+                    <th>Company</th>
+                    <th>Role</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -66,11 +75,11 @@ $(document).ready(function() {
         format: 'yyyy-mm-dd'
     });
 
-    var tLevel = $('#DataTableLevel').DataTable({
+    var texperience = $('#DataTableExperience').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: '{{ route("employee-level.data-table") }}',
+            url: '{{ route("employee-experience.data-table") }}',
             dataType: 'json',
             data:{ _token: "{{csrf_token()}}", employee_id: "{{ $employee_id }}"}
         },
@@ -81,7 +90,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 4 ],
+            targets: [ 5 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -90,29 +99,32 @@ $(document).ready(function() {
         }],
         columns: [
             {data: "id"},
-            {data: "level"},
             {data: "start_date"},
             {data: "end_date"},
+            {data: "company"},
+            {data: "role"},
         ]
     });
 
-    tLevel.on( 'order.dt search.dt', function () {
-        tLevel.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+    texperience.on( 'order.dt search.dt', function () {
+        texperience.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
             cell.innerHTML = i+1;
         });
     }).draw();
 
-    $('#DataTableLevel tbody').on('click', '#edit_btn', function () {
-        var data_row = tLevel.row($(this).closest('tr')).data();
-        $('#btn-level-form').val('Update');
-        $("#level_id").val(data_row.id);
+    $('#DataTableExperience tbody').on('click', '#edit_btn', function () {
+        var data_row = texperience.row($(this).closest('tr')).data();
+        $('#btn-experience-form').val('Update');
+        $("#experience_id").val(data_row.id);
         $("#start_date_id").val(data_row.start_date);
         $("#end_date_id").val(data_row.end_date);
-        $("#level_input_id").val(data_row.level);
+        $("#company_id").val(data_row.company);
+        $("#role_id").val(data_row.role);
+        $("#description_id").val(data_row.description);
     });
 
-    $('#DataTableLevel tbody').on('click', '#remove_btn', function () {
-        var data_row = tLevel.row($(this).closest('tr')).data();
+    $('#DataTableExperience tbody').on('click', '#remove_btn', function () {
+        var data_row = texperience.row($(this).closest('tr')).data();
         var c = confirm('Delete data ?');
         if (c) {
             $.ajaxSetup({
@@ -121,10 +133,10 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/employee-level/destroy/" + data_row.id,
+                url: "/employee-experience/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
-                    $('#DataTableLevel').DataTable().ajax.reload();
+                    $('#DataTableExperience').DataTable().ajax.reload();
                 }, error($data) {
                     alert('This Process Is Not Allowed');
                 }
@@ -132,30 +144,30 @@ $(document).ready(function() {
         }
     });
 
-    $('#level-form').on('reset', function() {
-        $("#level-form input[type='hidden']").val('');
-        $('#level-form')[0].reset();
-        $('#btn-level-form').val('Add');
+    $('#experience-form').on('reset', function() {
+        $("#experience-form input[type='hidden']").val('');
+        $('#experience-form')[0].reset();
+        $('#btn-experience-form').val('Add');
     });
 
-    $('#level-form').submit(function(e){
+    $('#experience-form').submit(function(e){
         e.preventDefault();
-        $('#btn-level-form').attr('disabled',true);
+        $('#btn-experience-form').attr('disabled',true);
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
         $.ajax({
-            url: "{{ route('employee-level.store') }}",
+            url: "{{ route('employee-experience.store') }}",
             method: 'post',
             dataType: 'json',
-            data: $('#level-form').serialize() + "&employee_id={{ $employee_id }}",
+            data: $('#experience-form').serialize() + "&employee_id={{ $employee_id }}",
             success: function(data){
-                $("#level-form input[type='hidden']").val('');
-                $('#level-form')[0].reset();
-                $('#DataTableLevel').DataTable().ajax.reload();
-                $('#btn-level-form').text('Add').removeAttr('disabled');
+                $("#experience-form input[type='hidden']").val('');
+                $('#experience-form')[0].reset();
+                $('#DataTableExperience').DataTable().ajax.reload();
+                $('#btn-experience-form').text('Add').removeAttr('disabled');
             }
         });
     });

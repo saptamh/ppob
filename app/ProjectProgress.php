@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProjectHistorical extends Model
+class ProjectProgress extends Model
 {
     use SoftDeletes;
 
@@ -15,8 +15,14 @@ class ProjectHistorical extends Model
 
     protected $fillable = [
         'project_id',
-        'duration',
-        'retention',
-        'start_date',
+        'progress',
+        'description',
+        'project_value_id',
+        'result',
     ];
+
+    public function ProjectValue()
+    {
+        return $this->belongsTo('App\ProjectValue');
+    }
 }

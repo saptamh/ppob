@@ -31,9 +31,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $data['religion'] = ['islam', 'kristen', 'hindu', 'budha', 'khonghucu'];
-        $data['education'] = ['sd', 'smp', 'sma', 'd3', 's1', 's2'];
-        $data['location'] = ['office','project'];
+        $data['select_box'] = $this->__getDropdown();
 
         return view('pages.employee.add', $data);
     }
@@ -54,6 +52,7 @@ class EmployeeController extends Controller
             'education' => 'required',
             'location' => 'required',
             'start_date' => 'required',
+            'status' => 'required',
         ]);
         try {
             $input = $request->all();
@@ -90,9 +89,7 @@ class EmployeeController extends Controller
      */
     public function edit($id, Employee $employee)
     {
-        $data['religion'] = ['islam', 'kristen', 'hindu', 'budha', 'khonghucu'];
-        $data['education'] = ['sd', 'smp', 'sma', 'd3', 's1', 's2'];
-        $data['location'] = ['office','project'];
+        $data['select_box'] = $this->__getDropdown();
         $data['edit'] = $employee->where('id', $id)->first();
 
         return view('pages.employee.edit', $data);
@@ -126,5 +123,14 @@ class EmployeeController extends Controller
 
             return $data;
         }
+    }
+
+    private function __getDropdown() {
+        $data['religion'] = ['islam', 'kristen', 'hindu', 'budha', 'khonghucu'];
+        $data['education'] = ['sd', 'smp', 'sma', 'd3', 's1', 's2'];
+        $data['location'] = ['office','project'];
+        $data['status'] = ['kontrak', 'tetap', 'phl'];
+
+        return $data;
     }
 }

@@ -38,10 +38,6 @@
                 {{ Form::label('address', 'Address') }}
                 {{ Form::textarea('address', '', ['class'=>'form-control', 'placeholder'=>'Enter Address', 'rows'=>3, 'required'=>'true']) }}
             </div>
-            <div class="form-group">
-                {{ Form::label('pic_customer', 'Pic Customer') }}
-                {{ Form::text('pic_customer', '', ['class'=>'form-control', 'placeholder'=>'Enter PIC', 'required'=>'true']) }}
-            </div>
         </div>
         <div class="col-lg-6">
             <div class="form-group">
@@ -53,12 +49,8 @@
                 {{ Form::text('work_type', '', ['class'=>'form-control', 'placeholder'=>'Enter Work Type', 'required'=>'true']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('start_date', 'Start Date') }}
-                {{ Form::text('start_date', '', ['class'=>'form-control', 'placeholder'=>'Select Date', 'required'=>'true']) }}
-            </div>
-            <div class="form-group">
-                {{ Form::label('end_date', 'End Date') }}
-                {{ Form::text('end_date', '', ['class'=>'form-control', 'placeholder'=>'Select Date']) }}
+                {{ Form::label('pic_customer', 'Pic Customer') }}
+                {{ Form::text('pic_customer', '', ['class'=>'form-control', 'placeholder'=>'Enter PIC', 'required'=>'true']) }}
             </div>
         </div>
     </div>
@@ -80,14 +72,7 @@
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('#start_date').datepicker({
-        uiLibrary: 'bootstrap',
-        format: 'yyyy-mm-dd'
-    });
-    $('#end_date').datepicker({
-        uiLibrary: 'bootstrap',
-        format: 'yyyy-mm-dd'
-    });
+
 });
 </script>
 @endpush

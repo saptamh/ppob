@@ -38,15 +38,19 @@
     </div>
     <div class="form-group">
         {{ Form::label('religion', 'Religion') }}
-        {{ Form::select('religion', array_combine($religion, $religion),  null, ['class'=>'form-control', 'placeholder'=>'Select Religion', 'required'=>'true']) }}
+        {{ Form::select('religion', array_combine($select_box['religion'], $select_box['religion']),  null, ['class'=>'form-control', 'placeholder'=>'Select Religion', 'required'=>'true']) }}
     </div>
     <div class="form-group">
         {{ Form::label('education', 'Education') }}
-        {{ Form::select('education', array_combine($education, $education),  null, ['class'=>'form-control', 'placeholder'=>'Select Education', 'required'=>'true']) }}
+        {{ Form::select('education', array_combine($select_box['education'], $select_box['education']),  null, ['class'=>'form-control', 'placeholder'=>'Select Education', 'required'=>'true']) }}
     </div>
     <div class="form-group">
         {{ Form::label('location', 'Location') }}
-        {{ Form::select('location', array_combine($location, $location),  null, ['class'=>'form-control', 'placeholder'=>'Select Location', 'required'=>'true']) }}
+        {{ Form::select('location', array_combine($select_box['location'], $select_box['location']),  null, ['class'=>'form-control', 'placeholder'=>'Select Location', 'required'=>'true']) }}
+    </div>
+    <div class="form-group">
+        {{ Form::label('status', 'Status') }}
+        {{ Form::select('status', array_combine($select_box['status'], $select_box['status']),  null, ['class'=>'form-control', 'placeholder'=>'Select Status', 'required'=>'true']) }}
     </div>
     <div class="form-group">
         {{ Form::label('is_merried', 'Merried') }}
