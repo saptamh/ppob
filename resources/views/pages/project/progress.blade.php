@@ -56,7 +56,8 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <th colspan="2" style="text-align:right">Total:</th>
+                        <th></th>
+                        <th style="text-align:right">Total:</th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -147,11 +148,11 @@ $(document).ready(function() {
 
             // Update footer
             $( api.column( 1 ).footer() ).html(
-                'Total Progress: ' + total + '%'
+                'Total: ' + total + '%'
             );
 
             $( api.column( 3 ).footer() ).html(
-                'Total Progress: Rp.' + totalBobot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+                'Total: Rp.' + totalBobot.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
             );
         },
     });

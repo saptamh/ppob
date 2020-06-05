@@ -53,6 +53,10 @@
                 {{ Form::label('pic_customer', 'Pic Customer') }}
                 {{ Form::text('pic_customer', $edit['pic_customer'], ['class'=>'form-control', 'placeholder'=>'Enter PIC', 'required'=>'true']) }}
             </div>
+            <div class="form-group">
+                {{ Form::label('start_date', 'Start Date') }}
+                {{ Form::text('start_date', $edit['start_date'], ['id'=>'start_date_id_log', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
+            </div>
         </div>
     </div>
     <div class="row">
@@ -128,6 +132,11 @@ function showDocumentProject() {
     $(".document-content").load("{{ url('/document-project/template/' . $edit['id']) }}");
 }
 $(document).ready(function() {
+    $('#start_date_id_log').datepicker({
+        uiLibrary: 'bootstrap',
+        format: 'yyyy-mm-dd'
+    });
+
     showValueProject();
 
     $('#myTabs a').click(function (link) {

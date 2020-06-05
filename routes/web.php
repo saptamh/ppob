@@ -128,6 +128,24 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', ['uses' => 'SalaryPaymentController@destroy'])->name('destroy');
         Route::get('/salary/{employee_id}', ['uses' => 'SalaryPaymentController@salary'])->name('salary');
     });
+
+    Route::group(['prefix' => 'purchase', 'as' => 'purchase.'], function () {
+        Route::get('/', ['uses' => 'PurchaseController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'PurchaseController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'PurchaseController@create'])->name('add');
+        Route::post('/store', ['uses' => 'PurchaseController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'PurchaseController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'PurchaseController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'purchase-goods', 'as' => 'purchase-goods.'], function () {
+        Route::get('/', ['uses' => 'GoodPurchaseController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'GoodPurchaseController@index'])->name('data-table');
+        Route::post('/store', ['uses' => 'GoodPurchaseController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'GoodPurchaseController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'GoodPurchaseController@destroy'])->name('destroy');
+        Route::get('/template/{id}', ['uses' => 'GoodPurchaseController@template'])->name('template');
+    });
 });
 Auth::routes();
 

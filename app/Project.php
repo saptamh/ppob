@@ -20,5 +20,21 @@ class Project extends Model
         'customer',
         'pic_customer',
         'work_type',
+        'start_date'
     ];
+
+    public function ProjectValue()
+    {
+        return $this->hasOne('App\ProjectValue');
+    }
+
+    public function ProjectProgress()
+    {
+        return $this->hasOne('App\ProjectProgress');
+    }
+
+    public function ProjectHistorical()
+    {
+        return $this->hasOne('App\ProjectHistorical');
+    }
 }

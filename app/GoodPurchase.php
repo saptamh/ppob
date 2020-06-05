@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProjectHistorical extends Model
+class GoodPurchase extends Model
 {
     use SoftDeletes;
 
@@ -14,8 +14,10 @@ class ProjectHistorical extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'project_id',
-        'duration',
-        'retention',
+        'purchase_id',
+        'part_number',
+        'name',
+        'qty',
+        'price',
     ];
 }

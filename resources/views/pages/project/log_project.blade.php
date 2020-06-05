@@ -14,10 +14,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="form-group">
-                    {{ Form::label('start_date', 'Start Date') }}
-                    {{ Form::text('start_date', '', ['id'=>'start_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
-                </div>
-                <div class="form-group">
                     {{ Form::label('duration', 'Duration') }}
                     {{ Form::text('duration', '', ['id'=>'duration_id', 'class'=>'form-control', 'placeholder'=>'Enter Duration']) }}
                 </div>
@@ -28,8 +24,11 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12">
-                {{ Form::submit('Update!', ['id'=>'btn-log-form', 'class'=>'btn btn-success btn-sm btn-block', 'disabled'=>true, 'data-loading-text'=>'Loading...']) }}
+            <div class="col-lg-6">
+                {{ Form::submit('Add!', ['id'=>'btn-log-form', 'class'=>'btn btn-success btn-sm btn-block', 'data-loading-text'=>'Loading...']) }}
+            </div>
+            <div class="col-lg-6">
+                {{ Form::button('Reset!', ['class'=>'btn btn-warning btn-sm btn-block', 'type'=>'reset']) }}
             </div>
         </div>
         {{ Form::close() }}
@@ -61,18 +60,14 @@
 <script src="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('#start_date_id').datepicker({
-        uiLibrary: 'bootstrap',
-        format: 'yyyy-mm-dd'
-    });
-
+    var start_date = new Date('{{ $project->start_date }}');
     var tLevel = $('#DataTableHistory').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
             url: '{{ route("log-project.data-table") }}',
             dataType: 'json',
-            data:{ _token: "{{csrf_token()}}", project_id: "{{ $project_id }}"}
+            data:{ _token: "{{csrf_token()}}", project_id: "{{ $project->id }}"}
         },
         columnDefs: [{
             targets: [ 0 ],
@@ -90,23 +85,23 @@ $(document).ready(function() {
         }],
         columns: [
             {data: "id"},
-            {data: "start_date"},
+            {render: function ( data, type, row, meta ) {
+                return "{{ $project->start_date }}";
+            }},
             {data: "duration"},
             {data: "retention"},
             {data: "updated_at"},
             {render: function ( data, type, row, meta ) {
-                console.log(data);
-                console.log('ROW', row);
-                var someDate = new Date(row.start_date);
+                console.log('ROW', start_date);
+                var someDate = new Date(start_date);
                 console.log( row.duration);
                 someDate.setDate(someDate.getDate() + parseInt(row.duration)); //number  of days to add, e.x. 15 days
                 var dateFormated = someDate.toISOString().substr(0,10);
                 return dateFormated;
             }},
             {render: function ( data, type, row, meta ) {
-                console.log(data);
                 console.log('ROW', row);
-                var someDate = new Date(row.start_date);
+                var someDate = new Date(start_date);
                 var duration = parseInt(row.duration) + parseInt(row.retention);
                 someDate.setDate(someDate.getDate() + parseInt(duration)); //number  of days to add, e.x. 15 days
                 var dateFormated = someDate.toISOString().substr(0,10);
@@ -151,9 +146,15 @@ $(document).ready(function() {
         }
     });
 
+    $('#log-form').on('reset', function() {
+        $("#log-form input[type='hidden']").val('');
+        $('#log-form')[0].reset();
+        $('#btn-log-form').val('Add');
+    });
+
     $('#log-form').submit(function(e){
         e.preventDefault();
-        // $('#btn-log-form').attr('disabled');
+        $('#btn-log-form').attr('disabled');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -163,12 +164,12 @@ $(document).ready(function() {
             url: "{{ route('log-project.store') }}",
             method: 'post',
             dataType: 'json',
-            data: $('#log-form').serialize() + "&project_id={{ $project_id }}",
+            data: $('#log-form').serialize() + "&project_id={{ $project->id }}",
             success: function(data){
                 $("#log-form input[type='hidden']").val('');
                 $('#log-form')[0].reset();
                 $('#DataTableHistory').DataTable().ajax.reload();
-                $('#btn-log-form').attr('disabled','disabled');
+                $('#btn-log-form').text('Add').removeAttr('disabled');
             }
         });
     });

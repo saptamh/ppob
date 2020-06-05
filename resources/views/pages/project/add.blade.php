@@ -52,6 +52,10 @@
                 {{ Form::label('pic_customer', 'Pic Customer') }}
                 {{ Form::text('pic_customer', '', ['class'=>'form-control', 'placeholder'=>'Enter PIC', 'required'=>'true']) }}
             </div>
+            <div class="form-group">
+                {{ Form::label('start_date', 'Start Date') }}
+                {{ Form::text('start_date', '', ['id'=>'start_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
+            </div>
         </div>
     </div>
     <div class="row">
@@ -72,7 +76,10 @@
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-
+    $('#start_date_id').datepicker({
+        uiLibrary: 'bootstrap',
+        format: 'yyyy-mm-dd'
+    });
 });
 </script>
 @endpush

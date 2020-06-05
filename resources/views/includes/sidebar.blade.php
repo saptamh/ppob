@@ -63,7 +63,7 @@
   </a>
   <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" href="buttons.html">Master</a>
+      <a class="collapse-item" href="{{ route('purchase.main') }}">Master</a>
       <a class="collapse-item" href="buttons.html">Pengembalian Material</a>
       <a class="collapse-item" href="buttons.html">Stok</a>
     </div>

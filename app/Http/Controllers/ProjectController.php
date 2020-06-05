@@ -18,7 +18,16 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Project::select('*');
+            $data = Project::with(['ProjectValue' => function($query) {
+                $query->select('project_id','value')->orderBy('updated_at', 'desc')->first();
+            }])
+            ->with(['ProjectProgress' => function($query) {
+                $query->selectRaw("project_id,SUM(progress) AS total_progress,SUM(result) AS total_result")->first();
+            }])
+            ->with(['ProjectHistorical' => function($query) {
+                $query->select('project_id','duration','retention')->orderBy('created_at', 'desc')->first();
+            }])
+            ->select('*');
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.project.main');

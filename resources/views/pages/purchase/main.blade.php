@@ -3,10 +3,10 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Projects</h1>
+    <h1 class="h3 mb-2 text-gray-800">Purchases</h1>
     <div class="row">
         <div class="col-lg-12">
-            <a href="{{ route('project.add') }}" class="btn btn-primary btn-circle">
+            <a href="{{ route('purchase.add') }}" class="btn btn-primary btn-circle">
                 <i class="fas fa-plus"></i>
             </a>
         </div>
@@ -14,7 +14,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Project List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Purchases List</h6>
             @if(session()->has('message'))
                 <div class="alert alert-success alert-sm">
                     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -28,12 +28,9 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Value</th>
-                        <th>Progress(%)</th>
-                        <th>Progress Values</th>
-                        <th>BAST 1</th>
-                        <th>BAST 2</th>
+                        <th>Project</th>
+                        <th>Supplier</th>
+                        <th>Incoming Date</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -55,7 +52,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '{{ route("project.data-table") }}',
+            url: '{{ route("purchase.data-table") }}',
             dataType: 'json',
             data:{ _token: "{{csrf_token()}}"}
         },
@@ -66,13 +63,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 2,3,4,5,6 ],
-            visible: true,
-            searchable: false,
-            sortable: false,
-        },
-        {
-            targets: [ 7 ],
+            targets: [ 4 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -81,23 +72,9 @@ $(document).ready(function() {
         }],
         columns: [
             {data: "id"},
-            {data: "name"},
-            {data: "project_value.value", name: "ProjectValue.value", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
-            {data: "project_progress.total_progress", name: "ProjectProgress.total_progress"},
-            {data: "project_progress.total_result", name: "ProjectProgress.total_result", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
-            {data: "project_historical.duration", render: function(data, type, row) {
-                var someDate = new Date(row.start_date);
-                someDate.setDate(someDate.getDate() + parseInt(row.project_historical.duration)); //number  of days to add, e.x. 15 days
-                var dateFormated = someDate.toISOString().substr(0,10);
-                return dateFormated;
-            }},
-            {data: "project_historical.retention", render: function(data, type, row) {
-                var someDate = new Date(row.start_date);
-                var duration = parseInt(row.project_historical.duration) + parseInt(row.project_historical.retention);
-                someDate.setDate(someDate.getDate() + parseInt(duration)); //number  of days to add, e.x. 15 days
-                var dateFormated = someDate.toISOString().substr(0,10);
-                return dateFormated;
-            }},
+            {data: "project.name", name: "Project.name"},
+            {data: "supplier_name"},
+            {data: "incoming_date"},
         ]
     });
 
@@ -109,7 +86,7 @@ $(document).ready(function() {
 
     $('#DataTable tbody').on('click', '#edit_btn', function () {
         var data_row = t.row($(this).closest('tr')).data();
-        window.location.href = baseUrl + "/project/edit/" + data_row.id;
+        window.location.href = baseUrl + "/purchase/edit/" + data_row.id;
     });
 
     $('#DataTable tbody').on('click', '#remove_btn', function () {
@@ -123,7 +100,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: baseUrl + "/project/destroy/" + data_row.id,
+                url: baseUrl + "/purchase/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTable').DataTable().ajax.reload();
