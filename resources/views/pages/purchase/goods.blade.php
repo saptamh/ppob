@@ -177,7 +177,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/purchase-goods/destroy/" + data_row.id,
+                url: baseUrl + "/purchase-goods/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableGoods').DataTable().ajax.reload();

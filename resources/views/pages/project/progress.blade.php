@@ -182,7 +182,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/progress-project/destroy/" + data_row.id,
+                url: baseUrl + "/progress-project/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableProgress').DataTable().ajax.reload();

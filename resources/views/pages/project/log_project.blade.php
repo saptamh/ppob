@@ -135,7 +135,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/log-project/destroy/" + data_row.id,
+                url: baseUrl + "/log-project/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableHistory').DataTable().ajax.reload();

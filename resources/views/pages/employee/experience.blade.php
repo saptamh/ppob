@@ -133,7 +133,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/employee-experience/destroy/" + data_row.id,
+                url: baseUrl + "/employee-experience/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableExperience').DataTable().ajax.reload();

@@ -105,7 +105,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/document-project/destroy/" + data_row.id,
+                url: baseUrl + "/document-project/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableDocument').DataTable().ajax.reload();

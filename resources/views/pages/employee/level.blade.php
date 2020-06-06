@@ -121,7 +121,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/employee-level/destroy/" + data_row.id,
+                url: baseUrl + "/employee-level/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableLevel').DataTable().ajax.reload();

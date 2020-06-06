@@ -121,7 +121,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/employee-salary/destroy/" + data_row.id,
+                url: baseUrl + "/employee-salary/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableSalary').DataTable().ajax.reload();

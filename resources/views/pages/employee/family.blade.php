@@ -150,7 +150,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/employee-family/destroy/" + data_row.id,
+                url: baseUrl + "/employee-family/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableFamily').DataTable().ajax.reload();

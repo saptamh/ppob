@@ -115,7 +115,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: "/value-project/destroy/" + data_row.id,
+                url: baseUrl + "/value-project/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTableLog').DataTable().ajax.reload();
