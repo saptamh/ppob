@@ -213,9 +213,9 @@ $(document).ready(function() {
                 $('#DataTableGoods').DataTable().ajax.reload();
                 $('#btn-value-form').text('Add').removeAttr('disabled');
                 if ($("#term_of_payment").val() == 2) {
-                    var percentase = (parseInt($("#down_payment").val()) / parseInt(res.data.total_price)) * 100;
-                    var nominalLeft = parseInt(res.data.total_price) - parseInt($("#down_payment").val());
-                    $("#percentase-left").val(percentase + '%');
+                    var percentase = (parseInt($("#down_payment").val()) / 100) * parseInt(res.data.total_price);
+                    var nominalLeft = parseInt(res.data.total_price) - percentase;
+                    $("#percentase-left").val(percentase.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
                     $("#nominal-left").val(nominalLeft.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,'));
                 }
             }

@@ -52,7 +52,7 @@
             </div>
             <div class="form-group">
                 {{ Form::label('incoming_date', 'Incoming Date') }}
-                {{ Form::text('incoming_date', $edit['incoming_date'], ['class'=>'form-control', 'placeholder'=>'Enter Incoming Date', 'required'=>'true']) }}
+                {{ Form::text('incoming_date', $edit['incoming_date'], ['class'=>'form-control', 'placeholder'=>'Enter Incoming Date']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('payment_status', 'Payment Status') }}

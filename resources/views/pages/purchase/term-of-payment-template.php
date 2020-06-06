@@ -1,6 +1,6 @@
 <script id="entry-template" type="text/x-handlebars-template">
     <div class="form-group">
-        <label>Down Payment</label>
+        <label>Down Payment (%)</label>
         <input type="text" name="down_payment" id="down_payment" value="{{ downPayment }}" class="form-control" required placeholder="Enter Down Payment">
     </div>
     <div class="form-group">

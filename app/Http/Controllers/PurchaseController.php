@@ -52,12 +52,12 @@ class PurchaseController extends Controller
             'project_id' => 'required',
             'supplier_name' => 'required',
             'supplier_address' => 'required',
-            'incoming_date' => 'required',
             'payment_status' => 'required',
             'term_of_payment' => 'required'
         ]);
         try {
             $input = $request->all();
+            $input['incoming_date'] = $input['incoming_date'] == "" ? NULL : $input['incoming_date'];
             $model = new Purchase;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);
@@ -95,8 +95,8 @@ class PurchaseController extends Controller
         $totalGoods = GoodPurchase::selectRaw('SUM(price*qty) AS total')->where('purchase_id', $data['edit']['id'])
         ->first();
 
-        $data['percentase'] = ($data['edit']['term_of_payment'] == 2 ? floor(($data['edit']['down_payment'] / $totalGoods->total) * 100) . '%' : 0);
-        $data['nominal'] = ($data['edit']['term_of_payment'] == 2 ? $totalGoods->total - $data['edit']['down_payment'] : 0);
+        $data['percentase'] = ($data['edit']['term_of_payment'] == 2 ? floor(($data['edit']['down_payment'] / 100) * $totalGoods->total) : 0);
+        $data['nominal'] = ($data['edit']['term_of_payment'] == 2 ? $totalGoods->total - floor(($data['edit']['down_payment'] / 100) * $totalGoods->total) : 0);
 
         $data['projects'] = Project::select('id', 'name')->orderBy('name', 'asc')->get()->pluck('name','id');
         $data['payment_status'] = ['debt', 'Down Payment', 'paid'];

@@ -1,6 +1,6 @@
 <script id="down-payment-template" type="text/x-handlebars-template">
     <div class="form-group">
-        <label>Percentase</label>
+        <label>Nominal of Down Payment</label>
         <input type="text" id="percentase-left" readonly value="{{ downPayment }}" class="form-control">
     </div>
     <div class="form-group">
