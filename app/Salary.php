@@ -17,6 +17,14 @@ class Salary extends Model
         'employee_id',
         'start_date',
         'end_date',
-        'value'
+        'base_salary',
+        'weekend_allowance',
+        'working_hour',
+        'meal_allowance',
     ];
+
+    public function Employee()
+    {
+        return $this->hasOne('App\Employee', 'id', 'employee_id');
+    }
 }

@@ -26,4 +26,9 @@ class Employee extends Model
         'end_date',
         'status',
         'no_npwp' ];
+
+    public function Level()
+    {
+        return $this->hasOne('App\Level');
+    }
 }

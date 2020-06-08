@@ -29,6 +29,7 @@
                     <tr>
                         <th>#</th>
                         <th>Employee</th>
+                        <th>Status</th>
                         <th>Date</th>
                         <th>Nominal</th>
                         <th>Periode</th>
@@ -64,7 +65,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 5 ],
+            targets: [ 6 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -74,6 +75,7 @@ $(document).ready(function() {
         columns: [
             {data: "id"},
             {data: "employee.name", name: "Employee.name"},
+            {data: "employee.status", name: "Employee.status"},
             {data: "payment_date"},
             {data: "salary"},
             {data: "periode"},

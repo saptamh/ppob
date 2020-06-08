@@ -12,7 +12,7 @@
         ]) }}
         {{ Form::hidden('id', '', ['id'=>'salary_id']) }}
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-6">
                 <div class="form-group">
                     {{ Form::label('start_date', 'Start Date') }}
                     {{ Form::text('start_date', '', ['id'=>'start_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
@@ -22,13 +22,31 @@
                     {{ Form::text('end_date', '', ['id'=>'end_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date']) }}
                 </div>
                 <div class="form-group">
-                    {{ Form::label('value', 'Value') }}
-                    {{ Form::text('value', '', ['id'=>'value_id', 'class'=>'form-control', 'placeholder'=>'Enter Value in Rupiah', 'required'=>'true']) }}
+                    {{ Form::label('base_salary', 'Base Salary') }}
+                    {{ Form::text('base_salary', '', ['id'=>'base_salary_id', 'class'=>'form-control', 'placeholder'=>'Enter Base Salary', 'required'=>'true']) }}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    {{ Form::label('weekend_allowance', 'Weekend Allowance (perdays based on salary)') }}
+                    {{ Form::text('weekend_allowance', '', ['id'=>'weekend_allowance_id', 'class'=>'form-control', 'placeholder'=>'Ex: 1.5']) }}
                 </div>
                 <div class="form-group">
-                    {{ Form::submit('Add!', ['id'=>'btn-salary-form', 'class'=>'btn btn-success btn-sm', 'data-loading-text'=>'Loading...']) }}
-                    {{ Form::button('Reset!', ['class'=>'btn btn-warning btn-sm', 'type'=>'reset']) }}
+                    {{ Form::label('meal_allowance', 'Meal Allowance (in a day)') }}
+                    {{ Form::text('meal_allowance', '', ['id'=>'meal_allowance_id', 'class'=>'form-control', 'placeholder'=>'Ex: 15000']) }}
                 </div>
+                <div class="form-group">
+                    {{ Form::label('working_hour', 'Working Hour Perday') }}
+                    {{ Form::text('working_hour', '', ['id'=>'working_hour_id', 'class'=>'form-control', 'placeholder'=>'Ex: 8 (means in a day working for 8 hour)']) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                {{ Form::submit('Add!', ['id'=>'btn-salary-form', 'class'=>'btn btn-success btn-sm btn-block', 'data-loading-text'=>'Loading...']) }}
+            </div>
+            <div class="col-lg-6">
+                {{ Form::button('Reset!', ['class'=>'btn btn-warning btn-sm btn-block', 'type'=>'reset']) }}
             </div>
         </div>
         {{ Form::close() }}
@@ -41,7 +59,10 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Value</th>
+                    <th>Base Salary</th>
+                    <th>Weekend Allowance</th>
+                    <th>Work Hour</th>
+                    <th>Meal Allowance</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Action</th>
@@ -81,7 +102,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 4 ],
+            targets: [ 7 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -90,7 +111,10 @@ $(document).ready(function() {
         }],
         columns: [
             {data: "id"},
-            {data: "value"},
+            {data: "base_salary", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
+            {data: "weekend_allowance"},
+            {data: "working_hour"},
+            {data: "meal_allowance", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
             {data: "start_date"},
             {data: "end_date"},
         ]
@@ -108,7 +132,10 @@ $(document).ready(function() {
         $("#salary_id").val(data_row.id);
         $("#start_date_id").val(data_row.start_date);
         $("#end_date_id").val(data_row.end_date);
-        $("#value_id").val(data_row.value);
+        $("#base_salary_id").val(data_row.base_salary);
+        $("#weekend_allowance_id").val(data_row.weekend_allowance);
+        $("#working_hour_id").val(data_row.working_hour);
+        $("#meal_allowance_id").val(data_row.meal_allowance);
     });
 
     $('#DataTableSalary tbody').on('click', '#remove_btn', function () {

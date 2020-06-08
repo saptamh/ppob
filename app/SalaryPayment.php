@@ -20,6 +20,13 @@ class SalaryPayment extends Model
         'payment_date',
         'receipe',
         'description',
+        'work_day',
+        'over_time_day',
+        'over_time_hour',
+        'meal_allowance',
+        'bonus',
+        'cashbon',
+        'total_salary',
     ];
 
     public function Employee()

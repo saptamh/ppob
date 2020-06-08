@@ -19,7 +19,10 @@ class SalaryPaymentController extends Controller
     public function index(Request $request, SalaryPayment $salaryPayment)
     {
         if($request->ajax()){
-            $data = $salaryPayment->select('*')->with('Employee');
+            $data = $salaryPayment->select('*')->with('Employee')
+            ->with(['Employee.Level' => function($query) {
+                $query->select('employee_id','level')->orderBy('created_at', 'desc')->first();
+            }]);
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.salary-payment.main');
@@ -122,7 +125,7 @@ class SalaryPaymentController extends Controller
     {
         try {
             if ($request->ajax()) {
-                $salary = $salary->select('value')->where('employee_id',$employee_id)->orderBy('id', 'desc')->first();
+                $salary = $salary->with('Employee')->where('employee_id',$employee_id)->orderBy('id', 'desc')->first();
             }
         } catch(\Exception $e) {
             return response()->json(['error'=>$e->getMessage()], 500);

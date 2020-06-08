@@ -146,6 +146,15 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', ['uses' => 'GoodPurchaseController@destroy'])->name('destroy');
         Route::get('/template/{id}', ['uses' => 'GoodPurchaseController@template'])->name('template');
     });
+
+    Route::group(['prefix' => 'bill', 'as' => 'bill.'], function () {
+        Route::get('/', ['uses' => 'BillItemController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'BillItemController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'BillItemController@create'])->name('add');
+        Route::post('/store', ['uses' => 'BillItemController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'BillItemController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'BillItemController@destroy'])->name('destroy');
+    });
 });
 Auth::routes();
 
