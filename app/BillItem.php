@@ -22,4 +22,8 @@ class BillItem extends Model
         'work_area',
         'description',
     ];
+
+    public function Project() {
+        return $this->hasOne('App\Project');
+    }
 }

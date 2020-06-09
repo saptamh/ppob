@@ -15,11 +15,11 @@
             <div class="col-lg-12">
                 <div class="form-group">
                     {{ Form::label('start_date', 'Start Date') }}
-                    {{ Form::text('start_date', '', ['id'=>'start_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
+                    {{ Form::text('start_date', '', ['id'=>'experience_start_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
                 </div>
                 <div class="form-group">
                     {{ Form::label('end_date', 'End Date') }}
-                    {{ Form::text('end_date', '', ['id'=>'end_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date']) }}
+                    {{ Form::text('end_date', '', ['id'=>'experience_end_date_id', 'class'=>'form-control', 'placeholder'=>'Enter Date']) }}
                 </div>
                 <div class="form-group">
                     {{ Form::label('company', 'Company') }}
@@ -65,12 +65,12 @@
 <script src="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
 $(document).ready(function() {
-    $('#start_date_id').datepicker({
+    $('#experience_start_date_id').datepicker({
         uiLibrary: 'bootstrap',
         format: 'yyyy-mm-dd'
     });
 
-    $('#end_date_id').datepicker({
+    $('#experience_end_date_id').datepicker({
         uiLibrary: 'bootstrap',
         format: 'yyyy-mm-dd'
     });
@@ -116,8 +116,8 @@ $(document).ready(function() {
         var data_row = texperience.row($(this).closest('tr')).data();
         $('#btn-experience-form').val('Update');
         $("#experience_id").val(data_row.id);
-        $("#start_date_id").val(data_row.start_date);
-        $("#end_date_id").val(data_row.end_date);
+        $("#experience_start_date_id").val(data_row.start_date);
+        $("#experience_end_date_id").val(data_row.end_date);
         $("#company_id").val(data_row.company);
         $("#role_id").val(data_row.role);
         $("#description_id").val(data_row.description);
