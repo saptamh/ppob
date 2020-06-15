@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\SalaryPayment;
 use App\Employee;
 use App\Salary;
+use App\Project;
+use App\Payment;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
+use PaymentHelp;
 
 class SalaryPaymentController extends Controller
 {
@@ -37,6 +40,7 @@ class SalaryPaymentController extends Controller
     public function create()
     {
         $data['employee'] = Employee::select('id','name')->get()->pluck('name', 'id');
+
         return view('pages.salary-payment.add', $data);
     }
 
@@ -50,31 +54,50 @@ class SalaryPaymentController extends Controller
     {
         $validatedData = $request->validate([
             'employee_id' => 'required',
-            'payment_date' => 'required',
             'salary' => 'required',
             'periode' => 'required',
         ]);
 
         $document_name = "";
-        if ($request->hasFile('receipe')) {
-                $document = $request->file('receipe');
+        if ($request->hasFile('upload')) {
+                $document = $request->file('upload');
                 $document_name = $request->id . '-'.time().'.'.$document->getClientOriginalExtension();
                 Cloudder::upload($document, $document_name,['folder'=>'REKAKOMINDO/salary', 'resource_type' => 'auto', 'use_filename' => TRUE]);
                 $document_name = Cloudder::getResult()['url'];
         } else {
-            if (isset($request->receipe_hidden) && !empty($request->receipe_hidden)) {
-                $document_name = $request->receipe_hidden;
+            if (isset($request->upload_hidden) && !empty($request->upload_hidden)) {
+                $document_name = $request->upload_hidden;
             }
         }
         try {
             $input = $request->all();
-            $input['receipe'] = $document_name;
+            $input['upload'] = $document_name;
             $model = new SalaryPayment;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);
             }
             $model->fill($input);
-            $model->save();
+
+            $save = $model->save();
+
+            if ($save) {
+                if (!isset($input['id'])) {
+                    $employee = Employee::select('name')->where('id', $input['employee_id'])->first();
+                    $dataToPayment = [
+                        'payment_name' => 'Pembayaran Gaji ' . $employee->name,
+                        'payment_type' => 'SALARY',
+                        'payment_total' => $input['total_salary'],
+                        'payment_id' => $model->id,
+                    ];
+                    PaymentHelp::savePaymentPartial($dataToPayment);
+                } else {
+                    Payment::where('payment_type', 'salary')
+                    ->where('payment_id', $input['id'])
+                    ->update([
+                        'payment_total'=> $input['total_salary'],
+                    ]);
+                }
+            }
 
         } catch (Exception $e) {
             return back()->withError($e->getMessage())->withInput();
@@ -132,5 +155,11 @@ class SalaryPaymentController extends Controller
         }
 
         return response()->json(['data'=>$salary], 201);
+    }
+
+    public function project() {
+        $data =  Project::select('id', 'name')->get();
+
+        return response()->json(['data'=>$data], 201);
     }
 }

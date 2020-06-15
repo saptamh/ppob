@@ -53,6 +53,7 @@
       <a class="collapse-item" href="{{ route('project.main') }}">Purchase Request</a>
       <a class="collapse-item" href="{{ route('bill.main') }}">Bon Material</a>
       <a class="collapse-item" href="buttons.html">Payment Request</a>
+      <a class="collapse-item" href="buttons.html">Invoice Equipment</a>
     </div>
   </div>
 </li>
@@ -81,15 +82,15 @@
 
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
     <i class="fas fa-fw fa-cog"></i>
-    <span>Purchase</span>
+    <span>Payment Request</span>
   </a>
-  <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+  <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
       <a class="collapse-item" href="{{ route('purchase.main') }}">Barang</a>
-      <a class="collapse-item" href="{{ route('purchase.main') }}">Gaji</a>
-      <a class="collapse-item" href="buttons.html">Non Purchase</a>
+      <a class="collapse-item" href="{{ route('salary-payment.main') }}">Gaji</a>
+      <a class="collapse-item" href="{{ route('nonpurchase.main') }}">Non Purchase</a>
     </div>
   </div>
 </li>
@@ -99,14 +100,14 @@
 
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseTwo">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true" aria-controls="collapseTwo">
     <i class="fas fa-fw fa-cog"></i>
     <span>Finance</span>
   </a>
-  <div id="collapseFour" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+  <div id="collapseSix" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" href="buttons.html">Kas</a>
-      <a class="collapse-item" href="{{ route('salary-payment.main') }}">Payment (Gaji)</a>
+      <a class="collapse-item" href="{{ route('petty-cash.main') }}">Kas</a>
+      <a class="collapse-item" href="{{ route('payment.main') }}">Payment</a>
       <a class="collapse-item" href="buttons.html">Invoice</a>
       <a class="collapse-item" href="buttons.html">Investor</a>
       <a class="collapse-item" href="buttons.html">Report</a>

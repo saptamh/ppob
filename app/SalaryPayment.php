@@ -17,8 +17,7 @@ class SalaryPayment extends Model
         'employee_id',
         'periode',
         'salary',
-        'payment_date',
-        'receipe',
+        'upload',
         'description',
         'work_day',
         'over_time_day',
@@ -27,6 +26,7 @@ class SalaryPayment extends Model
         'bonus',
         'cashbon',
         'total_salary',
+        'project_id',
     ];
 
     public function Employee()

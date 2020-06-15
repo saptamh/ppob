@@ -177,7 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        App\Providers\PaymentServiceProvider::class,
 
     ],
 
@@ -233,6 +233,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Cloudder' => JD\Cloudder\Facades\Cloudder::class,
+        'PaymentHelp' => App\Helpers\PaymentHelper::class,
 
     ],
 

@@ -127,6 +127,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/edit/{id}', ['uses' => 'SalaryPaymentController@edit'])->name('edit');
         Route::delete('/destroy/{id}', ['uses' => 'SalaryPaymentController@destroy'])->name('destroy');
         Route::get('/salary/{employee_id}', ['uses' => 'SalaryPaymentController@salary'])->name('salary');
+        Route::get('/project', ['uses' => 'SalaryPaymentController@project'])->name('project');
     });
 
     Route::group(['prefix' => 'purchase', 'as' => 'purchase.'], function () {
@@ -154,6 +155,34 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::post('/store', ['uses' => 'BillItemController@store'])->name('store');
         Route::get('/edit/{id}', ['uses' => 'BillItemController@edit'])->name('edit');
         Route::delete('/destroy/{id}', ['uses' => 'BillItemController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'petty-cash', 'as' => 'petty-cash.'], function () {
+        Route::get('/', ['uses' => 'PettyCashController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'PettyCashController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'PettyCashController@create'])->name('add');
+        Route::post('/store', ['uses' => 'PettyCashController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'PettyCashController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'PettyCashController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'nonpurchase', 'as' => 'nonpurchase.'], function () {
+        Route::get('/', ['uses' => 'NonpurchaseController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'NonpurchaseController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'NonpurchaseController@create'])->name('add');
+        Route::post('/store', ['uses' => 'NonpurchaseController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'NonpurchaseController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'NonpurchaseController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'payment', 'as' => 'payment.'], function () {
+        Route::get('/', ['uses' => 'PaymentController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'PaymentController@index'])->name('data-table');
+        // Route::get('/create', ['uses' => 'PaymentController@create'])->name('add');
+        Route::post('/store', ['uses' => 'PaymentController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'PaymentController@edit'])->name('edit');
+        // Route::delete('/destroy/{id}', ['uses' => 'PaymentController@destroy'])->name('destroy');
+        Route::get('/get-salary-payment', ['uses' => 'PaymentController@getSalaryPayment'])->name('get-project');
     });
 });
 Auth::routes();

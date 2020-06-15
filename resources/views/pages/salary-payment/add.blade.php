@@ -32,10 +32,6 @@
             </div>
             <div id="salary_content"></div>
             <div class="form-group">
-                {{ Form::label('payment_date', 'Payment Date') }}
-                {{ Form::text('payment_date', '', ['class'=>'form-control', 'placeholder'=>'Enter Payment Date', 'required'=>'true']) }}
-            </div>
-            <div class="form-group">
                 {{ Form::label('periode', 'Periode') }}
                 {{ Form::text('periode', '', ['class'=>'form-control', 'placeholder'=>'Enter Periode', 'required'=>'true']) }}
             </div>
@@ -98,8 +94,8 @@
                 {{ Form::text('total_salary', '0', ['class'=>'form-control', 'placeholder'=>'Automatically Calculate', 'readonly'=>'true', 'required'=>'true']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('receipe', 'Receipe') }}
-                {{ Form::file('receipe',  ['class'=>'form-control', 'placeholder'=>'Enter Receipe']) }}
+                {{ Form::label('upload', 'Upload') }}
+                {{ Form::file('upload',  ['class'=>'form-control', 'placeholder'=>'Upload File']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('description', 'Description') }}
@@ -126,23 +122,55 @@
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/handlebars/handlebars.min-v4.7.6.js') }}"></script>
 <script>
-function showSalary(data) {
+async function showSalary(data) {
     $('#salary_content').html('');
+
+    Handlebars.registerHelper('isdefined', function (value, opts) {
+        if (value == "phl") {
+            return opts.fn(this);
+        }
+
+        return opts.inverse(this);
+    });
+
+    Handlebars.registerHelper('isSelected', function (label) {
+        return "";
+    });
+
     var t = Handlebars.compile($('#salary-template').html());
-    var $html = $(t(data));
+
+    var obj = {
+        salary: data,
+        projects: await getProject(),
+    };
+    var $html = $(t(obj));
     $html.find('input.calculate-salary').on('keyup', function() {
         calculate();
     });
     $('#salary_content').append($html);
 }
 
+async function getProject() {
+    var result = await $.ajax({
+        method: 'GET',
+        url: baseUrl + "/salary-payment/project",
+        dataType: 'json',
+        data:{ _token: "{{csrf_token()}}"},
+        success: function (res) {
+            return res.data.data;
+        }
+    });
+    console.log("Res", result);
+    return result;
+}
+
 function calculate() {
     if ($("#employee_id").val() != "") {
-        console.log('YYYY');
         var base_salary = $("#base-salary-hide").val();
         var meal_allowance = $("#meal-allowance-hide").val();
         var weekend_allowance = $("#weekend-allowance-hide").val();
         var work_hour = $("#work-hour-hide").val();
+        console.log("BASESALARY", base_salary);
 
         let work_day_result = base_salary;
         if ($("#employee-status").val() == "phl") {
@@ -150,7 +178,7 @@ function calculate() {
         }
 
         var work_weekend_result = (parseInt(base_salary) * weekend_allowance) * parseInt($("#over_time_day").val());
-        var work_hour_result = (parseInt(base_salary) / work_hour) * parseInt($("#over_time_hour").val());
+        var work_hour_result = work_hour > 0 ? (parseInt(base_salary) / work_hour) * parseInt($("#over_time_hour").val()) : 0;
         var meal_allowance_result = parseInt(meal_allowance) * parseInt($("#meal_allowance").val());
 
         $("#work_day_result").val(work_day_result);
@@ -191,7 +219,9 @@ $(document).ready(function() {
                     data:{ _token: "{{csrf_token()}}"},
                     success: function (res) {
                         showSalary(res.data);
-                        calculate();
+                        setTimeout(function(){
+                            calculate();
+                        }, 2000);
                     }
                 });
             }

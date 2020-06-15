@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h3 mb-2 text-gray-800">Create Salary Payment</h1>
+            <h1 class="h3 mb-2 text-gray-800">Edit Salary Payment</h1>
                 @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -28,14 +28,11 @@
     <div class="row">
         <div class="col-lg-6">
             <div class="form-group">
-                {{ Form::label('employee_id', 'Employee') }}
-                {{ Form::select('employee_id', $employee, $edit['employee_id'], ['class'=>'form-control', 'placeholder'=>'Select Employee', 'required'=>'true']) }}
+                {{ Form::hidden('employee_id', $edit['employee_id'])}}
+                {{ Form::label('employee_name', 'Employee') }}
+                {{ Form::select('employee_name', $employee, $edit['employee_id'], ['class'=>'form-control', 'placeholder'=>'Select Employee', 'disabled'=>'true', 'required'=>'true']) }}
             </div>
             <div id="salary_content"></div>
-            <div class="form-group">
-                {{ Form::label('payment_date', 'Payment Date') }}
-                {{ Form::text('payment_date', $edit['payment_date'], ['class'=>'form-control', 'placeholder'=>'Enter Payment Date', 'required'=>'true']) }}
-            </div>
             <div class="form-group">
                 {{ Form::label('periode', 'Periode') }}
                 {{ Form::text('periode', $edit['periode'], ['class'=>'form-control', 'placeholder'=>'Enter Periode', 'required'=>'true']) }}
@@ -99,12 +96,12 @@
                 {{ Form::text('total_salary', $edit['total_salary'], ['class'=>'form-control', 'placeholder'=>'Automatically Calculate', 'readonly'=>'true', 'required'=>'true']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('receipe', 'Receipe') }}
-                {{ Form::file('receipe',  ['class'=>'form-control', 'placeholder'=>'Enter Receipe']) }}
-                {{ Form::hidden('receipe_hidden', $edit['receipe'], ['class'=>'form-control', 'required'=>'true']) }}
+                {{ Form::label('upload', 'Upload') }}
+                {{ Form::file('upload',  ['class'=>'form-control', 'placeholder'=>'Upload File']) }}
+                {{ Form::hidden('upload_hidden', $edit['upload'], ['class'=>'form-control', 'required'=>'true']) }}
                 <br>
                 <center>
-                    <img class="img-responsive img-circle" style="width: 150px;height:150px" src="{{ $edit['receipe'] }}">
+                    <img class="img-responsive img-circle" style="width: 150px;height:150px" src="{{ $edit['upload'] }}">
                 </center>
             </div>
             <div class="form-group">
@@ -132,10 +129,30 @@
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/handlebars/handlebars.min-v4.7.6.js') }}"></script>
 <script>
-function showSalary(data) {
+async function showSalary(data) {
     $('#salary_content').html('');
+
+    Handlebars.registerHelper('isdefined', function (value, opts) {
+        if (value == "phl") {
+            return opts.fn(this);
+        }
+
+        return opts.inverse(this);
+    });
+
+    Handlebars.registerHelper('isSelected', function (label) {
+        return label == "{{ $edit['project_id'] }}" ? 'selected' : '';
+    });
+
     var t = Handlebars.compile($('#salary-template').html());
-    var $html = $(t(data));
+
+    var obj = {
+        salary: data,
+        projects: await getProject(),
+    };
+
+    var $html = $(t(obj));
+
     $html.find('input.calculate-salary').on('keyup', function() {
         calculate();
     });
@@ -144,7 +161,6 @@ function showSalary(data) {
 
 function calculate() {
     if ($("#employee_id").val() != "") {
-        console.log('YYYY');
         var base_salary = $("#base-salary-hide").val();
         var meal_allowance = $("#meal-allowance-hide").val();
         var weekend_allowance = $("#weekend-allowance-hide").val();
@@ -183,21 +199,40 @@ function getEmployee(id, isEdit) {
             }
             var data = {
                 employee: {
-                    status: res.data.employee.status
+                    status: res.data.employee.status,
+                    location: res.data.employee.location,
                 },
                 base_salary: base_salary,
                 meal_allowance: res.data.meal_allowance,
                 weekend_allowance: res.data.weekend_allowance,
                 working_hour: res.data.working_hour,
             };
+
             showSalary(data);
-            calculate();
+            setTimeout(function(){
+                calculate();
+            }, 2000);
         }
     });
 }
+
+async function getProject() {
+    var result = await $.ajax({
+        method: 'GET',
+        url: baseUrl + "/salary-payment/project",
+        dataType: 'json',
+        data:{ _token: "{{csrf_token()}}"},
+        success: function (res) {
+            return res.data.data;
+        }
+    });
+
+    return result;
+}
+
 $(document).ready(function() {
     var baseUrl = "{{ URL::to('/') }}";
-    getEmployee("{{ $edit['id'] }}", 1);
+    getEmployee("{{ $edit['employee_id'] }}", 1);
     $('#payment_date').datepicker({
         uiLibrary: 'bootstrap',
         format: 'yyyy-mm-dd',
