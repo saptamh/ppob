@@ -24,4 +24,9 @@ class PettyCash extends Model
         'project_id',
         'upload',
     ];
+
+    public function Project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 }

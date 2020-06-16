@@ -29,6 +29,7 @@
                     <tr>
                         <th>#</th>
                         <th>Employee</th>
+                        <th>Project</th>
                         <th>Status</th>
                         <th>Nominal</th>
                         <th>Periode</th>
@@ -64,7 +65,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 5 ],
+            targets: [ 6 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -74,8 +75,20 @@ $(document).ready(function() {
         columns: [
             {data: "id"},
             {data: "employee.name", name: "Employee.name"},
-            {data: "employee.status", name: "Employee.status"},
-            {data: "salary", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
+            {data: "project.name", name: "Project.name", render: function(data, type, row) {
+                if (data) {
+                    return data;
+                }
+
+                return "-";
+            }},
+            {data: "employee.status", name: "Employee.status", render: function(data, type, row) {
+                if (data=="phl") {
+                    return "Pekerja Harian Lepas";
+                }
+                return data;
+            }},
+            {data: "total_salary", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
             {data: "periode"},
         ]
     });

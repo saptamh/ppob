@@ -33,4 +33,9 @@ class SalaryPayment extends Model
     {
         return $this->belongsTo('App\Employee');
     }
+
+    public function Project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 }

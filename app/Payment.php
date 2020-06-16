@@ -19,4 +19,9 @@ class Payment extends Model
         'payment_status',
         'description',
     ];
+
+    public function Project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 }

@@ -18,7 +18,8 @@ class PettyCashController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = PettyCash::select('*');
+            $data = PettyCash::select('*')
+            ->with('Project');
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.petty-cash.main');

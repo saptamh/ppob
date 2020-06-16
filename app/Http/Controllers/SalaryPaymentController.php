@@ -25,7 +25,9 @@ class SalaryPaymentController extends Controller
             $data = $salaryPayment->select('*')->with('Employee')
             ->with(['Employee.Level' => function($query) {
                 $query->select('employee_id','level')->orderBy('created_at', 'desc')->first();
-            }]);
+            }])
+            ->with('Project');
+
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.salary-payment.main');
@@ -88,6 +90,7 @@ class SalaryPaymentController extends Controller
                         'payment_type' => 'SALARY',
                         'payment_total' => $input['total_salary'],
                         'payment_id' => $model->id,
+                        'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
                     ];
                     PaymentHelp::savePaymentPartial($dataToPayment);
                 } else {
@@ -95,6 +98,7 @@ class SalaryPaymentController extends Controller
                     ->where('payment_id', $input['id'])
                     ->update([
                         'payment_total'=> $input['total_salary'],
+                        'project_id' => $input['project_id'],
                     ]);
                 }
             }

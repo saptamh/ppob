@@ -20,7 +20,9 @@ class NonpurchaseController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Nonpurchase::select('*');
+            $data = Nonpurchase::select('*')
+            ->with('Project');
+
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.nonpurchase.main');
@@ -81,17 +83,20 @@ class NonpurchaseController extends Controller
             $save = $model->save();
 
             if ($save) {
+                $type = [
+                    'Overhead',
+                    'Marketing',
+                    'Plemary',
+                    'Rumah Tangga',
+                    'Lainnya',
+                ];
                 if (!isset($input['id'])) {
-                    $payment_name = "Nonpurchase untuk office";
-                    if (isset($input['project_id'])) {
-                        $project = Project::select('name')->where('id', $input['project_id'])->first();
-                        $payment_name = "Nonpurchase untuk project " . $project->name;
-                    }
                     $dataToPayment = [
-                        'payment_name' => $payment_name,
+                        'payment_name' => $type[$input['type'] - 1] . ", " . $input['payment'],
                         'payment_type' => 'nonpurchase',
                         'payment_total' => $input['nominal'],
                         'payment_id' => $model->id,
+                        'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
                     ];
                     PaymentHelp::savePaymentPartial($dataToPayment);
                 } else {
@@ -99,6 +104,8 @@ class NonpurchaseController extends Controller
                     ->where('payment_id', $input['id'])
                     ->update([
                         'payment_total'=> $input['nominal'],
+                        'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
+                        'payment_name' => $type[$input['type'] - 1] . ", " . $input['payment'],
                     ]);
                 }
             }

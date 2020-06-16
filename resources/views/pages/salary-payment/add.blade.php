@@ -186,7 +186,7 @@ function calculate() {
         $("#over_time_hour_result").val(work_hour_result);
         $("#meal_allowance_result").val(meal_allowance_result);
 
-        var total_salary = (work_day_result + work_weekend_result + work_hour_result + meal_allowance_result + parseInt($("#bonus").val())) - parseInt($("#cashbon").val());
+        var total_salary = (+work_day_result + +work_weekend_result + +work_hour_result + +meal_allowance_result + +parseInt($("#bonus").val())) - +parseInt($("#cashbon").val());
 
         $("#total_salary").val(total_salary);
     }

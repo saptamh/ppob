@@ -29,7 +29,9 @@
                     <tr>
                         <th>#</th>
                         <th>Code</th>
+                        <th>Type</th>
                         <th>Anggaran</th>
+                        <th>Project</th>
                         <th>Date</th>
                         <th>Nominal</th>
                         <th>Action</th>
@@ -64,7 +66,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 5 ],
+            targets: [ 7 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -74,7 +76,33 @@ $(document).ready(function() {
         columns: [
             {data: "id"},
             {data: "number"},
+            {data: "type", render: function(data, type, row) {
+                switch (data) {
+                    case "1":
+                        return "Overhead";
+                    break;
+                    case "2":
+                        return "Marketing";
+                    break;
+                    case "3":
+                        return "Plemary";
+                    break;
+                    case "4":
+                        return "Rumah Tangga";
+                    break;
+                    case "5":
+                        return "Lainnya";
+                    break;
+                }
+            }},
             {data: "type_object"},
+            {data: "project.name", name: "Project.name", render: function(data, type, row) {
+                if (data) {
+                    return data;
+                }
+
+                return "-";
+            }},
             {data: "date"},
             {data: "nominal", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
         ]

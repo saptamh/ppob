@@ -12,13 +12,14 @@ class PaymentHelper {
         try {
             $payment = new Payment;
             $payment->payment_name  = $data['payment_name'];
-            $payment->payment_type          = $data['payment_type'];
+            $payment->payment_type  = $data['payment_type'];
             $payment->payment_total = $data['payment_total'];
             $payment->payment_id    = $data['payment_id'];
             $payment->paid_date     = NULL;
             $payment->payment_method= 'TRANSFER';
             $payment->payment_status= 'PENDING';
             $payment->description   = '-';
+            $payment->project_id    = $data['project_id'];
 
             $payment->save();
         } catch (Throwable $e) {

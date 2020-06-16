@@ -19,7 +19,8 @@ class PaymentController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Payment::select('*');
+            $data = Payment::select('*')
+            ->with('Project');
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.payment.main');

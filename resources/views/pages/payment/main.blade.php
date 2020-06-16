@@ -23,6 +23,7 @@
                         <th>#</th>
                         <th>Name</th>
                         <th>Type</th>
+                        <th>Project</th>
                         <th>Status</th>
                         <th>Nominal</th>
                         <th>Paid Date</th>
@@ -58,17 +59,23 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 6 ],
+            targets: [ 7 ],
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                "<button class='btn btn-danger btn-circle' disabled id='remove_btn'><i class='fas fa-trash'></i></button></center>"
+            defaultContent: "<center><button class='btn btn-warning btn-sm' id='edit_btn'>Detail</button></center>"
         }],
         columns: [
             {data: "id"},
             {data: "payment_name"},
             {data: "payment_type"},
+            {data: "project.name", name: "Project.name", render: function(data, type, row) {
+                if (data) {
+                    return data;
+                }
+
+                return "-";
+            }},
             {data: "payment_status"},
             {data: "payment_total", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
             {data: "paid_date"},

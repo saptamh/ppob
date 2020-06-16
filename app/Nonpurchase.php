@@ -27,4 +27,9 @@ class Nonpurchase extends Model
         'upload',
         'project_id',
     ];
+
+    public function Project()
+    {
+        return $this->belongsTo('App\Project');
+    }
 }

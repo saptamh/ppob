@@ -24,15 +24,15 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="DataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover display" id="DataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Code</th>
-                        <th>Budget For</th>
                         <th>Date</th>
-                        <th>Berita</th>
+                        <th>Budget For</th>
+                        <th>Project</th>
                         <th>Type</th>
+                        <th>Berita</th>
                         <th>Nominal</th>
                         <th>Action</th>
                     </tr>
@@ -45,9 +45,39 @@
 @endsection
 @push('style')
     <link href="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    <style>
+        tr.dtrg-level-0.dtrg-start td:first-child {
+            padding-left: 0px;
+            font-weight: bolder;
+            color: #fff;
+            background-color: gray;
+        }
+
+        tr.dtrg-level-0.dtrg-end td:first-child {
+            padding-left: 0px;
+            font-weight: bolder;
+            color: #80ffbf;
+            background-color: #669900;
+        }
+
+        tr.dtrg-level-1 td:first-child {
+            padding-left: 20px;
+            font-weight: bolder;
+            color: blue;
+            background-color: #ffcccc;
+        }
+
+        tr.dtrg-level-1.dtrg-end td:first-child {
+            padding-left: 20px;
+            font-weight: bolder;
+            color: #80ffbf;
+            background-color: #b38600;
+        }
+    </style>
 @endpush
 @push('script')
 <script src="{{ URL::asset('themes/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ URL::asset('themes/vendor/datatables/dataTables.rowGroup.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script>
 $(document).ready(function() {
@@ -66,6 +96,10 @@ $(document).ready(function() {
             sortable: false,
         },
         {
+            targets: [ 2, 3  ],
+            visible: false
+        },
+        {
             targets: [ 7 ],
             visible: true,
             searchable: false,
@@ -75,13 +109,33 @@ $(document).ready(function() {
         }],
         columns: [
             {data: "id"},
-            {data: "number"},
-            {data: "budget_for"},
             {data: "date"},
-            {data: "noted_news"},
+            {data: "budget_for"},
+            {data: "project.name", name: "Project.name", render: function(data, type, row) {
+                if (data) {
+                    return data;
+                }
+
+                return "-";
+            }},
             {data: "type"},
+            {data: "noted_news"},
             {data: "nominal", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
-        ]
+        ],
+        rowGroup: {
+            endRender: function ( rows, group ) {
+                var avg = rows
+                .data()
+                .pluck('nominal')
+                .reduce( function (a, b) {
+                    return a + b.replace(/[^\d]/g, '')*1;
+                }, 0);
+
+            return 'Total in '+group+': '+
+                $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg );
+            },
+            dataSrc: ['budget_for', 'project.name'],
+        }
     });
 
     t.on( 'order.dt search.dt', function () {
