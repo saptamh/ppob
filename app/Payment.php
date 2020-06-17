@@ -17,11 +17,18 @@ class Payment extends Model
         'payment_method',
         'paid_date',
         'payment_status',
+        'upload',
         'description',
+        'source_id',
     ];
 
     public function Project()
     {
         return $this->belongsTo('App\Project');
+    }
+
+    public function Source()
+    {
+        return $this->belongsTo('App\Project', 'source_id');
     }
 }

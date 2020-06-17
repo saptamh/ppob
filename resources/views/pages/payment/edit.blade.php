@@ -25,11 +25,17 @@
         'enctype' => 'multipart/form-data'
     ]) }}
     {{ Form::hidden('id', $edit['id'])}}
+    {{ Form::hidden('project_id', $edit['project_id'])}}
+    {{ Form::hidden('payment_name', $edit['payment_name'])}}
     <div class="row">
         <div class="col-lg-12">
             <div class="form-group">
                 {{ Form::label('payment_total', 'Payment Total') }}
                 {{ Form::text('payment_total', $edit['payment_total'], ['class'=>'form-control', 'readonly'=>'true', 'required'=>'true']) }}
+            </div>
+            <div class="form-group">
+                {{ Form::label('payment_total', 'Payment Total') }}
+                {{ Form::select('source_id', $source, $edit['project_id'], ['class'=>'form-control', 'placeholder'=>'Select Source', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('payment_method', 'Payment Method') }}
@@ -40,8 +46,13 @@
                 {{ Form::text('paid_date', $edit['paid_date'], ['class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('payment_status', 'Payment Status') }}
-                {{ Form::select('payment_status', ['PENDING'=>'PENDING', 'PROCESSING'=>'PROCESSING', 'PAID'=>'PAID', 'REJECT'=>'REJECT'], $edit['payment_status'], ['class'=>'form-control', 'placeholder'=>'Enter Payment Status', 'required'=>'true']) }}
+                {{ Form::label('upload', 'Upload') }}
+                {{ Form::file('upload',  ['class'=>'form-control', 'placeholder'=>'Upload File']) }}
+                {{ Form::hidden('upload_hidden', $edit['upload'], ['class'=>'form-control', 'required'=>'true']) }}
+                <br>
+                <center>
+                    <img class="img-responsive img-circle" style="width: 150px;height:150px" src="{{ $edit['upload'] }}">
+                </center>
             </div>
             <div class="form-group">
                 {{ Form::label('description', 'Description') }}
@@ -50,11 +61,14 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6">
-            {{ Form::submit('Save!', ['class'=>'btn btn-success btn-sm btn-block']) }}
+        <div class="col-lg-4">
+            {{ Form::submit('Paid', ['name'=>'paid', 'class'=>'btn btn-success btn-sm btn-block']) }}
         </div>
-        <div class="col-lg-6">
-            <a href="{{ route('payment.main') }}" class="btn btn-warning btn-sm btn-block"> Cancel! </a>
+        <div class="col-lg-4">
+            {{ Form::submit('Reject', ['name'=>'reject', 'class'=>'btn btn-danger btn-sm btn-block']) }}
+        </div>
+        <div class="col-lg-4">
+            <a href="{{ route('payment.main') }}" class="btn btn-warning btn-sm btn-block"> Cancel</a>
         </div>
     </div>
     <div class="row">

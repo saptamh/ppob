@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Payment;
 use App\PettyCash;
 use App\Nonpurchase;
+use App\SalaryPayment;
 use App\Exceptions\Handler;
 
 class PaymentHelper {
@@ -67,5 +68,61 @@ class PaymentHelper {
         $month = (int) date('m');
 
         return  date('Y') . '/' . $month_romawi[$month] . '/';
+    }
+
+    public static function savePaymentToPettyCash($data) {
+        if ($data['source_id'] == NULL) {
+            $budget_for = 'OFFICE';
+        } else {
+            $budget_for = 'PROJECT';
+        }
+        $input = [
+            'budget_for' => $budget_for,
+            'project_id' => $data['project_id'] ? $data['project_id'] : NULL,
+            'number' => self::generateCode(),
+            'date' => $data['paid_date'],
+            'noted_news' => $data['payment_name'],
+            'nominal' => $data['payment_total'],
+            'upload' => $data['upload'],
+            'type' => 'DEBIT',
+            'source_type' => 'PAYMENT',
+            'source_id' => $data['id'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+        try {
+            //check if exist
+            $is_exist = PettyCash::where('source_type', 'PAYMENT')
+                        ->where('source_id', $data['id'])->first();
+            //if exist then soft delete existing
+            if ($is_exist) {
+                PettyCash::where('source_type', 'PAYMENT')
+                ->where('source_id', $data['id'])
+                ->delete();
+            }
+            PettyCash::create($input);
+        } catch (Throwable $e) {
+            report($e);
+
+            return false;
+        }
+    }
+
+    public static function updatePaymentProcessStatus($source, $id, $status) {
+        try {
+            if ($source == "NONPURCHASE") {
+                Nonpurchase::where('id', $id)->update(['payment_process_status' => $status]);
+                return;
+            }
+
+            if ($source == "SALARY") {
+                SalaryPayment::where('id', $id)->update(['payment_process_status' => $status]);
+                return;
+            }
+        } catch (Throwable $e) {
+            report($e);
+
+            return false;
+        }
     }
 }

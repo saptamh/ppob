@@ -23,6 +23,9 @@ class PettyCash extends Model
         'nominal',
         'project_id',
         'upload',
+        'source_type',
+        'source_id',
+        'type',
     ];
 
     public function Project()

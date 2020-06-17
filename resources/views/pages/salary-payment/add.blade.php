@@ -191,6 +191,7 @@ function calculate() {
         $("#total_salary").val(total_salary);
     }
 }
+
 $(document).ready(function() {
     var baseUrl = "{{ URL::to('/') }}";
     $('#payment_date').datepicker({

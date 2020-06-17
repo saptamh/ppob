@@ -33,6 +33,7 @@
                         <th>Status</th>
                         <th>Nominal</th>
                         <th>Periode</th>
+                        <th>Finance Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -65,12 +66,10 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 6 ],
+            targets: [ 7 ],
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>"
         }],
         columns: [
             {data: "id"},
@@ -90,6 +89,14 @@ $(document).ready(function() {
             }},
             {data: "total_salary", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
             {data: "periode"},
+            {data: "payment_process_status"},
+            {data: "payment_process_status", render: function(data, type, row) {
+                if (data == "REJECT") {
+                    return "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
+                    "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>";
+                }
+                return "";
+            }},
         ]
     });
 

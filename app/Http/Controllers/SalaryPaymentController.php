@@ -74,6 +74,7 @@ class SalaryPaymentController extends Controller
         try {
             $input = $request->all();
             $input['upload'] = $document_name;
+            $input['payment_process_status'] = "PENDING";
             $model = new SalaryPayment;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);
@@ -98,7 +99,8 @@ class SalaryPaymentController extends Controller
                     ->where('payment_id', $input['id'])
                     ->update([
                         'payment_total'=> $input['total_salary'],
-                        'project_id' => $input['project_id'],
+                        'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
+                        'payment_status' => $input['payment_process_status'],
                     ]);
                 }
             }

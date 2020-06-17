@@ -26,6 +26,7 @@ class Nonpurchase extends Model
         'description',
         'upload',
         'project_id',
+        'payment_process_status',
     ];
 
     public function Project()

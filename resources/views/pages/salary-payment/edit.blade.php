@@ -165,6 +165,7 @@ function calculate() {
         var meal_allowance = $("#meal-allowance-hide").val();
         var weekend_allowance = $("#weekend-allowance-hide").val();
         var work_hour = $("#work-hour-hide").val();
+        console.log("BASESALARY", base_salary);
 
         let work_day_result = base_salary;
         if ($("#employee-status").val() == "phl") {
@@ -172,7 +173,7 @@ function calculate() {
         }
 
         var work_weekend_result = (parseInt(base_salary) * weekend_allowance) * parseInt($("#over_time_day").val());
-        var work_hour_result = (parseInt(base_salary) / work_hour) * parseInt($("#over_time_hour").val());
+        var work_hour_result = work_hour > 0 ? (parseInt(base_salary) / work_hour) * parseInt($("#over_time_hour").val()) : 0;
         var meal_allowance_result = parseInt(meal_allowance) * parseInt($("#meal_allowance").val());
 
         $("#work_day_result").val(work_day_result);

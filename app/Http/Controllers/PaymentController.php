@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Payment;
 use App\Employee;
 use App\SalaryPayment;
+use App\Project;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
+use PaymentHelp;
 
 class PaymentController extends Controller
 {
@@ -20,7 +22,8 @@ class PaymentController extends Controller
     {
         if($request->ajax()){
             $data = Payment::select('*')
-            ->with('Project');
+            ->with('Project')
+            ->with('Source');
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.payment.main');
@@ -48,7 +51,6 @@ class PaymentController extends Controller
         $validatedData = $request->validate([
             'payment_method' => 'required',
             'paid_date' => 'required',
-            'payment_status' => 'required',
             'description' => 'required',
         ]);
 
@@ -67,13 +69,27 @@ class PaymentController extends Controller
         try {
             $input = $request->all();
             $input['upload'] = $document_name;
+            $status = 'PENDING';
+            $input['source_id'] = $input['source_id'] == "OFFICE" ? NULL : $input['source_id'];
+            if (isset($request->paid)) {
+                $status = 'PAID';
+                PaymentHelp::savePaymentToPettyCash($input);
+
+            }
+            if (isset($request->reject)) {
+                $status = 'REJECT';
+            }
+            $input['payment_status'] = $status;
+
             $model = new Payment;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);
             }
-
             $model->fill($input);
             $model->save();
+
+            //update to purchase request (salary payment or nonpurchase)
+            PaymentHelp::updatePaymentProcessStatus($model->payment_type, $model->payment_id, $model->payment_status);
 
         } catch (Exception $e) {
             return back()->withError($e->getMessage())->withInput();
@@ -102,6 +118,12 @@ class PaymentController extends Controller
     public function edit($id, Payment $payment)
     {
         $data['edit'] = $payment->where('id', $id)->first();
+        if ($data['edit']['project_id']) {
+            $project = Project::where('id', $data['edit']['project_id'])->first();
+            $data['source'] = ['OFFICE'=>'OFFICE', $project->id => $project->name];
+        } else {
+            $data['source'] = ['OFFICE'=>'OFFICE'];
+        }
 
         return view('pages.payment.edit', $data);
     }

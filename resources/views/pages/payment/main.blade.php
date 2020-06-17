@@ -26,6 +26,7 @@
                         <th>Project</th>
                         <th>Status</th>
                         <th>Nominal</th>
+                        <th>Source</th>
                         <th>Paid Date</th>
                         <th>Action</th>
                     </tr>
@@ -59,7 +60,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 7 ],
+            targets: [ 8 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -78,6 +79,13 @@ $(document).ready(function() {
             }},
             {data: "payment_status"},
             {data: "payment_total", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
+            {data: "source.name", name: 'Source.name', render: function(data, type, row) {
+                if (data) {
+                    return data;
+                }
+
+                return "OFFICE";
+            }},
             {data: "paid_date"},
         ],
     });

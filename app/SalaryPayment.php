@@ -27,6 +27,7 @@ class SalaryPayment extends Model
         'cashbon',
         'total_salary',
         'project_id',
+        'payment_process_status',
     ];
 
     public function Employee()

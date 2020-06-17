@@ -46,15 +46,15 @@
 @push('style')
     <link href="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
-        tr.dtrg-level-0.dtrg-start td:first-child {
-            padding-left: 0px;
+        tr.dtrg-level-2.dtrg-start td:first-child {
+            padding-left: 40px;
             font-weight: bolder;
             color: #fff;
             background-color: gray;
         }
 
-        tr.dtrg-level-0.dtrg-end td:first-child {
-            padding-left: 0px;
+        tr.dtrg-level-2.dtrg-end td:first-child {
+            padding-left: 40px;
             font-weight: bolder;
             color: #80ffbf;
             background-color: #669900;
@@ -72,6 +72,12 @@
             font-weight: bolder;
             color: #80ffbf;
             background-color: #b38600;
+        }
+        tr.dtrg-level-0 td:first-child {
+            padding-left: 20px;
+            font-weight: bolder;
+            color: white;
+            background-color: red;
         }
     </style>
 @endpush
@@ -96,7 +102,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 2, 3  ],
+            targets: [ 2, 3, 4 ],
             visible: false
         },
         {
@@ -104,8 +110,6 @@ $(document).ready(function() {
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>"
         }],
         columns: [
             {data: "id"},
@@ -121,6 +125,13 @@ $(document).ready(function() {
             {data: "type"},
             {data: "noted_news"},
             {data: "nominal", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
+            {data: "source_type", render: function(data, type, row) {
+                if (!data) {
+                    return "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
+                    "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>";
+                }
+                return "";
+            }}
         ],
         rowGroup: {
             endRender: function ( rows, group ) {
@@ -131,11 +142,14 @@ $(document).ready(function() {
                     return a + b.replace(/[^\d]/g, '')*1;
                 }, 0);
 
-            return 'Total in '+group+': '+
-                $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg );
+                if (group == "DEBIT" || group == "KREDIT") {
+                    return 'Total in '+group+': '+
+                    $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg );
+                }
             },
-            dataSrc: ['budget_for', 'project.name'],
-        }
+            dataSrc: ['budget_for', 'project.name', 'type'],
+        },
+        orderFixed: [[2, 'asc'], [3, 'asc'], [4, 'asc']],
     });
 
     t.on( 'order.dt search.dt', function () {

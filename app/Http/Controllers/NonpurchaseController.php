@@ -73,6 +73,7 @@ class NonpurchaseController extends Controller
         try {
             $input = $request->all();
             $input['upload'] = $document_name;
+            $input['payment_process_status'] = "PENDING";
             $model = new Nonpurchase;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);
@@ -106,6 +107,7 @@ class NonpurchaseController extends Controller
                         'payment_total'=> $input['nominal'],
                         'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
                         'payment_name' => $type[$input['type'] - 1] . ", " . $input['payment'],
+                        'payment_status' => $input['payment_process_status'],
                     ]);
                 }
             }
