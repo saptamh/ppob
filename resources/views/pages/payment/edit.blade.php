@@ -4,7 +4,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="h3 mb-2 text-gray-800">Edit Petty Cash</h1>
+            <h1 class="h3 mb-2 text-gray-800">Edit Payment</h1>
                 @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -62,13 +62,15 @@
     </div>
     <div class="row">
         <div class="col-lg-4">
-            {{ Form::submit('Paid', ['name'=>'paid', 'class'=>'btn btn-success btn-sm btn-block']) }}
+
         </div>
         <div class="col-lg-4">
-            {{ Form::submit('Reject', ['name'=>'reject', 'class'=>'btn btn-danger btn-sm btn-block']) }}
+
         </div>
-        <div class="col-lg-4">
-            <a href="{{ route('payment.main') }}" class="btn btn-warning btn-sm btn-block"> Cancel</a>
+        <div class="col-lg-4" style="text-align:right;">
+            {{ Form::submit('Paid', ['name'=>'paid', 'class'=>'btn btn-outline-secondary btn-sm']) }}
+            {{ Form::submit('Reject', ['name'=>'reject', 'class'=>'btn btn-outline-secondary btn-sm']) }}
+            <a href="{{ route('payment.main') }}" class="btn btn-outline-secondary btn-sm"> Cancel</a>
         </div>
     </div>
     <div class="row">

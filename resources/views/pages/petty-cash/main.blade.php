@@ -3,7 +3,7 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Petty Cash</h1>
+    <h1 class="h3 mb-2 text-gray-800">Cash Flow</h1>
     <div class="row">
         <div class="col-lg-12">
             <a href="{{ route('petty-cash.add') }}" class="btn btn-primary btn-circle">
@@ -14,7 +14,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Patty Cash List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">Cash Flow List</h6>
             @if(session()->has('message'))
                 <div class="alert alert-success alert-sm">
                     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -47,37 +47,32 @@
     <link href="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     <style>
         tr.dtrg-level-2.dtrg-start td:first-child {
-            padding-left: 40px;
-            font-weight: bolder;
-            color: #fff;
-            background-color: gray;
+            padding-left: 0px;
+            color: #000;
+            font-style: italic;
         }
 
         tr.dtrg-level-2.dtrg-end td:first-child {
-            padding-left: 40px;
-            font-weight: bolder;
-            color: #80ffbf;
-            background-color: #669900;
+            padding-left: 0px;
+            color: #000;
+            font-style: italic;
         }
 
         tr.dtrg-level-1 td:first-child {
-            padding-left: 20px;
+            padding-left: 0px;
             font-weight: bolder;
-            color: blue;
-            background-color: #ffcccc;
+            color: #000;
         }
 
         tr.dtrg-level-1.dtrg-end td:first-child {
-            padding-left: 20px;
+            padding-left: 0px;
             font-weight: bolder;
-            color: #80ffbf;
-            background-color: #b38600;
+            color: #000;
         }
         tr.dtrg-level-0 td:first-child {
-            padding-left: 20px;
+            padding-left: 0px;
             font-weight: bolder;
-            color: white;
-            background-color: red;
+            color: blue;
         }
     </style>
 @endpush
@@ -127,8 +122,7 @@ $(document).ready(function() {
             {data: "nominal", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
             {data: "source_type", render: function(data, type, row) {
                 if (!data) {
-                    return "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                    "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>";
+                    return "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>";
                 }
                 return "";
             }}
@@ -141,9 +135,14 @@ $(document).ready(function() {
                 .reduce( function (a, b) {
                     return a + b.replace(/[^\d]/g, '')*1;
                 }, 0);
+                console.log('GR', group);
+                let groupName = group;
 
+                if (group === "No group") {
+                    groupName = "Office";
+                }
                 if (group == "DEBIT" || group == "KREDIT") {
-                    return 'Total in '+group+': '+
+                    return 'Total in '+groupName+': '+
                     $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg );
                 }
             },

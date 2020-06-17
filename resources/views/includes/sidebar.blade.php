@@ -106,7 +106,7 @@
   </a>
   <div id="collapseSix" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" href="{{ route('petty-cash.main') }}">Kas</a>
+      <a class="collapse-item" href="{{ route('petty-cash.main') }}">Cash Flow</a>
       <a class="collapse-item" href="{{ route('payment.main') }}">Payment</a>
       <a class="collapse-item" href="buttons.html">Invoice</a>
       <a class="collapse-item" href="buttons.html">Investor</a>
