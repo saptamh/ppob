@@ -138,10 +138,13 @@ $(document).ready(function() {
                 // console.log('GR', group);
                 // let groupName = group;
 
-                // if (group == "DEBIT" || group == "KREDIT") {
-                    return 'Total in '+group+': '+
+                if (group == "OFFICE" || group == "PROJECT") {
+                    return '<p style="text-align: right;">Total in '+group+': '+
+                    $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg ) + '</p>';
+                }
+
+                return 'Total in '+group+': '+
                     $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg );
-                // }
             },
             dataSrc: ['budget_for', 'project.name', 'type'],
         },
