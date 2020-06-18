@@ -82,7 +82,7 @@ class PaymentHelper {
             'number' => self::generateCode(),
             'date' => $data['paid_date'],
             'noted_news' => $data['payment_name'],
-            'nominal' => $data['payment_total'],
+            'nominal' => '-'.$data['payment_total'],
             'upload' => $data['upload'],
             'type' => 'DEBIT',
             'source_type' => 'PAYMENT',
