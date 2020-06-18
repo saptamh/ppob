@@ -18,7 +18,7 @@ class PettyCashController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = PettyCash::select('*')
+            $data = PettyCash::select('*','petty_cashes.id as rawId')
             ->with('Project');
            return DataTables::of($data)->make(true);
         } else {

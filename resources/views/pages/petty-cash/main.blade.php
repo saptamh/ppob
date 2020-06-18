@@ -133,18 +133,15 @@ $(document).ready(function() {
                 .data()
                 .pluck('nominal')
                 .reduce( function (a, b) {
-                    return a + b.replace(/[^\d]/g, '')*1;
+                    return a + b *1;
                 }, 0);
-                console.log('GR', group);
-                let groupName = group;
+                // console.log('GR', group);
+                // let groupName = group;
 
-                if (group === "No group") {
-                    groupName = "Office";
-                }
-                if (group == "DEBIT" || group == "KREDIT") {
-                    return 'Total in '+groupName+': '+
+                // if (group == "DEBIT" || group == "KREDIT") {
+                    return 'Total in '+group+': '+
                     $.fn.dataTable.render.number(',', '.', 0, 'Rp. ').display( avg );
-                }
+                // }
             },
             dataSrc: ['budget_for', 'project.name', 'type'],
         },
@@ -159,7 +156,7 @@ $(document).ready(function() {
 
     $('#DataTable tbody').on('click', '#edit_btn', function () {
         var data_row = t.row($(this).closest('tr')).data();
-        window.location.href = baseUrl + "/petty-cash/edit/" + data_row.id;
+        window.location.href = baseUrl + "/petty-cash/edit/" + data_row.rawId;
     });
 
     $('#DataTable tbody').on('click', '#remove_btn', function () {
@@ -173,7 +170,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: baseUrl + "/petty-cash/destroy/" + data_row.id,
+                url: baseUrl + "/petty-cash/destroy/" + data_row.rawId,
                 method: 'delete',
                 success: function(data){
                     $('#DataTable').DataTable().ajax.reload();
