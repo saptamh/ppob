@@ -24,7 +24,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover display" id="DataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover display table-sm" id="DataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -122,7 +122,7 @@ $(document).ready(function() {
             {data: "nominal", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
             {data: "source_type", render: function(data, type, row) {
                 if (!data) {
-                    return "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>";
+                    return "<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button></center>";
                 }
                 return "";
             }}

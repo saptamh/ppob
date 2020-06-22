@@ -24,7 +24,7 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover" id="DataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered table-hover table-sm" id="DataTable" width="100%" cellspacing="0">
                     <thead>
                     <tr>
                         <th>#</th>
@@ -76,8 +76,8 @@ $(document).ready(function() {
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>"
+            defaultContent: "<center><button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button> " +
+                "<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button></center>"
         }],
         columns: [
             {data: "id"},
