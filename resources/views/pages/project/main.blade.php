@@ -82,21 +82,43 @@ $(document).ready(function() {
         columns: [
             {data: "id"},
             {data: "name"},
-            {data: "project_value.value", name: "ProjectValue.value", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
-            {data: "project_progress.total_progress", name: "ProjectProgress.total_progress"},
-            {data: "project_progress.total_result", name: "ProjectProgress.total_result", render: $.fn.dataTable.render.number( '.', '.', 0, 'Rp.' )},
+            {data: "project_value.value", name: "ProjectValue.value", render: function(data, type, row) {
+                if(row.project_value) {
+                    return row.project_value.value
+                }
+
+                return 0;
+            }},
+            {data: "project_progress.total_progress", name: "ProjectProgress.total_progress", render: function(data, type, row) {
+                if (row.project_progress) {
+                    return row.project_progress.total_progress;
+                }
+                return 0;
+            }},
+            {data: "project_progress.total_result", name: "ProjectProgress.total_result", render: function(data, type, row) {
+                if (row.project_progress) {
+                    return row.project_progress.total_result;
+                }
+                return 0;
+            }},
             {data: "project_historical.duration", render: function(data, type, row) {
-                var someDate = new Date(row.start_date);
-                someDate.setDate(someDate.getDate() + parseInt(row.project_historical.duration)); //number  of days to add, e.x. 15 days
-                var dateFormated = someDate.toISOString().substr(0,10);
-                return dateFormated;
+                if (row.project_historical) {
+                    var someDate = new Date(row.start_date);
+                    someDate.setDate(someDate.getDate() + parseInt(row.project_historical.duration)); //number  of days to add, e.x. 15 days
+                    var dateFormated = someDate.toISOString().substr(0,10);
+                    return dateFormated;
+                }
+                return 0;
             }},
             {data: "project_historical.retention", render: function(data, type, row) {
-                var someDate = new Date(row.start_date);
-                var duration = parseInt(row.project_historical.duration) + parseInt(row.project_historical.retention);
-                someDate.setDate(someDate.getDate() + parseInt(duration)); //number  of days to add, e.x. 15 days
-                var dateFormated = someDate.toISOString().substr(0,10);
-                return dateFormated;
+                if (row.project_historical) {
+                    var someDate = new Date(row.start_date);
+                    var duration = parseInt(row.project_historical.duration) + parseInt(row.project_historical.retention);
+                    someDate.setDate(someDate.getDate() + parseInt(duration)); //number  of days to add, e.x. 15 days
+                    var dateFormated = someDate.toISOString().substr(0,10);
+                    return dateFormated;
+                }
+                return 0;
             }},
         ]
     });

@@ -22,7 +22,7 @@ class ProjectController extends Controller
                 $query->select('project_id','value')->orderBy('updated_at', 'desc')->first();
             }])
             ->with(['ProjectProgress' => function($query) {
-                $query->selectRaw("project_id,SUM(progress) AS total_progress,SUM(result) AS total_result")->first();
+                $query->selectRaw("project_id,SUM(progress) AS total_progress,SUM(result) AS total_result")->groupBy('project_id')->first();
             }])
             ->with(['ProjectHistorical' => function($query) {
                 $query->select('project_id','duration','retention')->orderBy('created_at', 'desc')->first();
