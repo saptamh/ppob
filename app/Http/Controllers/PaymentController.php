@@ -6,6 +6,7 @@ use App\Payment;
 use App\Employee;
 use App\SalaryPayment;
 use App\Project;
+use App\Nonpurchase;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
@@ -123,6 +124,15 @@ class PaymentController extends Controller
             $data['source'] = ['OFFICE'=>'OFFICE', $project->id => $project->name];
         } else {
             $data['source'] = ['OFFICE'=>'OFFICE'];
+        }
+
+        $data['pr_document'] = '';
+        if ($data['edit']['payment_type'] == 'SALARY') {
+            $data['pr_document'] = SalaryPayment::select('upload')->where('id', $data['edit']['payment_id'])->first('upload');
+        }
+
+        if ($data['edit']['payment_type'] == 'NONPURCHASE') {
+            $data['pr_document'] = Nonpurchase::select('upload')->where('id', $data['edit']['payment_id'])->first('upload');
         }
 
         return view('pages.payment.edit', $data);

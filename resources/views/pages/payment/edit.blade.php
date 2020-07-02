@@ -34,7 +34,15 @@
                 {{ Form::text('payment_total', $edit['payment_total'], ['class'=>'form-control', 'readonly'=>'true', 'required'=>'true']) }}
             </div>
             <div class="form-group">
-                {{ Form::label('payment_total', 'Payment Total') }}
+                {{ Form::label('payment_total', 'PR Document') }}
+                <div>
+                    <a href="{{ $pr_document['upload'] }}" target="_blank">
+                        <img src="{{ $pr_document['upload'] }}" style="widht: 100px;height:100px;"/>
+                    </a>
+                </div>
+            </div>
+            <div class="form-group">
+                {{ Form::label('pr_document', 'Payment Total') }}
                 {{ Form::select('source_id', $source, $edit['project_id'], ['class'=>'form-control', 'placeholder'=>'Select Source', 'required'=>'true']) }}
             </div>
             <div class="form-group">

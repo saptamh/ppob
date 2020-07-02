@@ -33,6 +33,10 @@
         {{ Form::text('name', '', ['class'=>'form-control', 'placeholder'=>'Enter Name', 'required'=>'true']) }}
     </div>
     <div class="form-group">
+        {{ Form::label('birth_date', 'Birth Date') }}
+        {{ Form::text('birth_date', '', ['class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
+    </div>
+    <div class="form-group">
         {{ Form::label('address', 'Address') }}
         {{ Form::textarea('address', '', ['class'=>'form-control', 'placeholder'=>'Enter Address', 'rows'=>3, 'required'=>'true']) }}
     </div>
@@ -101,6 +105,10 @@ $(document).ready(function() {
         format: 'yyyy-mm-dd'
     });
     $('#end_date').datepicker({
+        uiLibrary: 'bootstrap',
+        format: 'yyyy-mm-dd'
+    });
+    $('#birth_date').datepicker({
         uiLibrary: 'bootstrap',
         format: 'yyyy-mm-dd'
     });
