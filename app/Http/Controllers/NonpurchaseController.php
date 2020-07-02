@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Nonpurchase;
 use App\Project;
 use App\Payment;
+use App\Mail\ManagerPaymentNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
@@ -19,6 +21,9 @@ class NonpurchaseController extends Controller
      */
     public function index(Request $request)
     {
+        $objDemo = new \stdClass();
+        $objDemo->name = 'SenderUserName';
+        Mail::to("supri170845@gmail.com")->send(new ManagerPaymentNotification($objDemo));
         if($request->ajax()){
             $data = Nonpurchase::select('*')
             ->with('Project');
