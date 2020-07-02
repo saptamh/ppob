@@ -26,6 +26,7 @@ class Employee extends Model
         'end_date',
         'status',
         'birth_date',
+        'phone',
         'no_npwp' ];
 
     public function Level()

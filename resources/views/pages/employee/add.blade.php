@@ -37,6 +37,10 @@
         {{ Form::text('birth_date', '', ['class'=>'form-control', 'placeholder'=>'Enter Date', 'required'=>'true']) }}
     </div>
     <div class="form-group">
+        {{ Form::label('phone', 'Phone Number') }}
+        {{ Form::text('phone', '', ['class'=>'form-control', 'placeholder'=>'Enter Phone Number', 'required'=>'true']) }}
+    </div>
+    <div class="form-group">
         {{ Form::label('address', 'Address') }}
         {{ Form::textarea('address', '', ['class'=>'form-control', 'placeholder'=>'Enter Address', 'rows'=>3, 'required'=>'true']) }}
     </div>
