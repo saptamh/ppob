@@ -21,9 +21,9 @@ class NonpurchaseController extends Controller
      */
     public function index(Request $request)
     {
-        $objDemo = new \stdClass();
-        $objDemo->name = 'SenderUserName';
-        Mail::to("supri170845@gmail.com")->send(new ManagerPaymentNotification($objDemo));
+        // $objDemo = new \stdClass();
+        // $objDemo->name = 'SenderUserName';
+        // Mail::to("supri170845@gmail.com")->send(new ManagerPaymentNotification($objDemo));
         if($request->ajax()){
             $data = Nonpurchase::select('*')
             ->with('Project');
