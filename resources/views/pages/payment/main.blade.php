@@ -64,7 +64,7 @@ $(document).ready(function() {
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-sm' id='edit_btn'>Detail</button></center>"
+            defaultContent: "<center>@can('payment-edit')<button class='btn btn-warning btn-sm' id='edit_btn'>Detail</button>@endcan</center>"
         }],
         columns: [
             {data: "id"},

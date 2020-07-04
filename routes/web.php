@@ -184,6 +184,24 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         // Route::delete('/destroy/{id}', ['uses' => 'PaymentController@destroy'])->name('destroy');
         Route::get('/get-salary-payment', ['uses' => 'PaymentController@getSalaryPayment'])->name('get-project');
     });
+
+    Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
+        Route::get('/', ['uses' => 'UserController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'UserController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'UserController@create'])->name('add');
+        Route::post('/store', ['uses' => 'UserController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'UserController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'UserController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'role', 'as' => 'role.'], function () {
+        Route::get('/', ['uses' => 'RoleController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'RoleController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'RoleController@create'])->name('add');
+        Route::post('/store', ['uses' => 'RoleController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'RoleController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'RoleController@destroy'])->name('destroy');
+    });
 });
 Auth::routes();
 

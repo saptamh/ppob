@@ -19,11 +19,21 @@ class NonpurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+         $this->middleware('permission:nonpurchase-list', ['only' => ['index']]);
+         $this->middleware('permission:nonpurchase-create', ['only' => ['create','store']]);
+         $this->middleware('permission:nonpurchase-edit', ['only' => ['edit','store']]);
+         $this->middleware('permission:nonpurchase-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        // $objDemo = new \stdClass();
-        // $objDemo->name = 'SenderUserName';
-        // Mail::to("supri170845@gmail.com")->send(new ManagerPaymentNotification($objDemo));
         if($request->ajax()){
             $data = Nonpurchase::select('*')
             ->with('Project');
@@ -115,6 +125,11 @@ class NonpurchaseController extends Controller
                         'payment_status' => $input['payment_process_status'],
                     ]);
                 }
+                $objDemo = new \stdClass();
+                $objDemo->type = "Non Purchase";
+                $objDemo->content = $this->__emailContent($model);
+                $objDemo->url = url('/nonpurchase/verification/'.$model->id);
+                Mail::send(new ManagerPaymentNotification($objDemo));
             }
 
         } catch (Exception $e) {
@@ -190,5 +205,26 @@ class NonpurchaseController extends Controller
         ];
 
         return $data;
+    }
+
+    private function __emailContent($data) {
+        $type_anggaran = $this->__getDropdown();
+        $type_object = $data->type_object;
+        if ($data->type_object == 'PROJECT') {
+            $project = Project::select('name')->where('id', $data->project_id)->first();
+            $type_object = 'Project ' . $project->name;
+        }
+        $content = [
+            "Budget For: " . $type_object,
+            "Number: " . $data->number,
+            "Tanggal: " . $data->date,
+            "Anggaran: " . $type_anggaran['type'][$data->type],
+            "Berita Acara: " . $data->payment,
+            "Keterangan: " . $data->description,
+            "Nominal: " . $data->nominal,
+            'Dkokumen terkait: ' . $data->upload,
+        ];
+
+        return $content;
     }
 }

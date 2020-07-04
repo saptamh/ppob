@@ -16,6 +16,19 @@ class PurchaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+         $this->middleware('permission:purchase-list', ['only' => ['index']]);
+         $this->middleware('permission:purchase-create', ['only' => ['create','store']]);
+         $this->middleware('permission:purchase-edit', ['only' => ['edit','store']]);
+         $this->middleware('permission:purchase-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         if($request->ajax()){

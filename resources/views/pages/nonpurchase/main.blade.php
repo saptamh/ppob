@@ -4,6 +4,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800">Non Purchase</h1>
+    @can('nonpurchase-create')
     <div class="row">
         <div class="col-lg-12">
             <a href="{{ route('nonpurchase.add') }}" class="btn btn-primary btn-circle">
@@ -11,6 +12,7 @@
             </a>
         </div>
     </div>
+    @endcan
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -107,8 +109,8 @@ $(document).ready(function() {
             {data: "payment_process_status"},
             {data: "payment_process_status", render: function(data, type, row) {
                 if (data == "REJECT") {
-                    return "<center><button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button> " +
-                    "<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button></center>";
+                    return "<center>@can('nonpurchase-edit')<button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button>@endcan " +
+                    "@can('nonpurchase-delete')<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button>@endcan</center>";
                 }
                 return "";
             }},

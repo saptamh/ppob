@@ -19,6 +19,19 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+         $this->middleware('permission:payment-list', ['only' => ['index']]);
+         $this->middleware('permission:payment-create', ['only' => ['create','store']]);
+         $this->middleware('permission:payment-edit', ['only' => ['edit','store']]);
+         $this->middleware('permission:payment-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         if($request->ajax()){

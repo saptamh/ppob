@@ -19,6 +19,19 @@ class SalaryPaymentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+         $this->middleware('permission:salaryPayment-list', ['only' => ['index']]);
+         $this->middleware('permission:salaryPayment-create', ['only' => ['create','store']]);
+         $this->middleware('permission:salaryPayment-edit', ['only' => ['edit','store']]);
+         $this->middleware('permission:salaryPayment-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request, SalaryPayment $salaryPayment)
     {
         if($request->ajax()){

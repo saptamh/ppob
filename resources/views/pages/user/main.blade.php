@@ -3,11 +3,11 @@
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <h1 class="h3 mb-2 text-gray-800">Employees</h1>
-    @can('employee-create')
+    <h1 class="h3 mb-2 text-gray-800">User</h1>
+    @can('user-create')
     <div class="row">
         <div class="col-lg-12">
-            <a href="{{ route('employee.add') }}" class="btn btn-primary btn-circle">
+            <a href="{{ route('user.add') }}" class="btn btn-primary btn-circle">
                 <i class="fas fa-plus"></i>
             </a>
         </div>
@@ -16,7 +16,7 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Employe List</h6>
+            <h6 class="m-0 font-weight-bold text-primary">User List</h6>
             @if(session()->has('message'))
                 <div class="alert alert-success alert-sm">
                     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -30,11 +30,10 @@
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>NIK</th>
                         <th>Name</th>
-                        <th>Location</th>
-                        <th>Start date</th>
-                        <th>Status</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Created At</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -56,7 +55,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '{{ route("employee.data-table") }}',
+            url: '{{ route("user.data-table") }}',
             dataType: 'json',
             data:{ _token: "{{csrf_token()}}"}
         },
@@ -65,22 +64,20 @@ $(document).ready(function() {
             visible: true,
             searchable: false,
             sortable: false,
-        },
-        {
-            targets: [ 6 ],
+        },{
+            targets: [ 5 ],
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center>@can('employee-edit')<button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button>@endcan " +
-                "@can('employee-delete')<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button>@endcan</center>"
+            defaultContent: "<center>@can('user-edit')<button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button>@endcan " +
+                "@can('user-delete')<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button>@endcan</center>"
         }],
         columns: [
             {data: "id"},
-            {data: "nik"},
             {data: "name"},
-            {data: "location"},
-            {data: "start_date"},
-            {data: "status"},
+            {data: "email"},
+            {data: "model_has_role.role.name", name: "ModelHasRole.Role.name"},
+            {data: "created_at"},
         ]
     });
 
@@ -92,7 +89,7 @@ $(document).ready(function() {
 
     $('#DataTable tbody').on('click', '#edit_btn', function () {
         var data_row = t.row($(this).closest('tr')).data();
-        window.location.href = baseUrl + "/employee/edit/" + data_row.id;
+        window.location.href = baseUrl + "/user/edit/" + data_row.id;
     });
 
     $('#DataTable tbody').on('click', '#remove_btn', function () {
@@ -106,7 +103,7 @@ $(document).ready(function() {
                 }
             });
             $.ajax({
-                url: baseUrl + "/employee/destroy/" + data_row.id,
+                url: baseUrl + "/user/destroy/" + data_row.id,
                 method: 'delete',
                 success: function(data){
                     $('#DataTable').DataTable().ajax.reload();
@@ -114,6 +111,7 @@ $(document).ready(function() {
                     alert('This Process Is Not Allowed');
                 }
             });
+
         }
     });
 });

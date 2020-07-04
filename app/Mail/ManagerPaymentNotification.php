@@ -19,7 +19,6 @@ class ManagerPaymentNotification extends Mailable
     public function __construct($data)
     {
         $this->data = $data;
-        // dd($data);
     }
 
     /**
@@ -29,7 +28,13 @@ class ManagerPaymentNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('info@rekakomindo.com')
+        return $this->to(["supri170845@gmail.com","supriyadin.170845@gmail.com"])
+                ->with([
+                    'type' => $this->data->type,
+                    'url' => $this->data->url,
+                    'content' => $this->data->content,
+                ])
+                ->from('info@rekakomindo.com')
                 ->view('mail.manager-payment-notification');
     }
 }

@@ -9,6 +9,14 @@ use JD\Cloudder\Facades\Cloudder;
 
 class EmployeeController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:employee-list', ['only' => ['index']]);
+         $this->middleware('permission:employee-create', ['only' => ['create','store']]);
+         $this->middleware('permission:employee-edit', ['only' => ['edit','store']]);
+         $this->middleware('permission:employee-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *

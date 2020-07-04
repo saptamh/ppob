@@ -15,6 +15,19 @@ class PettyCashController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    function __construct()
+    {
+         $this->middleware('permission:pettyCash-list', ['only' => ['index']]);
+         $this->middleware('permission:pettyCash-create', ['only' => ['create','store']]);
+         $this->middleware('permission:pettyCash-edit', ['only' => ['edit','store']]);
+         $this->middleware('permission:pettyCash-delete', ['only' => ['destroy']]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
         if($request->ajax()){

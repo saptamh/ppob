@@ -4,6 +4,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800">Salary Payment</h1>
+    @can('salaryPayment-create')
     <div class="row">
         <div class="col-lg-12">
             <a href="{{ route('salary-payment.add') }}" class="btn btn-primary btn-circle">
@@ -11,6 +12,7 @@
             </a>
         </div>
     </div>
+    @endcan
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -92,8 +94,8 @@ $(document).ready(function() {
             {data: "payment_process_status"},
             {data: "payment_process_status", render: function(data, type, row) {
                 if (data == "REJECT") {
-                    return "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                    "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>";
+                    return "<center>@can('salaryPayment-edit')<button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button>@endcan " +
+                    "@can('salaryPayment-delete')<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button>@endcan</center>";
                 }
                 return "";
             }},

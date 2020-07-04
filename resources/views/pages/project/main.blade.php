@@ -4,6 +4,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800">Projects</h1>
+    @can('project-create')
     <div class="row">
         <div class="col-lg-12">
             <a href="{{ route('project.add') }}" class="btn btn-primary btn-circle">
@@ -11,6 +12,7 @@
             </a>
         </div>
     </div>
+    @endcan
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
@@ -76,28 +78,28 @@ $(document).ready(function() {
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button> " +
-                "<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button></center>"
+            defaultContent: "<center>@can('project-edit')<button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button>@endcan " +
+                "@can('project-delete')<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button>@endcan</center>"
         }],
         columns: [
             {data: "id"},
             {data: "name"},
             {data: "project_value.value", name: "ProjectValue.value", render: function(data, type, row) {
                 if(row.project_value) {
-                    return row.project_value.value
+                    return row.project_value.value.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
                 }
 
                 return 0;
             }},
             {data: "project_progress.total_progress", name: "ProjectProgress.total_progress", render: function(data, type, row) {
                 if (row.project_progress) {
-                    return row.project_progress.total_progress;
+                    return row.project_progress.total_progress.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
                 }
                 return 0;
             }},
             {data: "project_progress.total_result", name: "ProjectProgress.total_result", render: function(data, type, row) {
                 if (row.project_progress) {
-                    return row.project_progress.total_result;
+                    return row.project_progress.total_result.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
                 }
                 return 0;
             }},
