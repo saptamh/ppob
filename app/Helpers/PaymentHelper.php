@@ -21,7 +21,6 @@ class PaymentHelper {
             $payment->payment_status= 'PENDING';
             $payment->description   = '-';
             $payment->project_id    = $data['project_id'];
-
             $payment->save();
         } catch (Throwable $e) {
             report($e);
@@ -108,15 +107,15 @@ class PaymentHelper {
         }
     }
 
-    public static function updatePaymentProcessStatus($source, $id, $status) {
+    public static function updatePaymentProcessStatus($source, $id, $status, $reason = null) {
         try {
             if ($source == "NONPURCHASE") {
-                Nonpurchase::where('id', $id)->update(['payment_process_status' => $status]);
+                Nonpurchase::where('id', $id)->update(['payment_process_status' => $status, 'payment_process_reason' => $reason]);
                 return;
             }
 
             if ($source == "SALARY") {
-                SalaryPayment::where('id', $id)->update(['payment_process_status' => $status]);
+                SalaryPayment::where('id', $id)->update(['payment_process_status' => $status, 'payment_process_reason' => $reason]);
                 return;
             }
         } catch (Throwable $e) {

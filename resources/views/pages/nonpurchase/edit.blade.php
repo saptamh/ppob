@@ -64,6 +64,9 @@
                     <img class="img-responsive img-circle" style="width: 150px;height:150px" src="{{ $edit['upload'] }}">
                 </center>
             </div>
+            @if($edit['payment_process_status'] == "REJECT")
+                <div class="alert alert-danger" role="alert"><b>REJECTED!!!</b> Reason: {{ $edit['payment_process_reason'] }}</div>
+            @endif
         </div>
     </div>
     <div class="row">

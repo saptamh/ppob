@@ -25,7 +25,6 @@ Hi <strong>Manager</strong>,
 </div>
 
 <div style="text-align:center;">
-    <a href="{{ $url }}/approve"><button class="button button2">APPROVE</button></a>
-    <a href="{{ $url }}/reject"><button class="button button3">REJECT</button></a>
+    <a href="{{ $url }}"><button class="button button2">Click This Button For Action</button></a>
 </div>
 

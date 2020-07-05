@@ -123,12 +123,14 @@ class NonpurchaseController extends Controller
                         'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
                         'payment_name' => $type[$input['type'] - 1] . ", " . $input['payment'],
                         'payment_status' => $input['payment_process_status'],
+                        'is_manager_approval' => 'PENDING',
                     ]);
                 }
+
                 $objDemo = new \stdClass();
                 $objDemo->type = "Non Purchase";
                 $objDemo->content = $this->__emailContent($model);
-                $objDemo->url = url('/nonpurchase/verification/'.$model->id);
+                $objDemo->url = url('/approval/nonpurchase');
                 Mail::send(new ManagerPaymentNotification($objDemo));
             }
 
@@ -222,7 +224,7 @@ class NonpurchaseController extends Controller
             "Berita Acara: " . $data->payment,
             "Keterangan: " . $data->description,
             "Nominal: " . $data->nominal,
-            'Dkokumen terkait: ' . $data->upload,
+            'Dokumen terkait: ' . $data->upload,
         ];
 
         return $content;

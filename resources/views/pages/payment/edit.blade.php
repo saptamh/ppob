@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="form-group">
-                {{ Form::label('pr_document', 'Payment Total') }}
+                {{ Form::label('pr_document', 'Source') }}
                 {{ Form::select('source_id', $source, $edit['project_id'], ['class'=>'form-control', 'placeholder'=>'Select Source', 'required'=>'true']) }}
             </div>
             <div class="form-group">

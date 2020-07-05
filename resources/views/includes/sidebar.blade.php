@@ -138,6 +138,25 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 @endif
+@if(Gate::check('nonpurchase-approval') || Gate::check('purchase-approval') || Gate::check('salaryPayment-approval'))
+<!-- Nav Item - Pages Collapse Menu -->
+<li class="nav-item">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEight" aria-expanded="true" aria-controls="collapseTwo">
+    <i class="fas fa-fw fa-cog"></i>
+    <span>Approval</span>
+  </a>
+  <div id="collapseEight" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div class="bg-white py-2 collapse-inner rounded">
+      @can('nonpurchase-approval')<a class="collapse-item" href="{{ route('approval.nonpurchase') }}">Nonpurchase</a>@endcan
+      @can('purchase-approval')<a class="collapse-item" href="{{ route('approval.purchase') }}">Purchase</a>@endcan
+      @can('salaryPayment-approval')<a class="collapse-item" href="{{ route('approval.salary-payment') }}">Salary Payment</a>@endcan
+    </div>
+  </div>
+</li>
+
+<!-- Divider -->
+<hr class="sidebar-divider">
+@endif
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseTwo">

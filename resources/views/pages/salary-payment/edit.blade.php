@@ -108,6 +108,9 @@
                 {{ Form::label('description', 'Description') }}
                 {{ Form::textarea('description', $edit['description'], ['class'=>'form-control', 'placeholder'=>'Enter Description', 'rows'=>3, 'required'=>'true']) }}
             </div>
+            @if($edit['payment_process_status'] == "REJECT")
+            <div class="alert alert-danger" role="alert"><b>REJECTED!!!</b> Reason: {{ $edit['payment_process_reason'] }}</div>
+            @endif
         </div>
     </div>
     <div class="row">

@@ -36,7 +36,7 @@
                         <th>Project</th>
                         <th>Date</th>
                         <th>Nominal</th>
-                        <th>Finance Status</th>
+                        <th>Payment Status</th>
                         <th>Action</th>
                     </tr>
                     </thead>

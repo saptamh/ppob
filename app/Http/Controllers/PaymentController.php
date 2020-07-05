@@ -37,7 +37,8 @@ class PaymentController extends Controller
         if($request->ajax()){
             $data = Payment::select('*')
             ->with('Project')
-            ->with('Source');
+            ->with('Source')
+            ->where('is_manager_approval','APPROVED');
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.payment.main');
@@ -92,9 +93,9 @@ class PaymentController extends Controller
             }
             if (isset($request->reject)) {
                 $status = 'REJECT';
+                $input['is_manager_approval'] = 'REJECT';
             }
             $input['payment_status'] = $status;
-
             $model = new Payment;
             if (isset($input['id'])) {
                 $model = $model::find($input['id']);

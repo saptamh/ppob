@@ -28,13 +28,14 @@ class ManagerPaymentNotification extends Mailable
      */
     public function build()
     {
-        return $this->to(["supri170845@gmail.com","supriyadin.170845@gmail.com"])
+        return $this->to(["supriyadin.170845@gmail.com","zainpam@gmail.com","gideonrekakomindo@gmail.com"])
+                ->subject("REKAKOMINDO - Payment Approval")
                 ->with([
                     'type' => $this->data->type,
                     'url' => $this->data->url,
                     'content' => $this->data->content,
                 ])
-                ->from('info@rekakomindo.com')
+                ->from(['address' => 'info@rekakomindo.com', 'name' => 'REKAKOMINDO NOTIFICATION'])
                 ->view('mail.manager-payment-notification');
     }
 }

@@ -202,6 +202,13 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/edit/{id}', ['uses' => 'RoleController@edit'])->name('edit');
         Route::delete('/destroy/{id}', ['uses' => 'RoleController@destroy'])->name('destroy');
     });
+
+    Route::group(['prefix' => 'approval', 'as' => 'approval.'], function () {
+        Route::get('/nonpurchase', ['uses' => 'ApprovalController@nonpurchase'])->name('nonpurchase');
+        Route::get('/purchase', ['uses' => 'ApprovalController@purchase'])->name('purchase');
+        Route::get('/salary', ['uses' => 'ApprovalController@salaryPayment'])->name('salary-payment');
+        Route::post('/store', ['uses' => 'ApprovalController@store'])->name('store');
+    });
 });
 Auth::routes();
 

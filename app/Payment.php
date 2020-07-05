@@ -20,6 +20,7 @@ class Payment extends Model
         'upload',
         'description',
         'source_id',
+        'is_manager_approval',
     ];
 
     public function Project()

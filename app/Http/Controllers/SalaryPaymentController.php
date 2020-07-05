@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
 use PaymentHelp;
+use App\Mail\ManagerPaymentNotification;
+use Illuminate\Support\Facades\Mail;
 
 class SalaryPaymentController extends Controller
 {
@@ -114,8 +116,15 @@ class SalaryPaymentController extends Controller
                         'payment_total'=> $input['total_salary'],
                         'project_id' => isset($input['project_id']) ? $input['project_id'] : NULL,
                         'payment_status' => $input['payment_process_status'],
+                        'is_manager_approval' => 'PENDING',
                     ]);
                 }
+
+                $objDemo = new \stdClass();
+                $objDemo->type = "Salary";
+                $objDemo->content = $this->__emailContent($model);
+                $objDemo->url = url('/approval/salary');
+                Mail::send(new ManagerPaymentNotification($objDemo));
             }
 
         } catch (Exception $e) {
@@ -180,5 +189,29 @@ class SalaryPaymentController extends Controller
         $data =  Project::select('id', 'name')->get();
 
         return response()->json(['data'=>$data], 201);
+    }
+
+    private function __emailContent($data) {
+        $project = "-";
+        if ($data->project_id) {
+            $project = Project::select('name')->where('id', $data->project_id)->first();
+        }
+        $employee = Employee::select('nik','name','status','location')->where('id', $data->employee_id)->first();
+        $content = [
+            "NIK: " . $employee->nik,
+            "Name: " . $employee->name,
+            "Status: " . $employee->status,
+            "Project: " . $project->name,
+            "Work Day: " . $data->work_day,
+            "Over Time (Day): " . $data->over_time_day,
+            "Over Time (Hour): " . $data->over_time_hour,
+            "Meal Allowance: " . $data->meal_allowance,
+            "Bonus: " . $data->bonus,
+            "Cashbon: " . $data->cashbon,
+            "Total Salary: " . $data->total_salary,
+            'Dokumen terkait: ' . $data->upload,
+        ];
+
+        return $content;
     }
 }
