@@ -197,6 +197,10 @@ class SalaryPaymentController extends Controller
             $project = Project::select('name')->where('id', $data->project_id)->first();
         }
         $employee = Employee::select('nik','name','status','location')->where('id', $data->employee_id)->first();
+        $is_manager = "true";
+        if ((int)$data->total_salary <= 1000000) {
+            $is_manager="false";
+        }
         $content = [
             "NIK: " . $employee->nik,
             "Name: " . $employee->name,
@@ -210,6 +214,7 @@ class SalaryPaymentController extends Controller
             "Cashbon: " . $data->cashbon,
             "Total Salary: " . $data->total_salary,
             'Dokumen terkait: ' . $data->upload,
+            'is_manager:'.$is_manager,
         ];
 
         return $content;

@@ -28,7 +28,14 @@ class ManagerPaymentNotification extends Mailable
      */
     public function build()
     {
-        return $this->to(["supriyadin.170845@gmail.com","zainpam@gmail.com","gideonrekakomindo@gmail.com"])
+        $is_manager = end($this->data->content);
+        $to = ["supriyadin.170845@gmail.com","zainpam@gmail.com","gideonrekakomindo@gmail.com"];
+        if ($is_manager == "is_manager:false") {
+            $to = ["imah.rekakomindo@gmail.com","supriyadin.170845@gmail.com","zainpam@gmail.com","gideonrekakomindo@gmail.com"];
+        }
+        array_pop($this->data->content);
+
+        return $this->to($to)
                 ->subject("REKAKOMINDO - Payment Approval")
                 ->with([
                     'type' => $this->data->type,

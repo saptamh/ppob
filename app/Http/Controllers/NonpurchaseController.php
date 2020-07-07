@@ -216,6 +216,10 @@ class NonpurchaseController extends Controller
             $project = Project::select('name')->where('id', $data->project_id)->first();
             $type_object = 'Project ' . $project->name;
         }
+        $is_manager = "true";
+        if ((int)$data->nominal <= 1000000) {
+            $is_manager="false";
+        }
         $content = [
             "Budget For: " . $type_object,
             "Number: " . $data->number,
@@ -225,6 +229,7 @@ class NonpurchaseController extends Controller
             "Keterangan: " . $data->description,
             "Nominal: " . $data->nominal,
             'Dokumen terkait: ' . $data->upload,
+            'is_manager:'.$is_manager,
         ];
 
         return $content;
