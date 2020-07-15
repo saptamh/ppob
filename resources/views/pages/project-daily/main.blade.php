@@ -74,7 +74,6 @@
                                 <th>Realisation</th>
                                 <th>Achivement</th>
                                 <th>Description</th>
-                                <th>Estimation</th>
                                 <th style="width: 150px;">Action</th>
                             </tr>
                             </thead>
@@ -109,7 +108,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 9 ],
+            targets: [ 8 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -128,7 +127,6 @@ $(document).ready(function() {
                 return percentage + '%';
             }},
             {data: "description"},
-            {data: "project_timeline.date"},
         ]
     });
 
