@@ -125,7 +125,7 @@ class ProjectTimelineController extends Controller
     }
 
     private function __getDropdown() {
-        $data['type'] = ['PERSIAPAN', 'ONGOING', 'MAINTENANCE'];
+        $data['type'] = ['PERSIAPAN', 'ONGOING', 'MAINTENANCE','OFFICE'];
         $data['projects'] = Project::select('id','name')->get()->pluck('name','id');
         $data['project_items'] = ProjectItem::select('id','name')->get()->pluck('name','id');
         $data['project_jobs'] = ProjectJob::select('id','name')->get()->pluck('name','id');
