@@ -227,7 +227,7 @@ class NonpurchaseController extends Controller
             "Anggaran: " . $type_anggaran['type'][$data->type],
             "Berita Acara: " . $data->payment,
             "Keterangan: " . $data->description,
-            "Nominal: " . $data->nominal,
+            "Nominal: " . number_format($data->nominal, 0, '.', '.'),
             'Dokumen terkait: ' . $data->upload,
             'is_manager:'.$is_manager,
         ];

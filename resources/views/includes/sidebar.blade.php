@@ -79,24 +79,28 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 @endif
+
+@if(Gate::check('projectTimeline-list'))
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseTwo">
+  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseTwo">
     <i class="fas fa-fw fa-cog"></i>
-    <span>Purchase</span>
+    <span>Project Management</span>
   </a>
-  <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+  <div id="collapseNine" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
     <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" href="{{ route('purchase.main') }}">Master Supplier</a>
-      <a class="collapse-item" href="{{ route('purchase.main') }}">List</a>
-      <a class="collapse-item" href="buttons.html">Stok</a>
-      <a class="collapse-item" href="{{ route('purchase.main') }}">Barang Rusak</a>
+      @can('projectTimeline-list')<a class="collapse-item" href="{{ route('project-timeline.main') }}">Time Line</a>@endcan
+      @can('projectItem-list')<a class="collapse-item" href="{{ route('project-item.main') }}">Project Item</a>@endcan
+      @can('projectJob-list')<a class="collapse-item" href="{{ route('project-job.main') }}">Project Job</a>@endcan
+      @can('projectZone-list')<a class="collapse-item" href="{{ route('project-zone.main') }}">Project Zone</a>@endcan
     </div>
   </div>
 </li>
 
 <!-- Divider -->
 <hr class="sidebar-divider">
+@endif
+
 @if(Gate::check('purchase-list') || Gate::check('nonpurchase-list') || Gate::check('salaryPayment-list'))
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
@@ -138,6 +142,7 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 @endif
+
 @if(Gate::check('nonpurchase-approval') || Gate::check('purchase-approval') || Gate::check('salaryPayment-approval'))
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
@@ -157,18 +162,6 @@
 <!-- Divider -->
 <hr class="sidebar-divider">
 @endif
-<!-- Nav Item - Pages Collapse Menu -->
-<li class="nav-item">
-  <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseTwo">
-    <i class="fas fa-fw fa-cog"></i>
-    <span>Lainnya</span>
-  </a>
-  <div id="collapseFive" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-    <div class="bg-white py-2 collapse-inner rounded">
-      <a class="collapse-item" href="buttons.html">Upload Dokumen</a>
-    </div>
-  </div>
-</li>
 
 
 <!-- Divider -->

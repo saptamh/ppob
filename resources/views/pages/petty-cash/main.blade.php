@@ -87,6 +87,7 @@ $(document).ready(function() {
     var t = $('#DataTable').DataTable({
         processing: true,
         serverSide: true,
+        bPaginate: false,
         ajax: {
             url: '{{ route("petty-cash.data-table") }}',
             dataType: 'json',

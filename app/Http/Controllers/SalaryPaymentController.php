@@ -212,7 +212,7 @@ class SalaryPaymentController extends Controller
             "Meal Allowance: " . $data->meal_allowance,
             "Bonus: " . $data->bonus,
             "Cashbon: " . $data->cashbon,
-            "Total Salary: " . $data->total_salary,
+            "Total Salary: " . number_format($data->total_salary, 0, '.', '.'),
             'Dokumen terkait: ' . $data->upload,
             'is_manager:'.$is_manager,
         ];

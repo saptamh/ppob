@@ -209,6 +209,52 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::get('/salary', ['uses' => 'ApprovalController@salaryPayment'])->name('salary-payment');
         Route::post('/store', ['uses' => 'ApprovalController@store'])->name('store');
     });
+
+    Route::group(['prefix' => 'project-timeline', 'as' => 'project-timeline.'], function () {
+        Route::get('/', ['uses' => 'ProjectTimelineController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'ProjectTimelineController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'ProjectTimelineController@create'])->name('add');
+        Route::post('/store', ['uses' => 'ProjectTimelineController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'ProjectTimelineController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectTimelineController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'project-daily', 'as' => 'project-daily.'], function () {
+        Route::get('/{timeline_id}', ['uses' => 'ProjectDailyController@index'])->name('main');
+        Route::get('/data-table/{timeline_id}', ['uses' => 'ProjectDailyController@index'])->name('data-table');
+        Route::get('/create/{timeline_id}', ['uses' => 'ProjectDailyController@create'])->name('add');
+        Route::post('/store', ['uses' => 'ProjectDailyController@store'])->name('store');
+        Route::get('/edit/{timeline_id}/{id}', ['uses' => 'ProjectDailyController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectDailyController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'project-item', 'as' => 'project-item.'], function () {
+        Route::get('/', ['uses' => 'ProjectItemController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'ProjectItemController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'ProjectItemController@create'])->name('add');
+        Route::post('/store', ['uses' => 'ProjectItemController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'ProjectItemController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectItemController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'project-job', 'as' => 'project-job.'], function () {
+        Route::get('/', ['uses' => 'ProjectJobController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'ProjectJobController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'ProjectJobController@create'])->name('add');
+        Route::post('/store', ['uses' => 'ProjectJobController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'ProjectJobController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectJobController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'project-zone', 'as' => 'project-zone.'], function () {
+        Route::get('/', ['uses' => 'ProjectZoneController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'ProjectZoneController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'ProjectZoneController@create'])->name('add');
+        Route::post('/store', ['uses' => 'ProjectZoneController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'ProjectZoneController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'ProjectZoneController@destroy'])->name('destroy');
+    });
+
 });
 Auth::routes();
 
