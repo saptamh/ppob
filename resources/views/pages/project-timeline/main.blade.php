@@ -4,7 +4,7 @@
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800">Project Timeline</h1>
-    @can('role-create')
+    @can('projectTimeline-create')
     <div class="row">
         <div class="col-lg-12">
             <a href="{{ route('project-timeline.add') }}" class="btn btn-primary btn-circle">
