@@ -63,7 +63,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-sm" id="DataTable" width="100%" cellspacing="0">
+                        <table class="table dt-responsive nowrap table-bordered table-hover table-sm" id="DataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>#</th>
@@ -71,6 +71,7 @@
                                 <th>PIC</th>
                                 <th>Job</th>
                                 <th>Target</th>
+                                <th>Work Hour</th>
                                 <th>Realisation</th>
                                 <th>Achivement</th>
                                 <th>Description</th>
@@ -108,7 +109,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 8 ],
+            targets: [ 9 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -121,10 +122,11 @@ $(document).ready(function() {
             {data: "employee.name", name: "Employee.name"},
             {data: "job"},
             {data: "target"},
+            {data: "worked_hour"},
             {data: "realisation"},
             {render: function(data, type, row) {
                 var percentage = (row.realisation/row.target) * 100;
-                return percentage + '%';
+                return percentage ? percentage + '%' : 0 + '%';
             }},
             {data: "description"},
         ]

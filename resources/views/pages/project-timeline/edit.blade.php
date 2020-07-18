@@ -45,17 +45,17 @@
             </div>
             <div class="form-group">
                 {{ Form::label('item', 'Item') }}
-                {{ Form::select('project_item_id', $select_box['project_items'], $edit->item, ['class'=>'form-control', 'placeholder'=>'Select Item', 'required'=>'true']) }}
+                {{ Form::select('project_item_id', $select_box['project_items'], $edit->project_item_id, ['class'=>'form-control', 'placeholder'=>'Select Item', 'required'=>'true']) }}
             </div>
         </div>
         <div class="col-lg-6">
             <div class="form-group">
                 {{ Form::label('job', 'Job') }}
-                {{ Form::select('project_job_id', $select_box['project_jobs'], $edit->job, ['class'=>'form-control', 'placeholder'=>'Select Job', 'required'=>'true']) }}
+                {{ Form::select('project_job_id', $select_box['project_jobs'], $edit->project_job_id, ['class'=>'form-control', 'placeholder'=>'Select Job', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('zone', 'Zone') }}
-                {{ Form::select('project_zone_id', $select_box['project_zones'], $edit->zone, ['class'=>'form-control', 'placeholder'=>'Select Zone', 'required'=>'true']) }}
+                {{ Form::select('project_zone_id', $select_box['project_zones'], $edit->project_zone_id, ['class'=>'form-control', 'placeholder'=>'Select Zone', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('qty', 'Quantity') }}
@@ -64,6 +64,10 @@
             <div class="form-group">
                 {{ Form::label('duration', 'Duration') }}
                 {{ Form::number('duration', $edit->duration, ['class'=>'form-control', 'placeholder'=>'Enter Duration', 'required'=>'true']) }}
+            </div>
+            <div class="form-group">
+                {{ Form::label('working_hour', 'Working Hour') }}
+                {{ Form::number('working_hour', $edit['working_hour'], ['class'=>'form-control', 'placeholder'=>'Enter Working Hour', 'required'=>'true']) }}
             </div>
         </div>
     </div>

@@ -22,6 +22,7 @@ class ProjectTimeline extends Model
         'project_job_id',
         'project_zone_id',
         'qty',
+        'working_hour',
         'duration'];
 
     public function Manager()

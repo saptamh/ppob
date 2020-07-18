@@ -35,6 +35,7 @@
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Item</th>
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Job</th>
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Zone</th>
+                        <th rowspan="2" style="vertical-align: middle;text-align:center;">Work Hour</th>
                         <th colspan="3" style="text-align:center;">Target</th>
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Percentage</th>
                         <th colspan="3" style="text-align:center;">Realisation</th>
@@ -78,7 +79,7 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 13 ],
+            targets: [ 14 ],
             visible: true,
             searchable: false,
             sortable: false,
@@ -93,6 +94,7 @@ $(document).ready(function() {
             {data: "project_item.name", name: "ProjectItem.name"},
             {data: "project_job.name", name: "ProjectJob.name"},
             {data: "project_zone.name", name: "ProjectZone.name"},
+            {data: "working_hour"},
             {data: "qty"},
             {data: "duration"},
             {render: function ( data, type, row, meta ) {
@@ -105,7 +107,7 @@ $(document).ready(function() {
                 if (row.project_daily[0]) {
                     var total_realisation = row.project_daily[0].total_realisation;
                     var calculate = (total_realisation / row.qty) * 100;
-                    return calculate + '%';
+                    return calculate ? calculate + '%' : 0 +'%';
                 } else {
                     return '0%';
                 }
@@ -118,8 +120,20 @@ $(document).ready(function() {
                 }
             }},
             {render: function( data, type, row, meta ) {
+                if (row.project_daily[0]) {
+                    var qty = row.project_daily[0].total_realisation;
+                    var total_hari = row.project_daily[0].total_hari;
+                    var qty_per_day = (row.qty / row.duration) * total_hari;
+                    var duration = (qty_per_day - qty) / row.working_hour;
 
-               return 'DURATION';
+                    var res = duration.toFixed(1);
+                    var hour = (res % 1).toFixed(4) * 10;
+                    console.log(hour*10);
+
+                    return parseInt(res) + ' hari ' + hour + ' jam';
+                } else {
+                    return 0;
+                }
            }},
            {render: function( data, type, row, meta ) {
 

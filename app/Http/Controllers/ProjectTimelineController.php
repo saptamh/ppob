@@ -37,7 +37,7 @@ class ProjectTimelineController extends Controller
                     ->with('ProjectJob')
                     ->with('ProjectZone')
                     ->with(['ProjectDaily' => function($query) {
-                        $query->selectRaw("project_timeline_id, SUM(realisation) AS total_realisation")->groupBy('project_timeline_id');
+                        $query->selectRaw("project_timeline_id, SUM(realisation) AS total_realisation, COUNT(id) as total_hari")->groupBy('project_timeline_id');
                     }]);
            return DataTables::of($data)->make(true);
         } else {
@@ -75,6 +75,7 @@ class ProjectTimelineController extends Controller
             'project_zone_id' => 'required',
             'qty' => 'required|numeric',
             'duration' => 'required|numeric',
+            'working_hour' => 'required',
         ]);
         try {
             $input = $request->all();

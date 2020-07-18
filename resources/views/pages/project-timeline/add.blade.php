@@ -64,6 +64,10 @@
                 {{ Form::label('duration', 'Duration') }}
                 {{ Form::number('duration', '', ['class'=>'form-control', 'placeholder'=>'Enter Duration', 'required'=>'true']) }}
             </div>
+            <div class="form-group">
+                {{ Form::label('working_hour', 'Working Hour') }}
+                {{ Form::number('working_hour', '', ['class'=>'form-control', 'placeholder'=>'Enter Working Hour', 'required'=>'true']) }}
+            </div>
         </div>
     </div>
     <div class="row">
