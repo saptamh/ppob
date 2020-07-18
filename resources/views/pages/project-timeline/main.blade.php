@@ -35,9 +35,8 @@
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Item</th>
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Job</th>
                         <th rowspan="2" style="vertical-align: middle;text-align:center;">Zone</th>
-                        <th rowspan="2" style="vertical-align: middle;text-align:center;">Work Hour</th>
                         <th colspan="3" style="text-align:center;">Target</th>
-                        <th rowspan="2" style="vertical-align: middle;text-align:center;">Percentage</th>
+                        <th rowspan="2" style="vertical-align: middle;text-align:center;">%</th>
                         <th colspan="3" style="text-align:center;">Realisation</th>
                         <th rowspan="2"  style="vertical-align: middle;text-align:center;width:150px;">Action</th>
                     </tr>
@@ -79,13 +78,13 @@ $(document).ready(function() {
             sortable: false,
         },
         {
-            targets: [ 14 ],
+            targets: [ 13 ],
             visible: true,
             searchable: false,
             sortable: false,
             defaultContent: "<center>@can('projectTimeline-edit')<button class='btn btn-warning btn-sm' id='edit_btn'>Edit</button>@endcan " +
                 "@can('projectTimeline-delete')<button class='btn btn-danger btn-sm' id='remove_btn'>Delete</button>@endcan " +
-                "@can('projectDaily-list')<button class='btn btn-primary btn-sm' id='daily_rpt_btn'>Daily Report</button>@endcan</center>"
+                "@can('projectDaily-list')<button class='btn btn-primary btn-sm' id='daily_rpt_btn'>Daily Work</button>@endcan</center>"
         }],
         columns: [
             {data: "id"},
@@ -94,9 +93,10 @@ $(document).ready(function() {
             {data: "project_item.name", name: "ProjectItem.name"},
             {data: "project_job.name", name: "ProjectJob.name"},
             {data: "project_zone.name", name: "ProjectZone.name"},
-            {data: "working_hour"},
             {data: "qty"},
-            {data: "duration"},
+            {data: "duration", render: function( data, type, row, meta) {
+                return data + " hari";
+            }},
             {render: function ( data, type, row, meta ) {
                 var someDate = new Date(row.date);
                 someDate.setDate(someDate.getDate() + parseInt(row.duration)); //number  of days to add, e.x. 15 days
