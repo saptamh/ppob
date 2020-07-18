@@ -128,7 +128,6 @@ $(document).ready(function() {
 
                     var res = duration.toFixed(1);
                     var hour = (res % 1).toFixed(4) * 10;
-                    console.log(hour*10);
 
                     return parseInt(res) + ' hari ' + hour + ' jam';
                 } else {
@@ -136,8 +135,24 @@ $(document).ready(function() {
                 }
            }},
            {render: function( data, type, row, meta ) {
+            if (row.project_daily[0]) {
+                    var qty = row.project_daily[0].total_realisation;
+                    var total_hari = row.project_daily[0].total_hari;
+                    var qty_per_day = (row.qty / row.duration) * total_hari;
+                    var duration = (qty_per_day - qty) / row.working_hour;
 
-               return 'ESTIMATION';
+                    var res = duration.toFixed(1);
+                    var hour = (res % 1).toFixed(4) * 10;
+
+                    var someDate = new Date(row.date);
+                    someDate.setDate(someDate.getDate() + parseInt(row.duration) + parseInt(res)); //number  of days to add, e.x. 15 days
+                    var dateFormated = someDate.toISOString().substr(0,10);
+
+                    return dateFormated;
+                } else {
+                    return 0;
+                }
+
            }},
         ]
     });
