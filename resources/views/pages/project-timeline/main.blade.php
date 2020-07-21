@@ -104,7 +104,7 @@ $(document).ready(function() {
                 return dateFormated;
             }},
             {render: function( data, type, row, meta ) {
-                if (row.project_daily[0]) {
+                if (row.project_daily[0] && row.qty > 0) {
                     var total_realisation = row.project_daily[0].total_realisation;
                     var calculate = (total_realisation / row.qty) * 100;
                     return calculate ? calculate + '%' : 0 +'%';
@@ -129,10 +129,28 @@ $(document).ready(function() {
                     var res = duration.toFixed(1);
                     var hour = (res % 1).toFixed(4) * 10;
 
-                    return parseInt(res) + ' hari ' + hour + ' jam';
-                } else {
-                    return 0;
-                }
+                    let hari = 0;
+                    if (parseInt(res) > 0) {
+                        hari = row.duration - parseInt(res);
+                    }
+
+                    if (parseInt(res) < 0) {
+                        hari = parseInt(row.duration) + parseInt(res);
+                    }
+
+                    let jam = hour;
+                    if (hour < 0) {
+                        console.log(parseInt(row.working_hour));
+                        console.log(hour);
+
+
+                        jam = parseInt(row.working_hour) + hour;
+                        hari = hari - 1;
+                    }
+
+                        return hari + ' hari ' + jam + ' jam';
+                    }
+                    return row.duration;
            }},
            {render: function( data, type, row, meta ) {
             if (row.project_daily[0]) {
