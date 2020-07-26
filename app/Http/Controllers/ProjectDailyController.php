@@ -13,8 +13,8 @@ class ProjectDailyController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:projectDaily-list', ['only' => ['index']]);
-         $this->middleware('permission:projectDaily-create', ['only' => ['create','store']]);
+         $this->middleware('permission:projectDaily-list', ['only' => ['index','dataKpi']]);
+         $this->middleware('permission:projectDaily-create', ['only' => ['create','store','dataKpi']]);
          $this->middleware('permission:projectDaily-edit', ['only' => ['edit','store']]);
          $this->middleware('permission:projectDaily-delete', ['only' => ['destroy']]);
     }
@@ -165,8 +165,46 @@ class ProjectDailyController extends Controller
         }
     }
 
+    public function dataKpi(Request $request) {
+        if($request->ajax()){
+            $data=[];
+            if ($request->dt_for == "table") {
+                if ($request->date && $request->employee_id) {
+                    $date = $this->__validateDate($request->date);
+                    $employee_id = $request->employee_id;
+                    $data = ProjectDaily::select('*')
+                            ->whereBetween('date', [$date[0],$date[1]])
+                            ->where('employee_id', $employee_id);
+                }
+
+                return DataTables::of($data)->make(true);
+            } else {
+                if ($request->date && $request->employee_id) {
+                    $date = $this->__validateDate($request->date);
+                    $employee_id = $request->employee_id;
+                    $data = ProjectDaily::selectRaw("COUNT(*) AS total_hari, SUM(target) AS total_target, SUM(realisation) AS total_realisation")
+                            ->whereBetween('date', [$date[0],$date[1]])
+                            ->where('employee_id', $employee_id)
+                            ->first();
+                }
+
+                return response()->json($data);
+            }
+        }
+    }
+
     private function __getDropdown() {
         $data['employee'] = Employee::select('id','name')->where('status', 'phl')->pluck('name','id');
+
+        return $data;
+    }
+
+    private function __validateDate($date) {
+        $explode_date = explode(" - ", $date);
+        $data = [];
+        foreach($explode_date as $date) {
+            $data[] = date("Y-m-d", strtotime(str_replace(["/", " "],["-", ""], $date)));
+        }
 
         return $data;
     }

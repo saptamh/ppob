@@ -128,6 +128,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', ['uses' => 'SalaryPaymentController@destroy'])->name('destroy');
         Route::get('/salary/{employee_id}', ['uses' => 'SalaryPaymentController@salary'])->name('salary');
         Route::get('/project', ['uses' => 'SalaryPaymentController@project'])->name('project');
+        Route::get('/bonus', ['uses' => 'SalaryPaymentController@bonus'])->name('bonus');
     });
 
     Route::group(['prefix' => 'purchase', 'as' => 'purchase.'], function () {
@@ -226,6 +227,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::post('/store', ['uses' => 'ProjectDailyController@store'])->name('store');
         Route::get('/edit/{timeline_id}/{id}', ['uses' => 'ProjectDailyController@edit'])->name('edit');
         Route::delete('/destroy/{id}', ['uses' => 'ProjectDailyController@destroy'])->name('destroy');
+        Route::post('/data-table-kpi', ['uses' => 'ProjectDailyController@dataKpi'])->name('data-table-kpi');
     });
 
     Route::group(['prefix' => 'project-item', 'as' => 'project-item.'], function () {
@@ -253,6 +255,25 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::post('/store', ['uses' => 'ProjectZoneController@store'])->name('store');
         Route::get('/edit/{id}', ['uses' => 'ProjectZoneController@edit'])->name('edit');
         Route::delete('/destroy/{id}', ['uses' => 'ProjectZoneController@destroy'])->name('destroy');
+    });
+
+    Route::group(['prefix' => 'kpi', 'as' => 'kpi.'], function () {
+        Route::get('/', ['uses' => 'KpiController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'KpiController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'KpiController@create'])->name('add');
+        Route::post('/store', ['uses' => 'KpiController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'KpiController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'KpiController@destroy'])->name('destroy');
+        Route::post('/kpi-employee', ['uses' => 'KpiController@kpiEmployee'])->name('kpi-employee');
+    });
+
+    Route::group(['prefix' => 'bonus', 'as' => 'bonus.'], function () {
+        Route::get('/', ['uses' => 'BonusController@index'])->name('main');
+        Route::get('/data-table', ['uses' => 'BonusController@index'])->name('data-table');
+        Route::get('/create', ['uses' => 'BonusController@create'])->name('add');
+        Route::post('/store', ['uses' => 'BonusController@store'])->name('store');
+        Route::get('/edit/{id}', ['uses' => 'BonusController@edit'])->name('edit');
+        Route::delete('/destroy/{id}', ['uses' => 'BonusController@destroy'])->name('destroy');
     });
 
 });

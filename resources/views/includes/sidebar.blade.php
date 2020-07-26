@@ -80,7 +80,7 @@
 <hr class="sidebar-divider">
 @endif
 
-@if(Gate::check('projectTimeline-list'))
+@if(Gate::check('projectTimeline-list') || Gate::check('projectItem-list') || Gate::check('projectJob-list') || Gate::check('projectZone-list') || Gate::check('kpi-list'))
 <!-- Nav Item - Pages Collapse Menu -->
 <li class="nav-item">
   <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNine" aria-expanded="true" aria-controls="collapseTwo">
@@ -93,6 +93,8 @@
       @can('projectItem-list')<a class="collapse-item" href="{{ route('project-item.main') }}">Project Item</a>@endcan
       @can('projectJob-list')<a class="collapse-item" href="{{ route('project-job.main') }}">Project Job</a>@endcan
       @can('projectZone-list')<a class="collapse-item" href="{{ route('project-zone.main') }}">Project Zone</a>@endcan
+      @can('kpi-list')<a class="collapse-item" href="{{ route('kpi.main') }}">KPI</a>@endcan
+      @can('bonus-list')<a class="collapse-item" href="{{ route('bonus.main') }}">Bonus</a>@endcan
     </div>
   </div>
 </li>

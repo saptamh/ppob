@@ -81,9 +81,14 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                {{ Form::label('bonus', 'Bonus') }}
-                {{ Form::text('bonus', '0', ['class'=>'form-control calculate-salary', 'placeholder'=>'Enter Bonus', 'required'=>'true']) }}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Bonus</label>
+                </div>
+                {{ Form::text('bonus', '0', ['id'=>'bonus', 'class'=>'form-control calculate-salary', 'placeholder'=>'Enter Bonus', 'readonly'=>'true', 'required'=>'false']) }}
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="btn-bonus">Browse Bonus</button>
+                </div>
             </div>
             <div class="form-group">
                 {{ Form::label('cashbon', 'Cashbon') }}
@@ -113,12 +118,46 @@
     </div>
     {{ Form::close() }}
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">KPI List</h4>
+      </div>
+      <div class="modal-body">
+        <table id="example" style="width: 100%;"  class="display table dt-responsive nowrap table-bordered table-hover">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Job</th>
+                <th>Quality</th>
+                <th>Attitude</th>
+                <th>Result</th>
+                </tr>
+            </thead>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 @push('style')
+<link href="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/css.gijgo.min.css') }}" rel="stylesheet">
+<link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
 @endpush
 @push('script')
 @include('pages.salary-payment/salary-template')
+<script src="{{ URL::asset('themes/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script src="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/handlebars/handlebars.min-v4.7.6.js') }}"></script>
 <script>
@@ -231,6 +270,71 @@ $(document).ready(function() {
 
     $("input.calculate-salary").on('keyup', function() {
         calculate();
+    });
+
+    $("#btn-bonus").click(function() {
+        if($("#employee_id").val() == "") {
+            alert('Please select employee first');
+            return;
+        }
+        if($("#work_day").val() == "" || $("#work_day").val() < 1) {
+            alert('Please fill the work day first');
+            return;
+        }
+        $('#example').DataTable().ajax.reload();
+        $("#myModal").modal('show');
+    });
+
+    var t = $('#example').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("kpi.kpi-employee") }}',
+            dataType: 'json',
+            type: 'post',
+            data: function (d) {
+                d._token =  "{{csrf_token()}}";
+                d.employee_id = $("#employee_id").val();
+         }
+        },
+        select: {
+            style: 'single'
+        },
+        columnDefs: [{
+            targets: [ 0 ],
+            visible: true,
+            searchable: false,
+            sortable: false,
+        }],
+        columns: [
+            {data: "id"},
+            {data: "start_date"},
+            {data: "end_date"},
+            {data: "job_percentage"},
+            {data: "quality_percentage"},
+            {data: "attitude_percentage"},
+            {data: "result"},
+        ]
+    });
+
+    $('#myModal').on('hidden.bs.modal', function () {
+        var selData =   t.rows(".selected").data();
+        console.log(selData[0]);
+        if (selData.length > 0) {
+            $.ajax({
+                    method: 'GET',
+                    url: baseUrl + "/salary-payment/bonus/",
+                    dataType: 'json',
+                    data:{ _token: "{{csrf_token()}}", rate: selData[0].result},
+                    success: function (res) {
+                        var bonus = res.data.value * $("#work_day").val();
+                        $("#bonus").val(bonus);
+                        setTimeout(function(){
+                            calculate();
+                        }, 2000);
+                    }
+                });
+        }
     });
 });
 </script>

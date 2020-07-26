@@ -7,6 +7,7 @@ use App\Employee;
 use App\Salary;
 use App\Project;
 use App\Payment;
+use App\Bonus;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
@@ -191,6 +192,15 @@ class SalaryPaymentController extends Controller
         return response()->json(['data'=>$data], 201);
     }
 
+    public function bonus(Request $request) {
+        $data =  Bonus::select('value')
+                ->where('rate','<=', $request->rate)
+                ->orderBy('rate', 'desc')
+                ->first();
+
+        return response()->json(['data'=>$data], 201);
+    }
+
     private function __emailContent($data) {
         $project = "-";
         if ($data->project_id) {
@@ -202,19 +212,19 @@ class SalaryPaymentController extends Controller
             $is_manager="false";
         }
         $content = [
-            "NIK: " . $employee->nik,
-            "Name: " . $employee->name,
-            "Status: " . $employee->status,
-            "Project: " . $project->name,
-            "Work Day: " . $data->work_day,
-            "Over Time (Day): " . $data->over_time_day,
-            "Over Time (Hour): " . $data->over_time_hour,
-            "Meal Allowance: " . $data->meal_allowance,
-            "Bonus: " . $data->bonus,
-            "Cashbon: " . $data->cashbon,
-            "Total Salary: " . number_format($data->total_salary, 0, '.', '.'),
-            'Dokumen terkait: ' . $data->upload,
-            'is_manager:'.$is_manager,
+            "<td>NIK</td><td>: " . $employee->nik . "</td>",
+            "<td>Name</td><td>: " . $employee->name . "</td>",
+            "<td>Status</td><td>: " . $employee->status . "</td>",
+            "<td>Project</td><td>: " . $project->name . "</td>",
+            "<td>Work Day</td><td>: " . $data->work_day . "</td>",
+            "<td>Over Time (Day)</td><td>: " . $data->over_time_day . "</td>",
+            "<td>Over Time (Hour)</td><td>: " . $data->over_time_hour . "</td>",
+            "<td>Meal Allowance</td><td>: " . $data->meal_allowance . "</td>",
+            "<td>Bonus</td><td>: " . $data->bonus . "</td>",
+            "<td>Cashbon</td><td>: " . $data->cashbon . "</td>",
+            "<td>Total Salary</td><td>: " . number_format($data->total_salary, 0, '.', '.') . "</td>",
+            "<td>Dokumen terkait</td><td>: " . $data->upload . "</td>",
+            "is_manager:".$is_manager,
         ];
 
         return $content;
