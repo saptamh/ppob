@@ -34,7 +34,7 @@
         </div>
     </div>
     <br>
-    @can('role-create')
+    @can('projectDaily-create')
     <div class="row">
         <div class="col-lg-6">
             <a href="{{ route('project-daily.add', ['timeline_id'=>$timeline_id]) }}" class="btn btn-primary btn-circle">

@@ -42,7 +42,8 @@ class SalaryPaymentController extends Controller
             ->with(['Employee.Level' => function($query) {
                 $query->select('employee_id','level')->orderBy('created_at', 'desc')->first();
             }])
-            ->with('Project');
+            ->with('Project')
+            ->orderBy('id', 'desc');
 
            return DataTables::of($data)->make(true);
         } else {

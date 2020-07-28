@@ -36,7 +36,8 @@ class NonpurchaseController extends Controller
     {
         if($request->ajax()){
             $data = Nonpurchase::select('*')
-            ->with('Project');
+            ->with('Project')
+            ->orderBy('id', 'desc');
 
            return DataTables::of($data)->make(true);
         } else {

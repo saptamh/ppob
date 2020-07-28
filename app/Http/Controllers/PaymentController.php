@@ -38,7 +38,8 @@ class PaymentController extends Controller
             $data = Payment::select('*')
             ->with('Project')
             ->with('Source')
-            ->where('is_manager_approval','APPROVED');
+            ->where('is_manager_approval','APPROVED')
+            ->orderBy('id','desc');
            return DataTables::of($data)->make(true);
         } else {
             return view('pages.payment.main');
