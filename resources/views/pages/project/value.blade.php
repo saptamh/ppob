@@ -76,7 +76,7 @@ $(document).ready(function() {
             visible: true,
             searchable: false,
             sortable: false,
-            defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn' disabled='true'><i class='fas fa-edit'></i></button> " +
+            defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
                 "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>"
         }],
         columns: [
@@ -96,13 +96,9 @@ $(document).ready(function() {
     $('#DataTableLog tbody').on('click', '#edit_btn', function () {
         var data_row = tLevel.row($(this).closest('tr')).data();
         $('#btn-value-form').val('Update');
+        $("#value_id_text").val(data_row.value);
+        $("#description").val(data_row.description);
         $("#value_id").val(data_row.id);
-        $("#point_id").val(data_row.point);
-        $("#duration_id").val(data_row.duration);
-        $("#weight_id").val(data_row.weight);
-        $("#bast_id").val(data_row.bast);
-        $("#date_id").val(data_row.date);
-        $("#retention_id").val(data_row.retention);
     });
 
     $('#DataTableLog tbody').on('click', '#remove_btn', function () {

@@ -18,10 +18,11 @@ Hi <strong>Manager</strong>,
 <p>Berikut  ada process <b>{{ $type }} </b></p>
 <p>Dengan rincian sebagai berikut: </p>
 <div style="margin-left: 10px;">
-
-    @foreach($content as $v)
-        <p>{{ $v }}</p>
+    <table>
+    @foreach($content as $key=>$v)
+        <tr><td>{{ ucwords(str_replace("_", " ", $key)) }}</td><td>: {{ $v }}</td></tr>
     @endforeach
+    </table>
 </div>
 
 <div style="text-align:center;">

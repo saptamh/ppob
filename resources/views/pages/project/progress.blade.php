@@ -99,7 +99,7 @@ $(document).ready(function() {
             searchable: false,
             sortable: false,
             defaultContent: "<center><button class='btn btn-warning btn-circle' id='edit_btn'><i class='fas fa-edit'></i></button> " +
-                "<button class='btn btn-danger btn-circle' id='remove_btn' disabled='true'><i class='fas fa-trash'></i></button></center>"
+                "<button class='btn btn-danger btn-circle' id='remove_btn'><i class='fas fa-trash'></i></button></center>"
         }],
         columns: [
             {data: "id"},

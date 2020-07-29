@@ -213,19 +213,19 @@ class SalaryPaymentController extends Controller
             $is_manager="false";
         }
         $content = [
-            "<td>NIK</td><td>: " . $employee->nik . "</td>",
-            "<td>Name</td><td>: " . $employee->name . "</td>",
-            "<td>Status</td><td>: " . $employee->status . "</td>",
-            "<td>Project</td><td>: " . $project->name . "</td>",
-            "<td>Work Day</td><td>: " . $data->work_day . "</td>",
-            "<td>Over Time (Day)</td><td>: " . $data->over_time_day . "</td>",
-            "<td>Over Time (Hour)</td><td>: " . $data->over_time_hour . "</td>",
-            "<td>Meal Allowance</td><td>: " . $data->meal_allowance . "</td>",
-            "<td>Bonus</td><td>: " . $data->bonus . "</td>",
-            "<td>Cashbon</td><td>: " . $data->cashbon . "</td>",
-            "<td>Total Salary</td><td>: " . number_format($data->total_salary, 0, '.', '.') . "</td>",
-            "<td>Dokumen terkait</td><td>: " . $data->upload . "</td>",
-            "is_manager:".$is_manager,
+            "nik" => $employee->nik,
+            "name" => $employee->name,
+            "status" => $employee->status,
+            "project" => $project->name,
+            "work_day" => $data->work_day,
+            "over_day" => $data->over_time_day,
+            "over_time" => $data->over_time_hour,
+            "meal_allowance" => $data->meal_allowance,
+            "bonus" => $data->bonus,
+            "cashbon" => $data->cashbon,
+            "total_salary" => number_format($data->total_salary, 0, '.', '.'),
+            "dokumen_terkait" => $data->upload,
+            "is_manager" => $is_manager
         ];
 
         return $content;

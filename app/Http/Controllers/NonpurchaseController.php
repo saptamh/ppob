@@ -222,15 +222,15 @@ class NonpurchaseController extends Controller
             $is_manager="false";
         }
         $content = [
-            "Budget For: " . $type_object,
-            "Number: " . $data->number,
-            "Tanggal: " . $data->date,
-            "Anggaran: " . $type_anggaran['type'][$data->type],
-            "Berita Acara: " . $data->payment,
-            "Keterangan: " . $data->description,
-            "Nominal: " . number_format($data->nominal, 0, '.', '.'),
-            'Dokumen terkait: ' . $data->upload,
-            'is_manager:'.$is_manager,
+            "budget_for" => $type_object,
+            "number" => $data->number,
+            "tanggal" => $data->date,
+            "anggaran" => $type_anggaran['type'][$data->type],
+            "berita_acara" => $data->payment,
+            "keterangan" => $data->description,
+            "nominal" => number_format($data->nominal, 0, '.', '.'),
+            "dokumen_terkait" => $data->upload,
+            "is_manager" => $is_manager,
         ];
 
         return $content;

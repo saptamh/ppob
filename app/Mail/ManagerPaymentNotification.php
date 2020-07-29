@@ -30,7 +30,7 @@ class ManagerPaymentNotification extends Mailable
     {
         $is_manager = end($this->data->content);
         $to = ["supriyadin.170845@gmail.com","zainpam@gmail.com","gideonrekakomindo@gmail.com"];
-        if ($is_manager == "is_manager:false") {
+        if ($this->data->content['is_manager']) {
             $to = ["imah.rekakomindo@gmail.com","supriyadin.170845@gmail.com","zainpam@gmail.com","gideonrekakomindo@gmail.com"];
         }
         array_pop($this->data->content);
