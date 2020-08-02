@@ -33,17 +33,13 @@
                 {{ Form::select('employee_name', $employee, $edit['employee_id'], ['class'=>'form-control', 'placeholder'=>'Select Employee', 'disabled'=>'true', 'required'=>'true']) }}
             </div>
             <div id="salary_content"></div>
-            <div class="form-group">
-                {{ Form::label('periode', 'Periode') }}
-                {{ Form::text('periode', $edit['periode'], ['class'=>'form-control', 'placeholder'=>'Enter Periode', 'required'=>'true']) }}
-            </div>
         </div>
         <div class="col-lg-6">
             <div class="form-group">
                 {{ Form::label('work_day', 'Work Day') }}
                 <div class="form-row">
                     <div class="col">
-                        {{ Form::text('work_day', $edit['work_day'], ['class'=>'form-control calculate-salary', 'placeholder'=>'Enter Work Day', 'required'=>'true']) }}
+                        {{ Form::text('work_day', $edit['work_day'], ['class'=>'form-control calculate-salary', 'readonly'=>'true', 'placeholder'=>'Enter Work Day', 'required'=>'true']) }}
                     </div>
                     <div class="col">
                         {{ Form::text('work_day_result', '0', ['id'=>'work_day_result', 'class'=>'form-control', 'readonly'=>'true']) }}
@@ -54,7 +50,7 @@
                 {{ Form::label('over_time_day', 'Over Time (Weekend/Public Holiday)') }}
                 <div class="form-row">
                     <div class="col">
-                        {{ Form::text('over_time_day', $edit['over_time_day'], ['class'=>'form-control calculate-salary', 'placeholder'=>'Enter Over Time (day)', 'required'=>'true']) }}
+                        {{ Form::text('over_time_day', $edit['over_time_day'], ['class'=>'form-control calculate-salary', 'readonly'=>'true', 'placeholder'=>'Enter Over Time (day)', 'required'=>'true']) }}
                     </div>
                     <div class="col">
                         {{ Form::text('over_time_day_result', '0', ['id'=>'over_time_day_result', 'class'=>'form-control', 'readonly'=>'true']) }}
@@ -65,7 +61,7 @@
                 {{ Form::label('over_time_hour', 'Over Time (Hour)') }}
                 <div class="form-row">
                     <div class="col">
-                        {{ Form::text('over_time_hour', $edit['over_time_hour'], ['class'=>'form-control calculate-salary', 'placeholder'=>'Enter Over Time (hour)', 'required'=>'true']) }}
+                        {{ Form::text('over_time_hour', $edit['over_time_hour'], ['class'=>'form-control calculate-salary', 'readonly'=>'true', 'placeholder'=>'Enter Over Time (hour)', 'required'=>'true']) }}
                     </div>
                     <div class="col">
                         {{ Form::text('over_time_hour_result', '0', ['id'=>'over_time_hour_result', 'class'=>'form-control', 'readonly'=>'true']) }}
@@ -76,21 +72,16 @@
                 {{ Form::label('meal_allowance', 'Meal') }}
                 <div class="form-row">
                     <div class="col">
-                        {{ Form::text('meal_allowance', $edit['meal_allowance'], ['class'=>'form-control calculate-salary', 'placeholder'=>'Enter Meal Allowance', 'required'=>'true']) }}
+                        {{ Form::text('meal_allowance', $edit['meal_allowance'], ['class'=>'form-control calculate-salary', 'readonly'=>'true', 'placeholder'=>'Enter Meal Allowance', 'required'=>'true']) }}
                     </div>
                     <div class="col">
                         {{ Form::text('meal_allowance_result', '0', ['id'=>'meal_allowance_result', 'class'=>'form-control', 'readonly'=>'true']) }}
                     </div>
                 </div>
             </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Bonus</label>
-                </div>
-                {{ Form::text('bonus', $edit['bonus'], ['id'=>'bonus', 'class'=>'form-control calculate-salary', 'placeholder'=>'Enter Bonus', 'required'=>'true']) }}
-                <div class="input-group-append">
-                    <button class="btn btn-outline-secondary" type="button" id="btn-bonus">Browse Bonus</button>
-                </div>
+            <div class="form-group">
+                {{ Form::label('bonus', 'Bonus') }}
+                {{ Form::text('bonus', $edit['bonus'], ['class'=>'form-control calculate-salary', 'readonly'=>'true', 'placeholder'=>'Enter Bonus', 'required'=>'true']) }}
             </div>
             <div class="form-group">
                 {{ Form::label('cashbon', 'Cashbon') }}
@@ -161,6 +152,7 @@
 <link href="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
 <link href="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/css.gijgo.min.css') }}" rel="stylesheet">
 <link href="https://cdn.datatables.net/select/1.3.1/css/select.dataTables.min.css" rel="stylesheet">
+    <link href="{{ URL::asset('themes/vendor/daterangepicker-master/daterangepicker.css') }}" rel="stylesheet">
 @endpush
 @push('script')
 @include('pages.salary-payment/salary-template')
@@ -169,12 +161,30 @@
 <script src="{{ URL::asset('themes/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/gijgo-combined-1.9.13/js.gijgo.min.js') }}"></script>
 <script src="{{ URL::asset('themes/vendor/handlebars/handlebars.min-v4.7.6.js') }}"></script>
+<script src="{{ URL::asset('themes/vendor/daterangepicker-master/moment.min.js') }}"></script>
+<script src="{{ URL::asset('themes/vendor/daterangepicker-master/daterangepicker.js') }}"></script>
 <script>
 async function showSalary(data) {
     $('#salary_content').html('');
 
     Handlebars.registerHelper('isdefined', function (value, opts) {
         if (value == "phl") {
+            return opts.fn(this);
+        }
+
+        return opts.inverse(this);
+    });
+
+    Handlebars.registerHelper('isProject', function (value, opts) {
+        if (value == "phl") {
+            return opts.fn(this);
+        }
+
+        return opts.inverse(this);
+    });
+
+    Handlebars.registerHelper('isOffice', function (value, opts) {
+        if (value != "phl") {
             return opts.fn(this);
         }
 
@@ -189,14 +199,53 @@ async function showSalary(data) {
 
     var obj = {
         salary: data,
+        periode: "{{$edit['periode']}}",
         projects: await getProject(),
     };
+
+    console.log(obj);
 
     var $html = $(t(obj));
 
     $html.find('input.calculate-salary').on('keyup', function() {
         calculate();
     });
+
+    $html.find('#periode').datepicker({
+        uiLibrary: 'bootstrap',
+        format: 'mmmm, yyyy',
+        keyboardNavigation: true,
+        showOtherMonths: true
+    });
+
+    $html.find("#periode-phl").daterangepicker({
+        timePicker: false,
+        locale:{
+        format: 'DD/MM/YYYY'
+        }
+    });
+
+    $html.find("#periode-phl").on('apply.daterangepicker', function(ev, picker) {
+        var dateRange = $('input[name="periode"]').val();
+        $.ajax({
+            url: '{{ route("salary-payment.salary-bonus") }}',
+            dataType: 'json',
+            type: 'post',
+            data: {
+                _token:"{{csrf_token()}}",
+                date:$('input[name="periode"]').val(),
+                employee_id:$("#employee_id").val()
+            },
+            success: function(res) {
+                $("#work_day").val(res.data.total_day);
+                $("#over_time_hour").val(res.data.over_time.over_time);
+                $("#meal_allowance").val(res.data.meals);
+                $("#bonus").val(res.data.bonus.value);
+                calculate();
+            }
+        });
+    });
+
     $('#salary_content').append($html);
 }
 
@@ -211,10 +260,13 @@ function calculate() {
         let work_day_result = base_salary;
         if ($("#employee-status").val() == "phl") {
             work_day_result = parseInt(base_salary) * parseInt($("#work_day").val());
+            $("#over_time_day").removeAttr('readonly','true');
+        } else {
+            $("#over_time_day").attr('readonly','true');
         }
 
         var work_weekend_result = (parseInt(base_salary) * weekend_allowance) * parseInt($("#over_time_day").val());
-        var work_hour_result = work_hour > 0 ? (parseInt(base_salary) / work_hour) * parseInt($("#over_time_hour").val()) : 0;
+        var work_hour_result = work_hour > 0 ? Math.ceil((parseInt(base_salary) / work_hour) * parseInt($("#over_time_hour").val())) : 0;
         var meal_allowance_result = parseInt(meal_allowance) * parseInt($("#meal_allowance").val());
 
         $("#work_day_result").val(work_day_result);
@@ -301,71 +353,6 @@ $(document).ready(function() {
 
     $("input.calculate-salary").on('keyup', function() {
         calculate();
-    });
-
-    $("#btn-bonus").click(function() {
-        if($("#employee_id").val() == "") {
-            alert('Please select employee first');
-            return;
-        }
-        if($("#work_day").val() == "" || $("#work_day").val() < 1) {
-            alert('Please fill the work day first');
-            return;
-        }
-        $('#example').DataTable().ajax.reload();
-        $("#myModal").modal('show');
-    });
-
-    var t = $('#example').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: '{{ route("kpi.kpi-employee") }}',
-            dataType: 'json',
-            type: 'post',
-            data: function (d) {
-                d._token =  "{{csrf_token()}}";
-                d.employee_id = $("#employee_id_hidden").val();
-         }
-        },
-        select: {
-            style: 'single'
-        },
-        columnDefs: [{
-            targets: [ 0 ],
-            visible: true,
-            searchable: false,
-            sortable: false,
-        }],
-        columns: [
-            {data: "id"},
-            {data: "start_date"},
-            {data: "end_date"},
-            {data: "job_percentage"},
-            {data: "quality_percentage"},
-            {data: "attitude_percentage"},
-            {data: "result"},
-        ]
-    });
-
-    $('#myModal').on('hidden.bs.modal', function () {
-        var selData =   t.rows(".selected").data();
-        console.log(selData[0]);
-        if (selData.length > 0) {
-            $.ajax({
-                    method: 'GET',
-                    url: baseUrl + "/salary-payment/bonus/",
-                    dataType: 'json',
-                    data:{ _token: "{{csrf_token()}}", rate: selData[0].result},
-                    success: function (res) {
-                        var bonus = res.data.value * $("#work_day").val();
-                        $("#bonus").val(bonus);
-                        setTimeout(function(){
-                            calculate();
-                        }, 1000);
-                    }
-                });
-        }
     });
 });
 </script>

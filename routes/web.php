@@ -128,7 +128,7 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         Route::delete('/destroy/{id}', ['uses' => 'SalaryPaymentController@destroy'])->name('destroy');
         Route::get('/salary/{employee_id}', ['uses' => 'SalaryPaymentController@salary'])->name('salary');
         Route::get('/project', ['uses' => 'SalaryPaymentController@project'])->name('project');
-        Route::get('/bonus', ['uses' => 'SalaryPaymentController@bonus'])->name('bonus');
+        Route::post('/bonus', ['uses' => 'SalaryPaymentController@bonus'])->name('salary-bonus');
     });
 
     Route::group(['prefix' => 'purchase', 'as' => 'purchase.'], function () {

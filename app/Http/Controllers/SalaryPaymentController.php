@@ -8,6 +8,8 @@ use App\Salary;
 use App\Project;
 use App\Payment;
 use App\Bonus;
+use App\Kpi;
+use App\ProjectDaily;
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
@@ -156,7 +158,7 @@ class SalaryPaymentController extends Controller
      * @param  \App\SalaryPayments  $salaryPayments
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, SalaryPayments $salaryPayments, Request $request)
+    public function destroy($id, SalaryPayment $salaryPayments, Request $request)
     {
         if ($request->ajax()) {
             $model = $salaryPayments->find($id);
@@ -194,10 +196,35 @@ class SalaryPaymentController extends Controller
     }
 
     public function bonus(Request $request) {
-        $data =  Bonus::select('value')
-                ->where('rate','<=', $request->rate)
-                ->orderBy('rate', 'desc')
-                ->first();
+       $data = [];
+       $date = $this->__validateDate($request->date);
+       $employee_id = $request->employee_id;
+       $data['meals'] = ProjectDaily::select('*')
+       ->whereBetween('date', [$date[0],$date[1]])
+       ->where('employee_id', $employee_id)
+       ->where('worked_hour','>=', 12)
+       ->count();
+
+       $data['over_time'] = ProjectDaily::selectRaw('SUM(worked_hour - 7) AS over_time')
+       ->whereBetween('date', [$date[0],$date[1]])
+       ->where('employee_id', $employee_id)
+       ->where('worked_hour','>=', 7)
+       ->first();
+
+       $data['total_day'] =  ProjectDaily::select('*')
+       ->whereBetween('date', [$date[0],$date[1]])
+       ->where('employee_id', $employee_id)
+       ->count();
+
+       $kpi = Kpi::select('result')
+       ->where('start_date', $date[0])
+       ->where('end_date', $date[1])
+       ->first();
+
+       $data['bonus'] =  Bonus::select('value')
+       ->where('rate','<=', $kpi->result)
+       ->orderBy('rate', 'desc')
+       ->first();
 
         return response()->json(['data'=>$data], 201);
     }
@@ -216,7 +243,7 @@ class SalaryPaymentController extends Controller
             "nik" => $employee->nik,
             "name" => $employee->name,
             "status" => $employee->status,
-            "project" => $project->name,
+            "project" => isset($project->name) ? $project->name : "-",
             "work_day" => $data->work_day,
             "over_day" => $data->over_time_day,
             "over_time" => $data->over_time_hour,
@@ -229,5 +256,15 @@ class SalaryPaymentController extends Controller
         ];
 
         return $content;
+    }
+
+    private function __validateDate($date) {
+        $explode_date = explode(" - ", $date);
+        $data = [];
+        foreach($explode_date as $date) {
+            $data[] = date("Y-m-d", strtotime(str_replace(["/", " "],["-", ""], $date)));
+        }
+
+        return $data;
     }
 }

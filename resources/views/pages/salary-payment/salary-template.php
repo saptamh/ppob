@@ -33,5 +33,16 @@
         <label>Work Hour</label>
         <input type="text" id="work-hour-hide" readonly value="{{ salary.working_hour }}" class="form-control">
     </div>
-
+    {{#isProject salary.employee.status}}
+    <div class="form-group">
+        <label>Periode</label>
+        <input type="text" readonly="true" id="periode-phl" value="{{periode}}" required="true" class="form-control" name="periode">
+    </div>
+    {{/isProject}}
+    {{#isOffice salary.employee.status}}
+    <div class="form-group">
+        <label>Periode</label>
+        <input type="text" readonly="true" id="periode" value="{{periode}}" required="true" class="form-control" name="periode">
+    </div>
+    {{/isOffice}}
 </script>
