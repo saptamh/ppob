@@ -201,7 +201,7 @@ async function showSalary(data) {
                 $("#work_day").val(res.data.total_day);
                 $("#over_time_hour").val(res.data.over_time.over_time);
                 $("#meal_allowance").val(res.data.meals);
-                $("#bonus").val(res.data.bonus.value);
+                $("#bonus").val(res.data.bonus);
                 calculate();
             }
         });

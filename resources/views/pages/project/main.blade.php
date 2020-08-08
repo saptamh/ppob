@@ -36,7 +36,7 @@
                         <th>Progress Values</th>
                         <th>BAST 1</th>
                         <th>BAST 2</th>
-                        <th>Action</th>
+                        <th width="100px;">Action</th>
                     </tr>
                     </thead>
                 </table>
@@ -93,7 +93,8 @@ $(document).ready(function() {
             }},
             {data: "project_progress.total_progress", name: "ProjectProgress.total_progress", render: function(data, type, row) {
                 if (row.project_progress) {
-                    return row.project_progress.total_progress.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+                    var progress =  Math.ceil(row.project_progress.total_progress);
+                    return progress > 100 ? 100 : progress;
                 }
                 return 0;
             }},

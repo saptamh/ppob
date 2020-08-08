@@ -32,13 +32,13 @@ class ProjectController extends Controller
     {
         if($request->ajax()){
             $data = Project::with(['ProjectValue' => function($query) {
-                $query->select('project_id','value')->orderBy('updated_at', 'desc')->first();
+                $query->select('project_id','value')->orderBy('updated_at', 'desc');
             }])
             ->with(['ProjectProgress' => function($query) {
-                $query->selectRaw("project_id,SUM(progress) AS total_progress,SUM(result) AS total_result")->groupBy('project_id')->first();
+                $query->selectRaw("project_id,SUM(progress) AS total_progress,SUM(result) AS total_result")->groupBy('project_id');
             }])
             ->with(['ProjectHistorical' => function($query) {
-                $query->select('project_id','duration','retention')->orderBy('created_at', 'desc')->first();
+                $query->select('project_id','duration','retention')->orderBy('created_at', 'desc');
             }])
             ->select('*');
            return DataTables::of($data)->make(true);

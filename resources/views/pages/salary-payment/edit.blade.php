@@ -203,8 +203,6 @@ async function showSalary(data) {
         projects: await getProject(),
     };
 
-    console.log(obj);
-
     var $html = $(t(obj));
 
     $html.find('input.calculate-salary').on('keyup', function() {
@@ -226,27 +224,14 @@ async function showSalary(data) {
     });
 
     $html.find("#periode-phl").on('apply.daterangepicker', function(ev, picker) {
-        var dateRange = $('input[name="periode"]').val();
-        $.ajax({
-            url: '{{ route("salary-payment.salary-bonus") }}',
-            dataType: 'json',
-            type: 'post',
-            data: {
-                _token:"{{csrf_token()}}",
-                date:$('input[name="periode"]').val(),
-                employee_id:$("#employee_id").val()
-            },
-            success: function(res) {
-                $("#work_day").val(res.data.total_day);
-                $("#over_time_hour").val(res.data.over_time.over_time);
-                $("#meal_allowance").val(res.data.meals);
-                $("#bonus").val(res.data.bonus.value);
-                calculate();
-            }
-        });
+        getSalaryBasedDailyProject();
     });
 
     $('#salary_content').append($html);
+
+    if ($("#employee-status").val() == "phl") {
+        getSalaryBasedDailyProject();
+    }
 }
 
 function calculate() {
@@ -303,9 +288,6 @@ function getEmployee(id, isEdit) {
             };
 
             showSalary(data);
-            setTimeout(function(){
-                calculate();
-            }, 1000);
         }
     });
 }
@@ -322,6 +304,27 @@ async function getProject() {
     });
 
     return result;
+}
+
+function getSalaryBasedDailyProject() {
+    var dateRange = $('input[name="periode"]').val();
+    $.ajax({
+        url: '{{ route("salary-payment.salary-bonus") }}',
+        dataType: 'json',
+        type: 'post',
+        data: {
+            _token:"{{csrf_token()}}",
+            date:$('input[name="periode"]').val(),
+            employee_id:$("#employee_id_hidden").val()
+        },
+        success: function(res) {
+            $("#work_day").val(res.data.total_day);
+            $("#over_time_hour").val(res.data.over_time.over_time);
+            $("#meal_allowance").val(res.data.meals);
+            $("#bonus").val(res.data.bonus);
+            calculate();
+        }
+    });
 }
 
 $(document).ready(function() {

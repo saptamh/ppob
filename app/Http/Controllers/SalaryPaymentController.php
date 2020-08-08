@@ -211,20 +211,25 @@ class SalaryPaymentController extends Controller
        ->where('worked_hour','>=', 7)
        ->first();
 
-       $data['total_day'] =  ProjectDaily::select('*')
+       $project_daily =  ProjectDaily::select('*')
        ->whereBetween('date', [$date[0],$date[1]])
        ->where('employee_id', $employee_id)
-       ->count();
+       ->get();
 
-       $kpi = Kpi::select('result')
-       ->where('start_date', $date[0])
-       ->where('end_date', $date[1])
-       ->first();
+       $data['total_day'] = count($project_daily);
 
-       $data['bonus'] =  Bonus::select('value')
-       ->where('rate','<=', $kpi->result)
-       ->orderBy('rate', 'desc')
-       ->first();
+       $bonus = [];
+
+       foreach ($project_daily as $k=>$v) {
+           $realisation = ($v->realisation / $v->target) * 100;
+           $calculate =  Bonus::select('value')
+            ->where('rate','<=', $realisation)
+            ->orderBy('rate', 'desc')
+            ->first();
+            $bonus[] = $calculate->value;
+       }
+
+       $data['bonus'] = array_sum($bonus);
 
         return response()->json(['data'=>$data], 201);
     }
