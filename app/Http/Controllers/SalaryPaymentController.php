@@ -221,12 +221,22 @@ class SalaryPaymentController extends Controller
        $bonus = [];
 
        foreach ($project_daily as $k=>$v) {
-           $realisation = ($v->realisation / $v->target) * 100;
+           $realisation = 0;
+           if ($v->realisation > 0) {
+            $realisation = ($v->realisation / $v->target) * 100;
+           }
+
            $calculate =  Bonus::select('value')
             ->where('rate','<=', $realisation)
             ->orderBy('rate', 'desc')
             ->first();
-            $bonus[] = $calculate->value;
+
+            $value = 0;
+            if ($calculate) {
+                $value = $calculate->value;
+            }
+
+            $bonus[] = $value;
        }
 
        $data['bonus'] = array_sum($bonus);
