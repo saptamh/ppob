@@ -76,8 +76,10 @@
 
         </div>
         <div class="col-lg-4" style="text-align:right;">
+            @if (strtolower($edit['payment_status']) != 'paid')
             {{ Form::submit('Paid', ['name'=>'paid', 'class'=>'btn btn-outline-secondary btn-sm']) }}
             {{ Form::submit('Reject', ['name'=>'reject', 'class'=>'btn btn-outline-secondary btn-sm']) }}
+            @endif
             <a href="{{ route('payment.main') }}" class="btn btn-outline-secondary btn-sm"> Cancel</a>
         </div>
     </div>
