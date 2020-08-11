@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
 use PaymentHelp;
+use App\Mail\ManagerPaidStatusNotification;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentController extends Controller
 {
@@ -107,6 +109,9 @@ class PaymentController extends Controller
             //update to purchase request (salary payment or nonpurchase)
             PaymentHelp::updatePaymentProcessStatus($model->payment_type, $model->payment_id, $model->payment_status);
 
+            //send mail to manager
+            $this->__sendMail($model);
+
         } catch (Exception $e) {
             return back()->withError($e->getMessage())->withInput();
         }
@@ -196,5 +201,34 @@ class PaymentController extends Controller
 
             return response()->json(['data'=>$data], 201);
         }
+    }
+
+    private function __sendMail($data) {
+        $objDemo = new \stdClass();
+        $objDemo->content = $this->__emailContent($data);
+        Mail::send(new ManagerPaidStatusNotification($objDemo));
+    }
+
+    private function __emailContent($data) {
+
+        $content = [
+            'payment_name' => $data->payment_name,
+            'payment_type' => $data->payment_type,
+            'payment_status' => strtoupper($data->payment_status),
+            'payment_total' => number_format($data->payment_total, 0, '.', '.'),
+            'description' => $data->description
+        ];
+
+        if (strtolower($data->payment_status) == 'paid') {
+            if ($data->source_id != null) {
+                $project = Project::select('name')->where('id',$data->source_id)->first();
+                $content['source_payment'] = $project->name;
+            }
+            $content['payment_method'] = $data->payment_method;
+            $content['paid_date'] = $data->paid_date;
+            $content['document'] = $data->upload;
+        }
+
+        return $content;
     }
 }

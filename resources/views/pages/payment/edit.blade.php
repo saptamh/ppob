@@ -76,7 +76,7 @@
 
         </div>
         <div class="col-lg-4" style="text-align:right;">
-            @if (strtolower($edit['payment_status']) != 'paid')
+            @if (strtolower($edit['payment_status']) == 'pending')
             {{ Form::submit('Paid', ['name'=>'paid', 'class'=>'btn btn-outline-secondary btn-sm']) }}
             {{ Form::submit('Reject', ['name'=>'reject', 'class'=>'btn btn-outline-secondary btn-sm']) }}
             @endif
