@@ -100,7 +100,7 @@ $(document).ready(function() {
             }},
             {data: "project_progress.total_result", name: "ProjectProgress.total_result", render: function(data, type, row) {
                 if (row.project_progress) {
-                    return row.project_progress.total_result.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+                    return Math.ceil(row.project_progress.total_result).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
                 }
                 return 0;
             }},
