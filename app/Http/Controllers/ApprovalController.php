@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use JD\Cloudder\Facades\Cloudder;
 use PaymentHelp;
+use App\Nonpurchase;
+use App\SalaryPayment;
+use App\Mail\ManagerApprovalNotification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class ApprovalController extends Controller
 {
@@ -82,6 +87,9 @@ class ApprovalController extends Controller
 
         Payment::where('id', $request->id)->update(['is_manager_approval'=>$request->status]);
 
+         //send mail Approval
+         $this->__sendMail($source, $request->payment_id, $status, $reason);
+
         return redirect('/approval/'.$request->type)->with('message', 'Success!');
     }
 
@@ -147,5 +155,33 @@ class ApprovalController extends Controller
         $data['status'] = ['kontrak', 'tetap', 'phl'];
 
         return $data;
+    }
+
+    private function __sendMail($source, $payment_id, $status, $reason) {
+        $objDemo = new \stdClass();
+        $objDemo->user =  Auth::user()->name;
+        $objDemo->content = $this->__emailContent($source, $payment_id, $status, $reason);
+        Mail::send(new ManagerApprovalNotification($objDemo));
+    }
+
+    private function __emailContent($source, $payment_id, $status, $reason) {
+        $content = [];
+        if (strtolower($source) == "nonpurchase") {
+            $source_pay = Nonpurchase::selectRaw('payment as pay_for, nominal as total')->where('id', $payment_id)->first();
+        } else {
+            $source_pay = SalaryPayment::selectRaw('description as pay_for, total_salary as total')->where('id', $payment_id)->first();
+        }
+
+        $content['type'] = $source;
+        $content['status'] = strtolower($status) == 'reject' ? 'Reject' : 'Approved';
+        if ($source_pay) {
+            $content['pay_for'] = $source_pay['pay_for'];
+            $content['total'] = number_format($source_pay['total'], 0, '.', '.');
+        }
+        if (strtolower($status) == 'reject') {
+            $content['reason'] = $reason;
+        }
+
+        return $content;
     }
 }

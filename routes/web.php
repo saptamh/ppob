@@ -20,6 +20,8 @@ Route::group(['prefix' => '/', 'middleware' => ['auth']], function () {
         'uses' => 'HomeController@index',
     ])->name('home');
 
+    Route::get('/home', 'HomeController@index')->name('home');
+
     Route::group(['prefix' => 'employee', 'as' => 'employee.'], function () {
         Route::get('/', ['uses' => 'EmployeeController@index'])->name('main');
         Route::get('/data-table', ['uses' => 'EmployeeController@index'])->name('data-table');
