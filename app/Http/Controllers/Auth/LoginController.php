@@ -36,4 +36,12 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function showLoginForm()
+    {
+        if (\Session::has('user_profile')) {
+            return redirect()->route('home');
+        }
+        return view('login');
+    }
 }

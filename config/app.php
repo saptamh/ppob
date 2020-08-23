@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'api' => env('API_URL', 'http://localhost:8200'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
