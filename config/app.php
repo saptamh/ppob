@@ -17,6 +17,10 @@ return [
 
     'api' => env('API_URL', 'http://localhost:8200'),
 
+    'client_id' => env('CLIENT_ID',''),
+
+    'client_key' => env('CLIENT_KEY', ''),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

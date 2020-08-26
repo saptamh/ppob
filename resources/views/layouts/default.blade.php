@@ -60,13 +60,22 @@
             iconCls: 'icon-more',
             children: [{
                 text: 'Keluar',
-                link: "{{ route('transaction.late-pay-main') }}"
             }]
         }];
 
         function openPage(item){
             console.log(item.link);
-            // $('#container').html("");
+            var baseUrl = "{{ URL::to('/') }}";
+            if (item.text == "Keluar") {
+                console.log('logout');
+                $.messager.confirm('Confirm','Anda yakin ingin keluar?',function(r){
+                    if (r){
+                        console.log('keluar');
+                        window.location.href = baseUrl + '/logout';
+                    }
+                });
+                return false;
+            }
             $('#container').load(item.link);
         }
 

@@ -98,19 +98,40 @@ class UserController extends Controller
             $request= $client->request('POST', config('app.api') . '/v1/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'password',
-                    'client_id' => 2,
-                    'client_secret' => "YTGoG4c9KO7h20Gorj1scnIKgmdHKO6TxrQhFNtg",
+                    'client_id' => config('app.client_id'),
+                    'client_secret' => config('app.client_key'),
                     'password' => $request->password,
                     'username' => $request->username
                 ]
             ]);
 
             $response = $request->getBody()->getContents();
+
             \Session::push('user_profile', $response);
 
             return redirect()->route('home');
         } catch(\Exception $ex) {
             dd('error ,' . $ex);
         }
+    }
+
+    function logout() {
+        $client = new Client();
+        $session = json_decode(\Session::get('user_profile')[0], true);
+
+        $url = config('app.api').'/user/logout';
+        try {
+            $res = $client->request('POST',$url, [
+                'form_params' => [],
+                'headers' => [
+                    'Authorization' => 'Bearer '. $session['access_token'],
+                ],
+            ]);
+            $response = $res->getBody();
+        } catch(\Exception $e) {
+            $response = $e->getResponse();
+        }
+        \Session::forget('user_profile');
+        return redirect()->route('home');
     }
 }

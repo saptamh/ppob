@@ -22,6 +22,10 @@ Route::group(['middleware' => 'user'], function() {
         'uses' => 'HomeController@index',
     ])->name('home');
 
+    Route::get('/logout', [
+        'uses' => 'UserController@logout',
+    ])->name('logout');
+
     Route::group(['prefix' => 'user', 'as' => 'user.'], function () {
         Route::get('/', ['uses' => 'UserController@index'])->name('main');
         Route::get('/data-table', ['uses' => 'UserController@dataGrid'])->name('data-table');
